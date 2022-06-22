@@ -1,0 +1,160 @@
+﻿@model SCR_Tracker.Models.KanbanViewModel
+@using HelperMethods.Infrastructure;
+@{
+    Layout = "~/Views/Shared/_BarLayout.cshtml";
+    ViewBag.Title = @Resources.strings.qviKanbanBoardFor + " " + @Model.ReportTitle;
+}
+
+<script>
+        function popUpWatchList(URL) {
+            day = new Date();
+            id = day.getTime();
+            var strWindowFeatures = 'toolbar=no,scrollbars=yes,statusbar=no,location=no,menubar=no,resizable=yes,width=640,height=480,left = 600,top = 480'
+            if (navigator.userAgent.indexOf("Mozilla") != -1) {
+                window.open(URL, id, strWindowFeatures).moveTo(0, 0);
+            }
+            else
+            {
+                dom.disable_window_open_feature.location;
+                dom.disable_window_open_feature.status;
+                var popup = window.open(URL, "Name", "_blank");
+                popup.focus();
+            }
+        }
+</script>
+<script>
+    $(function () { $("[data-toggle='tooltip']").tooltip(); });
+    @*$(document).ready(function () {
+        $("#tooltip-ex a").tooltip({
+            placement: ''
+        });
+    });*@
+</script>
+<div>
+    @if (@Model.ErrorMessage.Length > 0)
+    {
+        <div class="alert alert-danger" role="alert">
+            @Model.ErrorMessage
+        </div>
+    }
+
+    <h4 class="portlet-title">
+        <u>@ViewBag.Title <span class="text-sm row-stat-label"></span></u>
+    </h4>
+    <div class="row">
+            <div class="col-md-2 col-sm-2">
+                <div class="alert alert-info" role="alert">@Resources.strings.qviSUBMITTEDCaps<i class='fa kv-icon kv-icon-default pull-right' style="margin-top: -7px;">@Model.KanbanCards.Count(m => m.statusID == 1)</i></div>
+                <!-- /.col SUBMITTED -->
+                @foreach (SCR_Tracker.Models.KanbanViewModel.KanbanSCR card in Model.KanbanCards.Where(m => m.statusID == 1))
+                {
+                    //if (card.statusID == 1)
+                    {
+                        @Html.KanbanCard(card)
+                    }
+                }
+            </div> <!-- /.col -->
+   
+            <div class="col-md-2 col-sm-2">
+                <div class="alert alert-info" role="alert">@Resources.strings.qviAPPROVEDCaps<i class='fa kv-icon kv-icon-default pull-right' style="margin-top: -7px;">@Model.KanbanCards.Count(m => m.statusID == 2)</i></div>
+                <!-- /.col APPROVED -->
+                @foreach (SCR_Tracker.Models.KanbanViewModel.KanbanSCR card in Model.KanbanCards.Where(m => m.statusID == 2))
+                {
+                    //if (card.statusID == 2)
+                    {
+                        @Html.KanbanCard(card)
+                    }
+                }
+            </div> <!-- /.col -->
+
+            <div class="col-md-2 col-sm-2">
+                <div class="alert alert-info" role="alert">@Resources.strings.qviINPROCESSCaps<i class='fa kv-icon kv-icon-default pull-right' style="margin-top: -7px;">@Model.KanbanCards.Count(m => m.statusID == 5)</i></div>
+                <!-- /.col IN PROCESS -->
+                @foreach (SCR_Tracker.Models.KanbanViewModel.KanbanSCR card in Model.KanbanCards.Where(m => m.statusID == 5))
+                {
+                    //if (card.statusID == 5)
+                    {
+                        @Html.KanbanCard(card)
+                    }
+                }
+            </div> <!-- /.col -->
+
+            <div class="col-md-2 col-sm-2">
+                <div class="alert alert-info" role="alert">@Resources.strings.qviFIXEDCaps<i class='fa kv-icon kv-icon-default pull-right' style="margin-top: -7px;">@Model.KanbanCards.Count(m => m.statusID == 6)</i></div>
+                <!-- /.col FIXED -->
+                @foreach (SCR_Tracker.Models.KanbanViewModel.KanbanSCR card in Model.KanbanCards.Where(m => m.statusID == 6))
+                {
+                    //if (card.statusID == 6)
+                    {
+                        @Html.KanbanCard(card)
+                    }
+                }
+            </div> <!-- /.col -->
+
+            <div class="col-md-2 col-sm-2">
+                <div class="alert alert-info" role="alert">@Resources.strings.qviDELIVEREDCaps<i class='fa kv-icon kv-icon-default pull-right' style="margin-top: -7px;">@Model.KanbanCards.Count(m => m.statusID == 7)</i></div>
+                <!-- /.col DELIVERED -->
+                @foreach (SCR_Tracker.Models.KanbanViewModel.KanbanSCR card in Model.KanbanCards.Where(m => m.statusID == 7))
+                {
+                    //if (card.statusID == 7)
+                    {
+                        @Html.KanbanCard(card)
+                    }
+                }
+            </div> <!-- /.col -->
+
+            <div class="col-md-2 col-sm-2">
+                <div class="alert alert-info" role="alert">@Resources.strings.qviTESTINGCaps<i class='fa kv-icon kv-icon-default pull-right' style="margin-top: -7px;">@Model.KanbanCards.Count(m => ((m.statusID == 8) || (m.statusID == 10) || (m.statusID == 11)))</i></div>
+                <!-- /.col TESTING -->
+                @foreach (SCR_Tracker.Models.KanbanViewModel.KanbanSCR card in Model.KanbanCards.Where(m => ((m.statusID == 8) || (m.statusID == 10) || (m.statusID == 11))))
+                {
+                    //if ((card.statusID == 8) || (card.statusID == 10) || (card.statusID == 11))
+                    {
+                        @Html.KanbanCard(card)
+                    }
+                }
+            </div> <!-- /.col -->       
+    </div> <!-- /.row -->
+    <div class="alert alert-info alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <b>@Resources.strings.qviAssignedToCAPS:&nbsp;</b>
+        <i class='fa fa-user'></i><i class='fa kv-icon kv-icon-danger' style='cursor: default' data-toggle='tooltip' data-placement='top' title=''>??</i>
+        <b>@Resources.strings.qviWatchersCAPS:&nbsp;</b><i class='fa fa-users'></i>
+        @Resources.strings.qviMANAGERCaps
+        <i class='fa kv-icon kv-icon-primary' style='cursor: default' data-toggle='tooltip' data-placement='top' title=''>??</i>
+        @Resources.strings.qviTESTERCaps
+        <i class='fa kv-icon kv-icon-success' style='cursor: default' data-toggle='tooltip' data-placement='top' title=''>??</i>
+        @Resources.strings.qviDEVELOPERCaps
+        <i class='fa kv-icon kv-icon-secondary' style='cursor: default' data-toggle='tooltip' data-placement='top' title=''>??</i>
+        @Resources.strings.qviOTHERROLECaps
+        <i class='fa kv-icon kv-icon-default' style='cursor: default' data-toggle='tooltip' data-placement='top' title=''>??</i>
+    </div>
+</div>
+
+<div class="modal modal-styled fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Basic Product Information</h4>
+            </div>
+            <div class="col-xs-12" align="center">
+                <b>@Resources.strings.qviAssignedToCAPS: </b>
+                <i class='fa fa-user'></i><i class='fa kv-icon kv-icon-danger' style='cursor: default' data-toggle='tooltip' data-placement='top' title=''>??</i>
+                <b>@Resources.strings.qviWatchersCAPS:&nbsp;</b><i class='fa fa-users'></i>
+                @Resources.strings.qviMANAGERCaps
+                <i class='fa kv-icon kv-icon-primary' style='cursor: default' data-toggle='tooltip' data-placement='top' title=''>??</i>
+                @Resources.strings.qviTESTERCaps
+                <i class='fa kv-icon kv-icon-success' style='cursor: default' data-toggle='tooltip' data-placement='top' title=''>??</i>
+                @Resources.strings.qviDEVELOPERCaps
+                <i class='fa kv-icon kv-icon-secondary' style='cursor: default' data-toggle='tooltip' data-placement='top' title=''>??</i>
+                @Resources.strings.qviOTHERROLECaps
+                <i class='fa kv-icon kv-icon-default' style='cursor: default' data-toggle='tooltip' data-placement='top' title=''>??</i>
+            </div>
+            <div class="modal-footer">
+                <div class="col-xs-12">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.strings.qviClose</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

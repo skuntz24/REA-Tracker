@@ -1,0 +1,91 @@
+﻿@model SCR_Tracker.Models.ProductHierarchyViewModel
+@using HelperMethods.Infrastructure
+@{
+    ViewBag.Title = Resources.strings.qviProductHierarchy;
+}
+
+<h2>@Resources.strings.qviProductHierarchy</h2>
+<font color="#33CC66" id="Message" name="Message">
+    @ViewBag.Message
+</font>
+<script type="text/javascript" src="~/Scripts/TableSort/jquery.tablesorter.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#ProductRelationTableHtml").tablesorter({
+            headers: {
+                3: { sorter: false },
+                4: { sorter: false }
+            }
+        });
+    });
+</script>
+@using (Html.BeginForm("ProductHierarchy", "Admin", FormMethod.Post, new { @onsubmit = "return validateNewForm();" }))
+{
+<div class="form-inline">
+    <label> @Resources.strings.qviParent :</label>
+    @Html.DisplaySelectList("NewParentProductID", Model.ProductList)
+    <label> @Resources.strings.qviChild :</label>
+    @Html.DisplaySelectList("NewChildProductID", Model.ProductList)
+    <input type="submit" name="button" value=@Resources.strings.qviCreate class="btn btn-primary"/>
+</div>
+}
+@using (Html.BeginForm("ProductHierarchy", "Admin", FormMethod.Post, new { @onsubmit = "return validateDeleteform();" }))
+{
+    <br/>
+    <table class="table table-bordered tablesorter" id="ProductRelationTableHtml" >
+        <thead>
+            <tr>
+                <th>
+                    @Resources.strings.qviRelation #
+                </th>
+                <th>
+                    @Resources.strings.qviParent
+                </th>
+                <th>
+                    @Resources.strings.qviChild
+                </th>
+                <th>
+                    <input type="submit" value=@Resources.strings.qviRemove name="button" class="btn btn-danger" />
+                </th>
+                <th>
+                    @Resources.strings.qviRelationshipTree
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ int i = 0; }
+            @foreach (var Relation in Model.ProductRelationList)
+            {
+                <tr>
+                    <td align="center">
+                        @Relation.RelationID  
+                    </td>
+
+                    <td align="center">
+                        @Relation.ParentName     
+                    </td>
+
+                    <td align="center">
+                        @Relation.ChildName 
+                    </td>
+                    <td align="center">
+                        <input id="ProductRelationList[@i].Remove"      name="ProductRelationList[@i].Remove"       type="checkbox"     value="true" />
+                        <input id="ProductRelationList[@i].RelationID"  name="ProductRelationList[@i].RelationID"   type="hidden"       value="@Relation.RelationID" />
+                        <input id="ProductRelationList[@i].ChildName"   name="ProductRelationList[@i].ChildName"    type="hidden"       value="@Relation.ChildName" />
+                        <input id="ProductRelationList[@i].ChildID"     name="ProductRelationList[@i].ChildID"      type="hidden"       value="@Relation.ChildID" />
+                        <input id="ProductRelationList[@i].ParentName"  name="ProductRelationList[@i].ParentName"   type="hidden"       value="@Relation.ParentName" />
+                        <input id="ProductRelationList[@i].ParentID"    name="ProductRelationList[@i].ParentID"     type="hidden"       value="@Relation.ParentID" />
+                    </td>
+                    @if (i == 0)
+                    {
+                        <td rowspan="@Model.ProductRelationList.Count()" valign="top">
+                            @Html.Raw(Model.GetBuiltTree())
+                        </td>
+                    }
+                </tr>
+                i++;
+            }
+        </tbody>
+        <tbody>
+    </table>
+}

@@ -1,0 +1,48 @@
+﻿@model REA_Tracker.Models.NewREA
+
+    <h3 class="content-title"><u>@Resources.strings.qviPlanningDetails</u></h3>
+<p class="text-danger">@ViewBag.Message[3]</p>
+<p>
+    @Resources.strings.qviPlanningDetailsDescription
+</p><br>
+    <br />
+    <div class="form-group">
+        <label class="col-md-3">@Resources.strings.qviSpecificationHours</label><div class="col-md-9"><input type="text" id="EstimateSpecifiedHours" name="EstimateSpecifiedHours" placeholder=@Resources.strings.qviHours value='@Model.EstimateSpecifiedHours' class="form-control qvi-small-width" /> </div><!-- /.col -->
+@Html.ValidationMessageFor(m => m.EstimateSpecifiedHours)
+    </div><!-- /.form-group -->
+    <div class="form-group">
+        <label class="col-md-3">@Resources.strings.qviImplementationHours</label><div class="col-md-9"><input type="text" id="EstiamteFixHours" name="EstimateFixHours" placeholder=@Resources.strings.qviHours value='@Model.EstimateFixHours' class="form-control qvi-small-width" /></div><!-- /.col -->
+@Html.ValidationMessageFor(m => m.EstimateFixHours)
+    </div><!-- /.form-group -->
+    <div class="form-group">
+        <label class="col-md-3">@Resources.strings.qviTestingHours</label><div class="col-md-9"><input data-val="true" data-val-doublenonegativenullableattribute="" type="text" placeholder=@Resources.strings.qviHours value='@Model.EstimateTestHours'id="EstimateTestHours" name="EstimateTestHours" class="form-control qvi-small-width" /></div><!-- /.col -->
+@Html.ValidationMessageFor(m => m.EstimateTestHours)
+    </div><!-- /.form-group -->
+    <div class="form-group form-inline">
+        <label class="col-md-3">@Resources.strings.qviTargetedVersion</label><div class="col-md-9">
+            @Html.TextBoxFor(m => m.VersionPlannedMajor, new { @class = "form-control", @style = "width: 50px;" })
+            .
+            @Html.TextBoxFor(m => m.VersionPlannedMinor, new { @class = "form-control", @style = "width: 50px;" })
+            .
+            @Html.TextBoxFor(m => m.VersionPlannedBuild, new { @class = "form-control", @style = "width: 50px;" })
+            &nbsp;
+            @Html.TextBoxFor(m => m.VersionPlannedMisc, new { @size = "10", @maxlength = "50", @class = "form-control" })
+        </div><!-- /.col -->
+        <div class="col-md-3"></div>
+        <div class="col-md-9">
+           <p>@Html.ValidationMessageFor(m => m.VersionPlannedMajor)</p>
+           <p>@Html.ValidationMessageFor(m => m.VersionPlannedMinor)</p>
+           <p>@Html.ValidationMessageFor(m => m.VersionPlannedBuild)</p>
+        </div>
+    </div><!-- /.form-group -->
+<div class="form-group">
+    <label class="col-md-3">@Resources.strings.qviRank</label><div class="col-md-9"><input data-val="true" data-val-doublenonegativenullableattribute="" type="text" placeholder="" value='@Model.Rank' id="Rank" name="Rank" class="form-control qvi-small-width" /></div><!-- /.col -->
+    @Html.ValidationMessageFor(m => m.Rank)
+</div><!-- /.form-group -->    
+
+<div class="form-group">
+    <label class="col-md-3">@Resources.strings.qviSize</label><div class="col-md-9"><input data-val="true" data-val-doublenonegativenullableattribute="" type="text" placeholder="" value='@Model.Size' id="Size" name="Size" class="form-control qvi-small-width" /></div><!-- /.col -->
+    @Html.ValidationMessageFor(m => m.Size)
+</div><!-- /.form-group -->
+
+

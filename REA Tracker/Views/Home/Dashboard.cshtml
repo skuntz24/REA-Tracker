@@ -1,0 +1,320 @@
+﻿@model REA_Tracker.Models.DashBoardViewModel
+@using HelperMethods.Infrastructure;
+<script type="text/javascript" src="~/Scripts/PopUp.js"></script>
+<script type="text/javascript" src="~/Scripts/TableSort/jquery.tablesorter.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#LatestSubmitted').tablesorter(
+            {
+                headers: {
+                    1: { sorter: false }
+                }
+            });
+    });
+    
+    
+    @if (Model.Releases != null)
+    {
+
+        for (int i = 0; i < Model.Releases.Count; i++)
+        {
+       <text>
+        $(document).ready(function () {
+            $('#Release-@i').tablesorter(
+                {
+                    headers: {
+                        4: { sorter: false },
+                        5: { sorter: false }
+                    }
+                });
+        } );
+        </text>
+        }
+    }
+
+</script>
+
+
+    <div class="layout layout-main-left layout-stack-sm">
+        <div class="col-md-3 col-sm-4 layout-main hidden-print">
+            <div class="portlet">
+                <form action="/Home/Dashboard" method="post" novalidate="novalidate" id="FavoriteForm" >
+                    <h4 class="portlet-title">
+                        <u>Product Dashboard</u>
+                        <i class="fa fa-info-circle pull-right" style="cursor:pointer;" onmouseup="javascript: $('#InfoModal').modal('show');"></i>
+                        @if (Model.IsFavoriteProduct)
+                        {
+                            <input type="hidden" name="setFavorite" value="false">
+                            <i class="fa fa-star pull-right" style="color:goldenrod;cursor:pointer;" onclick='document.getElementById("FavoriteForm").submit();' ></i>
+                        }
+                        else
+                        {
+                            <input type="hidden" name="setFavorite" value="true">
+                            <i class="fa fa-star-o pull-right" style="color:goldenrod;cursor:pointer;" onclick='document.getElementById("FavoriteForm").submit();' ></i>
+                        }
+                    </h4>
+                </form>
+                @{int counter = 1;}
+               
+                <div class="portlet-body">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.DisplaySelectList("product", Model.productList, "class= 'form-control fixed-width' onchange='this.form.submit();'");
+                    }
+                </div>                
+            </div>
+            <!-- CONTENT GOES HERE -->
+            <div class="portlet">
+                <h4>Reports</h4>
+                <div class="list-group">
+                    @foreach (var s in ViewBag.Status)
+                    {
+                        <a style="cursor:pointer;" onclick="javascript: window.open('/Home/Report?product=@Model.ProductInfo.ID&type=@s.Type')" class="list-group-item">@s.Name<span class="badge">@s.Value</span></a>                        
+                        counter++;
+                    }
+                </div> <!-- /.list-group -->
+                <div class="list-group">
+                    @foreach (var metric in ViewBag.Metrics)
+                    {
+                        int temp = 12 + (metric.PriorityID - 4) + 1;
+
+                        <a style="cursor:pointer;" onclick="javascript: window.open('/Home/Report?product=@Model.ProductInfo.ID&type=@temp')" class="list-group-item">@Html.PriorityIcon((string)metric.Name, "", true)<span class="badge">@metric.Count</span></a>                   
+                    }
+                    @{counter = counter + 4;}
+                </div> <!-- /.list-group -->
+                <div class="list-group-item-heading" ><span class="pull-left"><i class="fa fa-info-circle ui-tooltip" data-toggle="tooltip" data-trigger="hover" data-placement="bottom" title="These reports only count PROBLEM issues that are either SUBMITTED, APPROVED, IN PROCESS, FIXED or DELIVERED"></i></span></div>
+            </div> <!-- /.portlet -->
+        </div>
+
+        <div class="col-md-9 col-sm-8 layout-sidebar">
+            <!-- CONTENT GOES HERE -->
+
+            <div class="portlet">
+                <h4 class="portlet-title">
+                    <u>@Resources.strings.qviLatestSubmitted<span class="text-sm row-stat-label">&nbsp;(@ViewBag.DisplayBy)</span></u>
+                </h4>
+                <div class="portlet-body">
+                    <div id="layout-responsive" data-title="Responsive Stacking" class="bs-docs-section-sub">
+                        <table id="LatestSubmitted" name="LatestSubmitted" class="table table-bordered table-hover table-striped tablesorter">
+                            <thead>
+                                <tr class="header">
+                                    <th align="center" class="qvi-col-trackingid">@Resources.strings.qviSCR #</th>
+                                    <th align="left">@Resources.strings.qviTitle</th>
+                                    <th align="center" class="qvi-col-priority">@Resources.strings.qviPriority</th>
+                                    <th align="center" class="qvi-col-status">@Resources.strings.qviStatus</th>
+                                    <th align="center" class="qvi-col-type">@Resources.strings.qviType</th>
+                                    <th align="center" class="qvi-col-version">@Resources.strings.qviVersionFound</th>
+                                   
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var row in ViewBag.LatestSubmitted)
+                                {
+                                    <tr>
+                                        <td align="center">
+                                            <a href="/SCR/Display/@row.SCR" target="_blank">@row.SCR</a>
+                                        </td>
+                                        <td align="left">
+                                            <div class="hidden">@row.SubmittedOn</div>
+                                            @row.Title<br />
+                                                      <div style="font-size: 10pt;">
+                                                          @Resources.strings.qviAssignedTo&nbsp;<a style="cursor:pointer;" onclick="javascript: popUp('/Account/ViewUser/@row.AssignedToID')">@row.AssignedTo</a>
+                                                          <div class="pull-right">@Resources.strings.qviSubmittedOn:&nbsp;@row.SubmittedOn</div>
+                                                          @if (!string.IsNullOrEmpty(row.ManagersNote))
+                                                          {
+                                                              <br />
+                                                              <b>@Resources.strings.qviManagersNote: &nbsp;</b>@row.ManagersNote
+                                                          }
+                                                      </div>
+                                        </td>
+                                        <td align="center"><div class="hidden"> @row.PriorityID </div>@Html.PriorityIcon((string)row.Priority, "fa-2x")</td>
+                                        <td align="center"><div class="hidden"> @row.StatusID </div>@row.Status</td>
+                                        <td align="center"><div class="hidden"> @row.IssueID </div>@Html.IssueIcon((string)row.Issue, "fa-2x")</td>
+                                        <td align="center"><div class="hidden"> @row.VersionFoundID </div>@row.VersionFound</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr><td colspan="7">@Resources.strings.qviTotalRecordsFound <strong>@ViewBag.LastestSubmittedCount</strong></td></tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                </div>
+            </div> <!-- /.portlet -->
+            <!--Code Review Table-->
+
+        </div> <!--sidebar-->
+    </div>
+@if (Model.Releases != null)
+{
+
+
+    for (int iModal = 0; iModal < Model.Releases.Count(); iModal++)
+    {
+        for (int jModal = 0; jModal < Model.Releases[iModal].ListOfRecords.Count(); jModal++)
+        {
+        <div class="modal fade" id="@Model.Releases[iModal].ListOfRecords[jModal].ModalString" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel"> @Model.ProductInfo.Name
+                        @Model.Releases[iModal].ListOfRecords[jModal].Version Notes</h4>
+                    </div>
+                    <div class="modal-body" style="max-height:500px; overflow-y: auto;">
+                        @Html.Nl2Br(Model.Releases[iModal].ListOfRecords[jModal].Notes)
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+    }
+}
+
+
+    <div class="modal modal-styled fade" id="InfoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Basic Product Information</h4>
+                </div>
+                <div class="col-xs-12" align="center">
+                    <br />
+                    <ul id="latestReleaseTab" class="nav nav-tabs">
+                        <li class="active"><a href="#InfoPanel" data-toggle="tab">Info</a></li>
+                        <li class=""><a href="#HierarchyPanel" data-toggle="tab">Hierarchy</a></li>
+                    </ul>
+
+                    <div id="latestReleaseTabContent" class="tab-content">
+                        <div class="tab-pane fade active in" id="InfoPanel">
+                            <table class="table table-bordered  portlet-body">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="col-xs-4">Name:</td>
+                                        <td align="Left">
+                                            @Model.ProductInfo.Name
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Description:
+                                        </td>
+                                        <td align="Left">
+                                            @Html.Nl2BrEscapeCharacters(Model.ProductInfo.Description)                                        
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-xs-4">Owner:</td>
+                                        <td align="Left">
+                                            <a style="cursor:pointer;" onclick="javascript: popUp('/Account/ViewUser/@Model.ProductInfo.OwnerID')">@Model.ProductInfo.OwnerName</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Validator:</td>
+                                        <td align="Left">
+                                            <!-- note: cursor:hand is for firefox -->
+                                            <a style="cursor:pointer;" onclick="javascript: popUp('/Account/ViewUser/@Model.ProductInfo.ValidatorID')">@Model.ProductInfo.ValidatorName</a>                                        
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Default Tester:</td>
+                                        <td align="Left">
+                                            <a style="cursor:pointer;" onclick="javascript: popUp('/Account/ViewUser/@Model.ProductInfo.DefaultTesterID')">@Model.ProductInfo.DefaultTesterName</a>                                        
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Release Coordinator:</td>
+                                        <td align="Left">
+                                            <a style="cursor:pointer;" onclick="javascript: popUp('/Account/ViewUser/@Model.ProductInfo.ReleaseCoordinatorID')">@Model.ProductInfo.ReleaseCoordinatorName</a>                                        
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Release Coordinator 2:</td>
+                                        <td align="Left">
+                                            <a style="cursor:pointer;" onclick="javascript: popUp('/Account/ViewUser/@Model.ProductInfo.ReleaseCoordinator2ID')">@Model.ProductInfo.ReleaseCoordinator2Name</a>                                        
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>SCCB:</td>
+                                        <td align="Left">
+                                            <a style="cursor:pointer;" onclick="javascript: popUp('/Account/ViewUser/@Model.ProductInfo.SCCBID')">@Model.ProductInfo.SCCBName</a>                                        
+                                        </td>
+                                    <tr>
+                                        <td>Active:</td>
+                                        <td align="Left">
+                                           @if (!Model.ProductInfo.IsRetired)
+                                           {<text>Yes</text>}
+                                            else
+                                            {<text>No</text>}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Is internal:</td>
+                                        <td align="Left">
+                                           @if (Model.ProductInfo.IsInternal)
+                                           {<text>Yes</text>}
+                                            else
+                                            {<text>No</text>}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Billing Code:</td>
+                                        <td align="Left">
+                                            @Model.ProductInfo.BillingCode                                       
+                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Distribution List:</td>
+                                        <td align="Left"> @Model.ProductInfo.DistributionList</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Display Metrics:</td>
+                                        <td align="Left">
+                                            @if (Model.ProductInfo.HasMetrics)
+                                            {
+                                                <text>Yes</text>
+                                            }
+                                            else
+                                            {
+                                                <text>No</text>
+                                            }
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="HierarchyPanel">
+                            @Html.Raw(Model.BuildTree(Model.ProductInfo.ID, 1))
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-xs-12">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+<script>
+    $(function () { $("[data-toggle='tooltip']").tooltip(); });
+    @*$(document).ready(function () {
+        $("#tooltip-ex a").tooltip({
+            placement: ''
+        });
+    });*@
+    function commentFunction() {
+        var id = document.getElementById("codeReviewId").value;
+    }
+</script>
+
+

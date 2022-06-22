@@ -1,0 +1,15 @@
+﻿@model REA_Tracker.Models.SearchViewModel
+@using HelperMethods.Infrastructure;
+
+<div class="row">
+    <div class="col-sm-6 col-md-12">
+        <div class="row-stat">
+            <p class="row-stat-label">Where Clause</p>
+            <textarea class="form form-control" rows="10" id="Where" name="Where">@Model.Where</textarea>
+            @if (Model.isWhereQueryFail) {<font size="4" color="#CD5C5C">Invalid where clause.</font>}
+        </div> <!-- /.row-stat -->
+       
+    </div> <!-- /.col -->
+</div> <!-- /.row -->
+                        
+

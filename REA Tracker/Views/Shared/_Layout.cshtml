@@ -1,0 +1,337 @@
+﻿@using QVICommonIntranet.Database;
+@using HelperMethods.Infrastructure;
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="REA Tracker" content="Pin">
+    <meta name="msapplication-TileColor" content="#B01B2E" />
+    <meta name="msapplication-TileImage" content="/Img/QVILogoPinIcon.png" />
+
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/fonts/css")    <!-- DMF CHANGE -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/css")
+
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/personal")
+    @Scripts.Render("~/Scripts/Parsley/Parsley.js")
+    @Scripts.Render("~/Scripts/respond.min.js")
+    <link rel="icon" type="image/png" href="~/favicon.png">
+</head>
+<body class="">
+    @{
+        String STUSERID = Convert.ToString(Session["st_userID"]);
+        bool isSPDManager = false;
+        var countOfAssigned = -1;
+        if (STUSERID != null && STUSERID != "")
+        {
+            REATrackerDB sql = new REATrackerDB();
+
+            try
+            {
+                countOfAssigned = sql.GetUserAssignedCount(int.Parse(STUSERID));
+            }
+            catch
+            {
+                countOfAssigned = -1;
+            }
+            try
+            {
+                isSPDManager = sql.IsSPDManager(int.Parse(STUSERID));
+            }
+            catch
+            {
+                isSPDManager = false;
+            }
+
+        }
+
+        string logo = @Html.GetLogo().ToString();
+    }
+    @if (Request.IsAuthenticated)
+    {
+        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", style = "" }))
+        {
+            @Html.AntiForgeryToken()
+        }
+        <!-- THE TOP NAV BAR-->
+        <header class="navbar navbar-inverse navbar-fixed-top hidden-print" role="banner">
+            <div class="container">
+                <div class="navbar-header" data-toggle="collapse" data-target=".navbar-collapse">
+                    <a style="height:60px;" href="~/Home/Index" class="navbar-brand navbar-brand-img">
+                        <div style="width:120px;
+                                    height:60px;
+                                    background-image: url(/img/@logo);">
+                            <div style="float:right; margin-right:35px">
+                                <h6 style="position:absolute; top:40px;">
+                                    v. @typeof(REA_Tracker.MvcApplication).Assembly.GetName().Version<!--xxx-->
+                                </h6>
+                            </div>
+                        </div>
+                    </a>
+                    <nav class="showAfterCollapse hideMobileCollapse" role="navigation">
+                        <ul class="nav navbar-nav noticebar navbar-left">
+                            <li class="ui-tooltip" data-toggle="tooltip" data-trigger="hover" data-placement="bottom" title="@Resources.strings.qviYourStartingHomePage">
+                                <a href="~/Home/Index">
+                                    <i style="color: #FFFFFF" class="fa fa-home"></i>
+                                    <span class="navbar-visible-collapsed">&nbsp;Notifications&nbsp;</span>
+                                    @if (countOfAssigned != -1)
+                                    {<span class="badge badge-primary">@countOfAssigned</span>}
+                                else
+                                {<span class="badge badge-primary">Connection Error</span>}
+                                </a>
+                            </li>
+                        </ul>
+
+                        <ul class="nav navbar-nav noticebar navbar-left">
+                            <li class="ui-tooltip" data-toggle="tooltip" data-trigger="hover" data-placement="bottom" title="@Resources.strings.qviLatestInformationAboutAProduct">
+                                <a href="~/Home/Dashboard">
+                                    <i style="color: #FFFFFF" class="fa fa-dashboard"></i>
+                                    <span class="navbar-visible-collapsed">&nbsp;Dashboard&nbsp;</span>
+                                </a>
+                            </li>
+                        </ul>
+
+                        <ul class="nav navbar-nav noticebar navbar-left">
+                            <li class="ui-tooltip" data-toggle="tooltip" data-trigger="hover" data-placement="bottom" title="Create New REA">
+                                <a href="~/REA/New/@Convert.ToInt32(Session["CurrentProduct"])">
+                                    <i style="color: #FFFFFF" class="fa fa-bug"></i>
+                                    <span class="navbar-visible-collapsed">&nbsp;Enter REA&nbsp;</span>
+                                </a>
+                            </li>
+                        </ul>
+
+                        <ul class="nav navbar-nav noticebar navbar-left">
+                            <li class="ui-tooltip" data-toggle="tooltip" data-trigger="hover" data-placement="bottom" title="@Resources.strings.qviAdvancedSearchFunctionality">
+                                <a href="~/REA/Search">
+                                    <i style="color: #FFFFFF" class="fa fa-search"></i>
+                                    <span class="navbar-visible-collapsed">&nbsp;Search&nbsp;</span>
+                                </a>
+                            </li>
+                        </ul>
+
+                        <ul class="nav navbar-nav noticebar navbar-left">
+                            <li class="ui-tooltip" data-toggle="tooltip" data-trigger="hover" data-placement="bottom" title="@Resources.strings.qviDefaultAndCustomReportingOptions">
+                                <a href="~/DetailedReports/Index">
+                                    <!--./page-notifications.html-->
+                                    <i style="color: #FFFFFF" class="fa fa-file-text"></i>
+                                    <span class="navbar-visible-collapsed">&nbsp;Reports&nbsp;</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav noticebar navbar-left">
+                            <li class="ui-tooltip" data-toggle="tooltip" data-trigger="hover" data-placement="bottom" title="@Resources.strings.qviHelpAndFrequentlyAskedQuestions">
+                                <a href="~/Home/Help">
+                                    <i style="color: #FFFFFF" class="fa fa-question-circle"></i>
+                                    <span class="navbar-visible-collapsed">&nbsp;Help&nbsp;</span>
+                                </a>
+                            </li>
+                        </ul>
+                        @if (Convert.ToString(Session["CurrentUserAccountType"]) == "Administrator")
+                        {
+                            <ul class="nav navbar-nav noticebar navbar-left">
+                                <li class="ui-tooltip" data-toggle="tooltip" data-trigger="hover" data-placement="bottom" title="@Resources.strings.qviAdministration">
+                                    <a href="~/Admin/Index">
+                                        <i class="fa fa-gears text-primary"></i>
+                                        <span class="navbar-visible-collapsed">&nbsp;Administration&nbsp;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        }
+                    </nav>
+                    <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" type="button">
+                        <span class="sr-only">Toggle navigation</span>
+                        <i class="fa fa-cog"></i>
+                    </button>
+                </div> <!-- /.navbar-header -->
+                <nav class="collapse navbar-collapse" role="navigation">
+                    <div class="hideAfterCollapse displayMobileCollapse">
+                        <ul class="nav navbar-nav noticebar navbar-left">
+                            <li class="ui-tooltip" data-toggle="tooltip" data-trigger="hover" data-placement="bottom" title="@Resources.strings.qviYourStartingHomePage">
+                                <a href="~/Home/Index">
+                                    <i style="color: #FFFFFF" class="fa fa-home"></i>
+                                    <span class="navbar-visible-collapsed">&nbsp;Notifications&nbsp;</span>
+                                    @if (countOfAssigned != -1)
+                                    {<span class="badge badge-primary">@countOfAssigned</span>}
+                                else
+                                {<span class="badge badge-primary">Connection Error</span>}
+                                </a>
+                            </li>
+                        </ul>
+
+                        <ul class="nav navbar-nav noticebar navbar-left">
+                            <li class="ui-tooltip" data-toggle="tooltip" data-trigger="hover" data-placement="bottom" title="@Resources.strings.qviLatestInformationAboutAProduct">
+                                <a href="~/Home/Dashboard">
+                                    <i style="color: #FFFFFF" class="fa fa-dashboard"></i>
+                                    <span class="navbar-visible-collapsed">&nbsp;Dashboard&nbsp;</span>
+                                </a>
+                            </li>
+                        </ul>
+
+                        <ul class="nav navbar-nav noticebar navbar-left">
+                            <li class="ui-tooltip" data-toggle="tooltip" data-trigger="hover" data-placement="bottom" title="Create New REA">
+                                <a href="~/REA/New/@Convert.ToInt32(Session["CurrentProduct"])">
+                                    <i style="color: #FFFFFF" class="fa fa-bug"></i>
+                                    <span class="navbar-visible-collapsed">&nbsp;Enter REA&nbsp;</span>
+                                </a>
+                            </li>
+                        </ul>
+
+                        <ul class="nav navbar-nav noticebar navbar-left">
+                            <li class="ui-tooltip" data-toggle="tooltip" data-trigger="hover" data-placement="bottom" title="@Resources.strings.qviAdvancedSearchFunctionality">
+                                <a href="~/REA/Search">
+                                    <i style="color: #FFFFFF" class="fa fa-search"></i>
+                                    <span class="navbar-visible-collapsed">&nbsp;Search&nbsp;</span>
+                                </a>
+                            </li>
+                        </ul>
+
+                        <ul class="nav navbar-nav noticebar navbar-left">
+                            <li class="ui-tooltip" data-toggle="tooltip" data-trigger="hover" data-placement="bottom" title="@Resources.strings.qviDefaultAndCustomReportingOptions">
+                                <a href="~/DetailedReports/Index">
+                                    <!--./page-notifications.html-->
+                                    <i style="color: #FFFFFF" class="fa fa-file-text"></i>
+                                    <span class="navbar-visible-collapsed">&nbsp;Reports&nbsp;</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav noticebar navbar-left">
+                            <li class="ui-tooltip" data-toggle="tooltip" data-trigger="hover" data-placement="bottom" title="@Resources.strings.qviHelpAndFrequentlyAskedQuestions">
+                                <a href="~/Home/Help">
+                                    <i style="color: #FFFFFF" class="fa fa-question-circle"></i>
+                                    <span class="navbar-visible-collapsed">&nbsp;Help&nbsp;</span>
+                                </a>
+                            </li>
+                        </ul>
+                        @if (Convert.ToString(Session["CurrentUserAccountType"]) == "Administrator")
+                        {
+                            <ul class="nav navbar-nav noticebar navbar-left">
+                                <li class="ui-tooltip" data-toggle="tooltip" data-trigger="hover" data-placement="bottom" title="@Resources.strings.qviAdministration">
+                                    <a href="~/Admin/Index">
+                                        <i class="fa fa-gears text-primary"></i>
+                                        <span class="navbar-visible-collapsed">&nbsp;Administration&nbsp;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        }
+                    </div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li style="margin-top : -5px">
+                            <div class="mainnav-form pull-right" role="search">
+                                <input id="SearchSCRLayout" type="text" class="form-control input-sm mainnav-search-query" onkeypress="if (event.keyCode == 13) window.open('/REA/QuickSearchREA/' + document.getElementById('SearchREALayout').value)" placeholder="REA #" size="10">
+                                <button class="btn btn-sm mainnav-form-btn" onclick="javascript: window.open('/REA/QuickSearchREA/' + document.getElementById('SearchREALayout').value)"><i class=" fa fa-search"></i></button>
+                            </div>
+                        </li>
+
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+
+                        <li style="margin-top : -5px">
+                            <div class="mainnav-form pull-right" role="search">
+                                <input type="text" id="QuickSearchTextBox" class="form-control input-sm mainnav-search-query" onkeypress="if (event.keyCode == 13) window.open('/REA/QuickSearchResult?term=' + document.getElementById('QuickSearchTextBox').value.replace('&', '&amp;').trim() )" placeholder="@Resources.strings.qviQuickSearch" size="25">
+                                <button class="btn btn-sm mainnav-form-btn" onclick="javascript: window.open('/REA/QuickSearchResult?term=' + document.getElementById('QuickSearchTextBox').value.replace('&', '&amp;').trim())"><i class="fa fa-search"></i></button>
+                            </div>
+                        </li>
+
+                        <li class="dropdown navbar-profile">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
+
+                                @if (Session["photo"] != null)
+                                {
+                                    @*<img src="data:image/png;base64,@Convert.ToBase64String(
+                                                              ((byte[])Session["photo"]), 78, ((byte[])Session["photo"]).Length - 78,
+                                        Base64FormattingOptions.None)"
+                                                                   alt="Image" />*@
+
+                                    var base64 = Convert.ToBase64String((byte[])Session["photo"]);
+                                    var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+
+                                    <img src="@imgSrc" class="navbar-profile-avatar" />
+                                }
+                                else
+                                {
+                                    <img src="~/img/blank-md.png" class="navbar-profile-avatar" alt="">
+                                }
+                                @Convert.ToString(Session["CurrentUserName"]) &nbsp;
+                                <i class="fa fa-caret-down"></i>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="~/Account/Manage">
+                                        <i class="fa fa-user"></i>
+                                        &nbsp;&nbsp;@Resources.strings.qviMyProfile
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="~/TimeReports/Index">
+                                        <i class="fa fa-clock-o"></i>
+                                        &nbsp;&nbsp;@Resources.strings.qviMyTimesheetReports
+                                    </a>
+                                </li>
+                                @if (Convert.ToBoolean(Session["isManager"]))
+                                {
+                                    <li>
+                                        <a href="~/Account/MyTeam">
+                                            <i class="fa fa-group"></i>
+                                            &nbsp;&nbsp;@Resources.strings.qviMyTeam
+                                        </a>
+                                    </li>
+                                }
+                                @if (isSPDManager)
+                                {
+                                    <li>
+                                        <a href="~/SPDReports/Index">
+                                            <i class="fa fa-bar-chart"></i>
+                                            &nbsp;&nbsp;@Resources.strings.qviSPDReports
+                                        </a>
+                                    </li>
+                                }
+                                <li class="divider hidden-print"></li>
+                                <li>
+                                    <a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out"></i>&nbsp;&nbsp;@Resources.strings.qviLogOff</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div> <!-- /.container -->
+        </header>
+
+        <!-- THE MAIN NAV BAR-->
+        <div class="mainnav hidden-print">
+            <div class="container hidden-print">
+
+
+            </div> <!-- /.container -->
+        </div>
+        <!-- END OF THE MAIN NAV BAR FOR LAYOUT -->
+    }
+
+    <div class="content">
+        <div class="container">
+            @RenderBody()
+        </div><!-- container -->
+    </div><!-- content -->
+
+    @if (Request.IsAuthenticated)
+    {
+        <!-- START OF THE FOOTER -->
+        <footer class="footer hidden-print">
+            <div class="container">
+                <p class="pull-left">@Resources.strings.qviCopyright &copy; 1999 - @DateTime.Now.Year @Resources.strings.qviQualityVisionInternationalInc</p>
+            </div>
+        </footer>
+    }
+
+    @*@Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/jqueryval")*@
+    @RenderSection("scripts", required: false)
+
+
+</body>
+</html>

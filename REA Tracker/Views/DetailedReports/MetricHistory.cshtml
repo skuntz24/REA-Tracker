@@ -1,0 +1,253 @@
+﻿@model SCR_Tracker.Models.MetricHistoryViewModel
+@using HelperMethods.Infrastructure;
+@{
+    ViewBag.Title = Resources.strings.qviMetricHistoryFor + " " +
+        Model.productname + " " + Resources.strings.qviFrom + " " +
+        Model.StartDay + "\\" + Model.StartMonth + "\\" + Model.StartYear +
+        " " + Resources.strings.qviTo + " " +
+        Model.EndDay + "\\" + Model.EndMonth + "\\" + Model.EndYear;
+        
+}
+
+
+<div class="hidden-print">
+    @using (Html.BeginForm())
+    {
+
+        <h4 class="portlet-title">
+            <u>@Resources.strings.qviMetricHistory<span class="text-sm row-stat-label"></span></u>
+            <button type="submit" class="pull-right btn btn-danger"> @Resources.strings.qviUpdate </button>
+        </h4>
+        <div class="row form-inline">
+            <b class="col-md-2"> @Resources.strings.qviProduct </b>
+            <div class="col-md-3">
+                    @Html.DisplaySelectList("productID", Model.Products, "class= 'form-control fixed-width'")
+            </div>
+        </div>
+        <br />
+        <div class="row form-inline">
+            <b class="col-md-2">@Resources.strings.qviStartingDate</b>
+            <div class="col-md-3">
+                <select name="StartMonth" class="form-control">
+                    @for (int i = 1; i <= Model.MonthCount; i++)
+                    {
+                        <option value="@i" @( i == this.Model.StartMonth ? "Selected" : "")>@i</option>
+                    }
+                </select>
+                -
+                <select name="StartDay" class="form-control">
+                    @for (int i = 1; i <= Model.DayCount; i++)
+                    {
+                        <option value="@i" @( i == this.Model.StartDay ? "Selected" : "")>@i</option>
+                    }
+                </select>
+                -
+                <select name="StartYear" class="form-control">
+                    @for (int i = Model.YearCount; i <= DateTime.Now.Year; i++)
+                    {
+                        <option value="@i" @( i == this.Model.StartYear ? "Selected" : "")>@i</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <br/>
+        <div class="row form-inline">
+            <b class="col-md-2">@Resources.strings.qviEndingDate</b>
+            <div class="col-md-3">
+                <select name="EndMonth" class="form-control">
+                    @for (int i = 1; i <= Model.MonthCount; i++)
+                    {
+                        <option value="@i" @( i == this.Model.EndMonth ? "Selected" : "")>@i</option>
+                    }
+                </select>
+                -
+                <select name="EndDay" class="form-control">
+                    @for (int i = 1; i <= Model.DayCount; i++)
+                    {
+                        <option value="@i" @( i == this.Model.EndDay ? "Selected" : "")>@i</option>
+                    }
+                </select>
+                -
+                <select name="EndYear" class="form-control">
+                    @for (int i = Model.YearCount; i <= DateTime.Now.Year; i++)
+                    {
+                        <option value="@i" @( i == this.Model.EndYear ? "Selected" : "")>@i</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <br />
+        <div class="row form-inline">
+            <b class="col-md-2"># @Resources.strings.qviWorkingDays</b>
+            <div class="col-md-3">@Model.NumWorkingDays</div>
+        </div>
+        <br />
+        <br />
+    }
+</div>
+<div class="form-inline">
+    <h4 class="portlet-title">
+        <u> @Resources.strings.qviResults<span class="text-sm row-stat-label"></span></u>
+    </h4>
+    <h4 class="text-primary">
+        @System.Math.Round(Model.SubmittedRates, 2) @Resources.strings.qviSCRsDaySubmitted
+    </h4>
+    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+        <img src="@Url.Action("ReportChart", "Home", new
+                             {
+                                 Title = "",
+                                 ArgsxValues = "Total",
+                                 ArgsyValues = String.Join(", ", Model.Total(Model.SubmittedProblem, Model.SubmittedEnhancement, Model.SubmittedPlanned).ToArray()),
+                                 ArgsMetrics = String.Join(", ", Model.Metricform(Model.Total(Model.SubmittedProblem, Model.SubmittedEnhancement, Model.SubmittedPlanned)).ToArray()),
+                                 ParamWidth =210,
+                                 ParamHeight =270
+                             })" alt="SimpleChart" />
+    </div>
+    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+        <img src="@Url.Action("ReportChart", "Home", new
+                                 {
+                                     Title = "",
+                                     ArgsxValues = "Problems",
+                                     ArgsyValues = String.Join(", ", Model.SubmittedProblem.ToArray()),
+                                     ArgsMetrics = String.Join(", ", Model.Metricform(Model.SubmittedProblem).ToArray()),
+                                     ParamWidth = 210,
+                                     ParamHeight = 270
+                                 })" alt="SimpleChart" />
+    </div>
+    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+        <img src="@Url.Action("ReportChart", "Home", new
+                                 {
+                                     Title = "",
+                                     ArgsxValues = "Enhancement",
+                                     ArgsyValues = String.Join(", ", Model.SubmittedEnhancement.ToArray()),
+                                     ArgsMetrics = String.Join(", ", Model.Metricform(Model.SubmittedEnhancement).ToArray()),
+                                     ParamWidth = 210,
+                                     ParamHeight =270
+                                 })" alt="SimpleChart" />
+    </div>
+    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+        <img src="@Url.Action("ReportChart", "Home", new
+                                 {
+                                     Title = "",
+                                     ArgsxValues = "Planned",
+                                     ArgsyValues = String.Join(", ", Model.SubmittedPlanned.ToArray()),
+                                     ArgsMetrics = String.Join(", ", Model.Metricform(Model.SubmittedPlanned).ToArray()),
+                                     ParamWidth = 210,
+                                     ParamHeight =270
+                                 })" alt="SimpleChart" />
+    </div>
+    @Html.ReportTable(Model.SubmittedProblem, Model.SubmittedEnhancement, Model.SubmittedPlanned
+    ,Model.productID, "SUBMITTED_ON", 
+    new DateTime(Model.StartYear, Model.StartMonth, Model.StartDay),
+            new DateTime(Model.EndYear, Model.EndMonth, Model.EndDay)
+    )
+</div>
+<div class="form-inline">
+    <h4 class="text-primary">
+        @System.Math.Round(Model.ResolvedRates, 2) @Resources.strings.qviSCRsDayResolved
+    </h4>
+    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+        <img src="@Url.Action("ReportChart", "Home", new
+                             {
+                                 Title = "",
+                                 ArgsxValues = "Total",
+                                 ArgsyValues = String.Join(", ", Model.Total(Model.ResolvedProblem, Model.ResolvedEnhancement, Model.ResolvedPlanned).ToArray()),
+                                 ArgsMetrics = String.Join(", ", Model.Metricform(Model.Total(Model.ResolvedProblem, Model.ResolvedEnhancement, Model.ResolvedPlanned)).ToArray()),
+                                 ParamWidth =210,
+                                 ParamHeight =270
+                             })" alt="SimpleChart" />
+    </div>
+    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+        <img src="@Url.Action("ReportChart", "Home", new
+                                 {
+                                     Title = "",
+                                     ArgsxValues = "Problems",
+                                     ArgsyValues = String.Join(", ", Model.ResolvedProblem.ToArray()),
+                                     ArgsMetrics = String.Join(", ", Model.Metricform(Model.ResolvedProblem).ToArray()),
+                                     ParamWidth = 210,
+                                     ParamHeight = 270
+                                 })" alt="SimpleChart" />
+    </div>
+    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+        <img src="@Url.Action("ReportChart", "Home", new
+                                 {
+                                     Title = "",
+                                     ArgsxValues = "Enhancement",
+                                     ArgsyValues = String.Join(", ", Model.ResolvedEnhancement.ToArray()),
+                                     ArgsMetrics = String.Join(", ", Model.Metricform(Model.ResolvedEnhancement).ToArray()),
+                                     ParamWidth = 210,
+                                     ParamHeight =270
+                                 })" alt="SimpleChart" />
+    </div>
+    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+        <img src="@Url.Action("ReportChart", "Home", new
+                                 {
+                                     Title = "",
+                                     ArgsxValues = "Planned",
+                                     ArgsyValues = String.Join(", ", Model.ResolvedPlanned.ToArray()),
+                                     ArgsMetrics = String.Join(", ", Model.Metricform(Model.ResolvedPlanned).ToArray()),
+                                     ParamWidth = 210,
+                                     ParamHeight =270
+                                 })" alt="SimpleChart" />
+    </div>
+    @Html.ReportTable(Model.ResolvedProblem, Model.ResolvedEnhancement, Model.ResolvedPlanned
+            , Model.productID, "RESOLVED_ON",
+                    new DateTime(Model.StartYear, Model.StartMonth, Model.StartDay),
+                    new DateTime(Model.EndYear, Model.EndMonth, Model.EndDay)
+    )
+</div>
+
+<div class="form-inline">
+    <h4 class="text-primary">
+        @System.Math.Round(Model.ClosedRates, 2) @Resources.strings.qviSCRsDayClosed
+    </h4>
+    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+        <img src="@Url.Action("ReportChart", "Home", new
+                             {
+                                 Title = "",
+                                 ArgsxValues = "Total",
+                                 ArgsyValues = String.Join(", ", Model.Total(Model.ClosedProblem, Model.ClosedEnhancement, Model.ClosedPlanned).ToArray()),
+                                 ArgsMetrics = String.Join(", ", Model.Metricform(Model.Total(Model.ClosedProblem, Model.ClosedEnhancement, Model.ClosedPlanned)).ToArray()),
+                                 ParamWidth =210,
+                                 ParamHeight =270
+                             })" alt="SimpleChart" />
+    </div>
+    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+        <img src="@Url.Action("ReportChart", "Home", new
+                                 {
+                                     Title = "",
+                                     ArgsxValues = "Problems",
+                                     ArgsyValues = String.Join(", ", Model.ClosedProblem.ToArray()),
+                                     ArgsMetrics = String.Join(", ", Model.Metricform(Model.ClosedProblem).ToArray()),
+                                     ParamWidth = 210,
+                                     ParamHeight = 270
+                                 })" alt="SimpleChart" />
+    </div>
+    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+        <img src="@Url.Action("ReportChart", "Home", new
+                                 {
+                                     Title = "",
+                                     ArgsxValues = "Enhancement",
+                                     ArgsyValues = String.Join(", ", Model.ClosedEnhancement.ToArray()),
+                                     ArgsMetrics = String.Join(", ", Model.Metricform(Model.ClosedEnhancement).ToArray()),
+                                     ParamWidth = 210,
+                                     ParamHeight =270
+                                 })" alt="SimpleChart" />
+    </div>
+    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+        <img src="@Url.Action("ReportChart", "Home", new
+                                 {
+                                     Title = "",
+                                     ArgsxValues = "Planned",
+                                     ArgsyValues = String.Join(", ", Model.ClosedPlanned.ToArray()),
+                                     ArgsMetrics = String.Join(", ", Model.Metricform(Model.ClosedPlanned).ToArray()),
+                                     ParamWidth = 210,
+                                     ParamHeight =270
+                                 })" alt="SimpleChart" />
+    </div>
+    @Html.ReportTable(Model.ClosedProblem, Model.ClosedEnhancement, Model.ClosedPlanned
+            , Model.productID, "CLOSED_ON",
+                    new DateTime(Model.StartYear, Model.StartMonth, Model.StartDay),
+                    new DateTime(Model.EndYear, Model.EndMonth, Model.EndDay)
+    )
+</div>

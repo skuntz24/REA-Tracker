@@ -1,0 +1,110 @@
+﻿@model REA_Tracker.Models.KeywordManagerViewModel
+@using HelperMethods.Infrastructure
+@{
+    ViewBag.Title = Resources.strings.qviKeywordManager;
+}
+<script type="text/javascript" src="~/Scripts/TableSort/jquery.tablesorter.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#table1').tablesorter({
+            headers: {
+                0: { sorter: false }
+            }
+        });
+    });
+</script>
+
+<script>
+    function ValidateNewKeyword() {
+        var valid = true;
+        var ErrorString = "";
+        var keyword = document.getElementById("labelKeyword").value;
+        keyword = keyword.trim();
+        if (keyword.length == 0) {
+            valid = false;
+            ErrorString += @Resources.strings.qviTheKeywordFieldCannotBeEmptyOrSpaces
+        }
+
+        if (valid == false) {
+            alert(ErrorString);
+        }
+        return valid;
+    }
+</script>
+
+<section class="demo-section">
+    <h4 class="content-title"><u>@ViewBag.Title</u></h4>
+    <p>
+        @Resources.strings.qviKeywordsMessage
+    </p>
+    <br />
+    <h4 class="content-title"><u>@Resources.strings.qviAddNewKeyword</u></h4>
+    <p>
+        @Resources.strings.qviTheFollowingRestrictionsMessage
+        <ul>
+            <li>@Resources.strings.qviKeywordsMustBeUnique</li>
+            <li>@Resources.strings.qviKeywordsMustBeUpperCase</li>
+            <li>@Resources.strings.qviMaximumLengthOfAKeyword</li>
+            <li>@Resources.strings.qviSCRsCanOnlyReferenceAKeywordOnce</li>
+        </ul>
+    </p>
+@using (Html.BeginForm("KeywordManager", "Admin", FormMethod.Post, new { @onsubmit = "return ValidateNewKeyword();" }))
+{
+    @Html.AntiForgeryToken()
+
+    <form class="form-inline">
+        <div class="form-group">
+            <label class="" for="labelKeyword">@Resources.strings.qviKeyword</label>
+            <input type="text" class="form-control" id="Keyword" name="Keyword" placeholder=@Resources.strings.qviKeyword>
+        </div>
+        <div class="form-group">
+            <label class="" for="labelDescription">@Resources.strings.qviDescription</label>
+            <input type="text" class="form-control" id="Description" name="Description" placeholder="(@Resources.strings.qviOptional)" size="50">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-success" value="Add" name="button"><i class="fa fa-plus fa-lg"></i> @Resources.strings.qviAdd</button>
+        </div>
+
+        @if (ViewBag.Result != null)
+        {
+            @Html.DisplayMessage((bool)ViewBag.Result, (string)ViewBag.Message)
+        }
+    </form>
+}
+    <br />
+
+    <h4 class="content-title"><u>@Resources.strings.qviAllKeywords</u></h4>
+    <table id="table1" class="table table-bordered tablesorter">
+        <thead>
+            <tr>
+                <th width="50px"> </th>
+                <th width="75px">@Resources.strings.qviID</th>
+                <th>@Resources.strings.qviKeyword</th>
+                <th>@Resources.strings.qviDescription</th>
+                <th width="100px">@Resources.strings.qviTimesUsed</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.GetAll)
+            {
+                <tr>
+                    <td><a href="/Admin/KeywordManagerEdit/@item.ID">@Resources.strings.qviEdit</a></td>
+                    <td>@item.ID</td>
+                    <td>@item.Keyword</td>
+                    <td>@item.Description</td>
+                    <td align="center">
+                        @if (Int16.Parse(@item.Usage) > 0)
+                        {
+                            <a href="/Admin/KeywordManagerKeywordDetails/@item.ID" target="_blank">@item.Usage</a>
+                        }
+                        else
+                        {
+                            @item.Usage
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>
+

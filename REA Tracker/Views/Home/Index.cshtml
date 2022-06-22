@@ -1,0 +1,126 @@
+﻿@model REA_Tracker.Models.HomeIndexViewModel
+@using HelperMethods.Infrastructure;
+@{
+    ViewBag.Title = "Home";
+}
+
+<script type="text/javascript" src="~/Scripts/TableSort/jquery.tablesorter.js"></script>
+<script type="text/javascript" src="~/Scripts/PopUp.js"></script>
+<script>
+    function SelectClosedSCRsWatchList() {
+        var table = document.getElementById("watchlist");
+        //The header is row index of 0, so we will start on index of 1
+        for (var i = 1, row; row = table.rows[i]; i++) {
+            var checkListID = row.cells[0].innerText    //use the name of the SCR as the checkbox id which we set in the html
+            var isChecked = (row.cells[3].innerText.indexOf("Closed") != -1);
+            document.getElementById(checkListID).checked = isChecked;
+            //alert('SCR#' + row.cells[0].innerText + ' is ' + row.cells[3].innerText + ' setting ' + checkListID + ' to ' + isChecked);
+        }
+
+    }
+</script>
+@*Scripts.Render("~/bundles/DnD")*@
+<script src="~/bundles/DnD"></script>
+
+<script>
+
+    @for (int i = 0; i < Model.TableId.Count();i++ )
+     {
+         <text>
+
+    $(document).ready(function () {
+        $('#@Model.TableId[i]').tablesorter();
+    });
+    </text>
+     }
+    $(document).ready(function () {
+        $('#watchlist').tablesorter(
+            {
+                headers: {
+                    5: { sorter: false }
+                }
+            });
+    });
+</script>
+
+@if (Model.deletedClosed)
+{
+    <script>
+        alert(@Resources.strings.qviClosedSCRsMessage)
+    </script>
+}
+@if (Request.IsAuthenticated)
+{
+    <div class="hidden-print">
+        <br />
+        <h2></h2>
+    </div>
+    <div class="layout layout-main-left layout-stack-sm">
+        <div class="col-md-12 col-sm-12">
+            @{
+                int LayoutStyle = Convert.ToInt32(Session["HomePageLayout"]);
+            }
+            @if (LayoutStyle == 1) //original style
+            {
+                <!-- CONTENT GOES HERE -->
+                <div>
+                    <div class="portlet hidden-print">
+                        <h4 class="portlet-title">
+                            <u>My Code Review Watch List</u>
+                        </h4>
+                        <div class="portlet-body">
+                            @if (@Model.CRCreatedWatchlist.Count > 0)
+                            {
+                                @Html.Partial("Partials/_IndexCodeReviewList")
+                            }
+                            else
+                            {
+                                <h5 class="text-primary"><i>None</i></h5>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portlet">
+                    <h4 class="portlet-title"><u>My To Do List</u></h4>
+                    <div class="portlet-body">
+                        @if (@Model.toDoListDisplay.Count > 0)
+                        {
+                            @Html.Partial("Partials/_IndexToDoList")
+                        }
+                        else
+                        {
+                            <h5 class="text-primary"><i>None</i></h5>
+                        }
+                    </div>
+                </div>
+
+                <div class="portlet hidden-print">
+                    <h4 class="portlet-title">
+                        <u>My Watch List</u>
+                    </h4>
+                    <div class="portlet-body">
+                        @if (@Model.watchListDisplay.Count > 0)
+                        {
+                            @Html.Partial("Partials/_IndexWatchList")
+                        }
+                        else
+                        {
+                            <h5 class="text-primary"><i>None</i></h5>
+                        }
+                    </div>
+
+                </div>
+            }
+            else
+            {
+                @Html.Partial("Partials/_IndexLayoutTabStyle")
+            }
+        </div>
+    </div>
+}
+else
+{
+    <p>You are not logged in</p>
+}
+

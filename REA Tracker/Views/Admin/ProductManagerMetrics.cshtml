@@ -1,0 +1,250 @@
+﻿@model SCR_Tracker.Models.ProductManagerViewModel
+@using HelperMethods.Infrastructure
+
+@{
+    ViewBag.Title = Resources.strings.qviMetrics;
+}
+<script>
+
+    function ValidateMetrics()
+    {
+        var Valid = true;
+        var CodeCriticalCount    = document.getElementById("CodeCriticalCount");
+        var CodeMetrics          = document.getElementById("CodeMetrics");
+        var ReleaseCriticalCount = document.getElementById("ReleaseCriticalCount");
+        var ReleaseMetric        = document.getElementById("ReleaseMetric");
+        var CodeHighCount        = document.getElementById("CodeHighCount");
+        var CodeDefectCount      = document.getElementById("CodeDefectCount");
+        var ReleaseHighCount     = document.getElementById("ReleaseHighCount");
+        var ReleaseDefectCount   = document.getElementById("ReleaseDefectCount");
+
+        if (
+            !isNumberInt(CodeCriticalCount.value) ||
+            !isNumberInt(CodeMetrics.value) ||
+            !isNumberInt(ReleaseCriticalCount.value) ||
+            !isNumberInt(ReleaseMetric.value) ||
+            !isNumberInt(CodeHighCount.value) ||
+            !isNumberInt(CodeDefectCount.value) ||
+            !isNumberInt(ReleaseHighCount.value) ||
+            !isNumberInt(ReleaseDefectCount.value)
+          ) {
+            alert(@Resources.strings.qviPleaseFillAllFieldsWithIntegers);
+            Valid = false;
+        }
+        if(Valid)
+        {
+            document.getElementById("MetricsForm").submit();
+        }
+        return Valid;
+    }
+    function isNumberInt(inputString) {
+        return (!isNaN(parseInt(inputString))) ? true : false;
+    }
+    $(document).on("keypress", 'form', function (e) {
+        var code = e.keyCode || e.which;
+        if (code == 13) {
+            e.preventDefault();
+            return false;
+        }
+    });
+</script>
+@using (Html.BeginForm())
+    //"ProductManagerMetrics", "Admin", FormMethod.Post, new {id="MetricsForm" }))
+{
+    @Html.AntiForgeryToken()
+<div class="layout layout-main-left layout-stack-sm">
+    <div class="col-md-3 col-sm-4 layout-main">
+        <h4 class="portlet-title">
+            <u>@Resources.strings.qviProductManager</u>
+            @*<button class="btn btn-default pull-right" onclick="javascript: window.location.href = '/Admin/ProductManagerCreate'">
+                <i class="fa fa-plus"> </i>
+            </button>*@
+            <a href="/Admin/ProductManagerCreate" class="btn btn-default pull-right"> <i class="fa fa-plus"> </i> </a>
+        </h4>
+        
+        @Html.DisplaySelectList("productID", Model.ProductName, "class='form-control fixed-width' onchange='this.form.submit()' data-val='true'")
+
+        
+        <br />
+        <div class="list-group">
+            <a style="cursor:hand; cursor:pointer;" onmouseup="javascript:location.href = '/Admin/ProductManager/@Model.productID';" class="list-group-item">@Resources.strings.qviDetails</a>
+            <a style="cursor:hand; cursor:pointer;" onmouseup="javascript:location.href = '/Admin/ProductManagerEditInformation/@Model.productID';" class="list-group-item">@Resources.strings.qviUpdateInformation</a>
+            <a style="cursor:hand; cursor:pointer;" onmouseup="javascript:location.href = '/Admin/ProductManagerEditModule/@Model.productID';" class="list-group-item">@Resources.strings.qviUpdateModule</a>
+            <a style="cursor:hand; cursor:pointer;" onmouseup="javascript:location.href = '/Admin/ProductManagerEditTeam/@Model.productID';" class=" list-group-item">@Resources.strings.qviUpdateTeam</a>
+            <a style="cursor:hand; cursor:pointer;" onmouseup="javascript:location.href = '/Admin/ProductManagerMetrics/@Model.productID';" class=" list-group-item">@Resources.strings.qviUpdateMetrics</a>
+        </div>
+    </div>
+    <div class="col-md-9 col-sm-8 layout-sidebar">
+        <h3> @Resources.strings.qviMetrics </h3>
+        <h5> @Resources.strings.qviCreate </h5>
+        <table >
+        <!-- Major, Minor -->
+            <tr >
+                <td style="padding : .5em;"><label>@Resources.strings.qviVersion:</label> </td>
+                <td style="padding : .5em;">
+                    <select class="form-control" id="BuildVersion" name="BuildVersion">
+                        @foreach (String Version in Model.ListBuilds)
+                        {
+                            <option value="@Version">
+                                @Version
+                            </option>
+                        }
+                    </select>
+                </td>
+                    <!---Code Critical Count -->
+                <td style="padding : .5em;"><label>&nbsp;&nbsp;@Resources.strings.qviCodeCriticalCount:</label></td>
+
+                <td style="padding : .5em;"><input size="4" id="CodeCriticalCount" name="CodeCriticalCount" class="form-control" />                  </td>
+
+                    <!-- Code Metric -->
+                <td style="padding : .5em;"><label>&nbsp;&nbsp;@Resources.strings.qviCodeMetric:</label></td>
+               
+                <td style="padding : .5em;"><input size="4" id="CodeMetrics" name="CodeMetrics" class="form-control" />         </td>
+
+            </tr>
+            <tr>
+                <td style="padding : .5em;"></td><td style="padding : .5em;"></td>
+                    <!-- Release Crititcal Count -->
+                <td style="padding : .5em;"><label>&nbsp;&nbsp;@Resources.strings.qviReleaseCriticalCount:</label></td>
+
+                <td style="padding : .5em;"><input size="4" id="ReleaseCriticalCount" name="ReleaseCriticalCount" class="form-control" />                    </td>
+                    <!-- Release Metric -->
+                <td style="padding : .5em;"><label>&nbsp;&nbsp;@Resources.strings.qviReleaseMetric:</label></td>
+
+                <td style="padding : .5em;"><input size="4" id="ReleaseMetric" name="ReleaseMetric" class="form-control" />            </td>
+            </tr>
+                
+            <tr>
+                <td style="padding : .5em;"></td><td style="padding : .5em;"></td>
+                <!-- Code High Count -->
+                <td style="padding : .5em;"><label>&nbsp;&nbsp;@Resources.strings.qviCodeHighCount:</label></td>
+
+                <td style="padding : .5em;"><input size="4" id="CodeHighCount" name="CodeHighCount" class="form-control" />             </td>
+
+                <!-- Code Defect Count -->
+                <td style="padding : .5em;"><label>&nbsp;&nbsp;@Resources.strings.qviCodeDefectCount:</label></td>
+
+                <td style="padding : .5em;"><input size="4" id="CodeDefectCount" name="CodeDefectCount" class="form-control" />               </td>
+            </tr>
+            <tr>
+                <td style="padding : .5em;"></td><td style="padding : .5em;"></td>
+                <!-- Release High Count -->
+                <td style="padding : .5em;"><label>&nbsp;&nbsp;@Resources.strings.qviReleaseHighCount:</label></td>
+
+                <td style="padding : .5em;"><input size="4" id="ReleaseHighCount" name="ReleaseHighCount" class="form-control" />                </td>
+
+                <!-- Release Defect -->
+                <td style="padding : .5em;"><label>&nbsp;&nbsp;@Resources.strings.qviReleaseDefect:</label>  </td>
+
+                <td style="padding : .5em;"><input size="4" id="ReleaseDefectCount" name="ReleaseDefectCount" class="form-control" />              </td>
+            </tr>
+        <!-- Display or hide? -->
+            <tr>
+                <td style="padding : .5em;"><label>@Resources.strings.qviDisplayMetric:</label></td>
+
+                <td align="center"><input name="Display"value="true" type="checkbox" />     </td>
+                <td>
+                    <button class="btn btn-success" onmousedown="javascript: return ValidateMetrics();" type="submit" name="button" value=@Resources.strings.qviCreate> <i class="fa fa-plus"></i> </button>
+                </td>
+            </tr>
+        </table>
+
+
+        @if (Model.ListOfMetrics.Count != 0)
+        {
+        <h5> @Resources.strings.qviExistingMetrics </h5>
+        <table id="displayExistingMetricsTable" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        @Resources.strings.qviVersion
+                    </th>
+                    <th>
+                        @Resources.strings.qviCodeCriticalCount
+                    </th>
+                    <th>
+                        @Resources.strings.qviCodeHighCount
+                    </th>
+                    <th>
+                        @Resources.strings.qviReleaseCriticalCount
+                    </th>
+                    <th>
+                        @Resources.strings.qviReleaseHighCount
+                    </th>
+                    <th>
+                        @Resources.strings.qviCodeMetric
+                    </th>
+                    <th>
+                        @Resources.strings.qviCodeDefect
+                    </th>
+                    <th>
+                        @Resources.strings.qviReleaseDefect
+                    </th>
+                    <th>
+                        @Resources.strings.qviReleaseMetric
+                    </th>
+                    <th>
+                        @Resources.strings.qviDisplay
+                    </th>
+                    <th>
+                        @Resources.strings.qviEdit
+                    </th>
+                    <th>
+                        @Resources.strings.qviDelete
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Display the rest of the metrics -->
+                @foreach (var item in Model.ListOfMetrics)
+                {
+                    <tr>
+                        <td align="center">
+                            @(Convert.ToString(item.MajorVersion) + '.' + Convert.ToString(item.MinorVersion))
+                        </td>
+                        <td align="center">
+                            @item.CodeCriticalCount
+                        </td>
+                        <td align="center">
+                            @item.CodeHighCount
+                        </td>
+                        <td align="center">
+                            @item.ReleaseCriticalCount
+                        </td>
+                        <td align="center">
+                            @item.ReleaseHighCount
+                        </td>
+                        <td align="center">
+                            @item.CodeMetrics
+                        </td>
+                        <td align="center">
+                            @item.CodeDefectCount
+                        </td>
+                        <td align="center">
+                            @item.ReleaseDefectCount
+                        </td>
+                        <td align="center">
+                            @item.ReleaseMetric
+                        </td>
+                        <td align="center">
+                            @Html.CheckIcon(Convert.ToString((bool)item.Display))
+                        </td>
+                        <td align="center">
+                            <button type="button" class="btn btn-default" name="button" value="@item.ID" onmouseup="javascript:location.href = '/Admin/ProductManagerMetricEdit/@item.ID'">
+                                <i class="fa fa-pencil-square-o"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-danger" name="button" value="Delete @item.ID">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        }
+    </div>
+</div>
+}
+

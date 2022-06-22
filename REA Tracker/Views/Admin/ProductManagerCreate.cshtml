@@ -1,0 +1,103 @@
+﻿@model SCR_Tracker.Models.ProductManagerViewModel
+@using HelperMethods.Infrastructure
+@{
+    ViewBag.Title = Resources.strings.qviProductManagerCreateNewProduct;
+}
+
+        @using (Html.BeginForm("ProductManagerCreate", "Admin", FormMethod.Post, new { @onsubmit = "return validateNewProductForm();" }))
+        {
+            @Html.AntiForgeryToken();
+                <div class="portlet-body col-lg-12">
+                    <h4 class="portlet-title">Create New Product</h4>
+                    <table class="table table-borderless">
+                        <tr>
+                            <!--  Name  -->
+                            <td>
+                                @Resources.strings.qviProductName:
+                                <input type="text" id="CurrentProductName" name="CurrentProductName" maxlength="100" value="" class='form-control'>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <!--  Description  -->
+                                @Resources.strings.qviDescription:
+                                <input type="text" id="Description" name="Description" maxlength="500" value="" class='form-control'>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <!-- Validator   -->
+                                @Resources.strings.qviValidator:
+                                @Html.DisplaySelectList("Vaildator", Model.GetAllEmployeesDefaulted(0), "class='form-control'")
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <!--  Release Coordinator  -->
+                                @Resources.strings.qviReleaseCoordinator:
+                                @Html.DisplaySelectList("ReleaseCoordinator", Model.GetAllEmployeesDefaulted(0), "class='form-control'")
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <!--  Release Coordinator2  -->
+                                @Resources.strings.qviReleaseCoordinator 2:
+                                @Html.DisplaySelectListNullable("ReleaseCoordinator2", Model.GetAllEmployeesDefaulted(0), "class='form-control'")
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <!--  Default Tester 276 is the default test queue's st_user's id -->
+                                @Resources.strings.qviDefaultTester:
+                                @Html.DisplaySelectList("DefaultTester", Model.GetAllEmployeesDefaulted(Model.DefaultTesterID), "class='form-control'")
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td>
+                                <!--  SCCB  Default SCCB is 135 which is  SCCB Rochester  -->
+                                @Resources.strings.qviSoftwareChangeCommitteeBoard:
+                                @Html.DisplaySelectList("SCCB", Model.GetAllEmployeesDefaulted(Model.DefaultSCCBID), "class='form-control'")
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <!--  Is internal  -->
+                                @Resources.strings.qviIsItInternal:
+                                <select id="isInternal" name="isInternal" class="form-control">
+                                    <option value="true"> @Resources.strings.qviYes </option>
+                                    <option value="false"> @Resources.strings.qviNo  </option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <!--  Billing code  -->
+                                @Resources.strings.qviBillingCode:
+                                <input type="text" id="BillingCode" name="BillingCode" value="" class='form-control'>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <!--  Distribution List  -->
+                                @Resources.strings.qviDistributionList:
+                                <br />
+                                <textarea id="DistributionList" name="DistributionList" style="resize: none;" maxlength="500" rows="4" cols="50" class="form-control"></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                    <input type="submit" name="button" value=@Resources.strings.qviCreate class="btn btn-default" />
+                    &nbsp;
+                    &nbsp;
+                    <input type="submit" name="button" class="btn btn-danger" value=@Resources.strings.qviCancel />
+                </div>
+        }

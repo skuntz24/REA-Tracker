@@ -1,0 +1,121 @@
+﻿@model SCR_Tracker.Models.PermissionMangerViewModel
+@{
+    ViewBag.Title = Resources.strings.qviPermissionManager;
+}
+
+@using (Html.BeginForm())
+{
+
+    <div class="col-md-6 form-inline">
+        <label>
+            @Resources.strings.qviCurrentRole:&nbsp;
+        </label>
+        <select name="EditID" id="EditID" class="form-control text-center ">
+           <option value="-1"> </option>
+            @for (int i = 0; i < Model.SelectList.Length; i++)
+            {
+                <option value="@Model.SelectList[i].Item1"
+                        @if (Model.SelectList[i].Item3) { <text> selected</text> }>
+                    @Model.SelectList[i].Item2
+                </option>
+            }
+        </select>
+        <button class="btn btn-success" value="ChangeRole" name="button" onmouseup="this.form.submit()">
+            @Resources.strings.qviSubmit
+        </button>
+    </div>
+    <br />
+    <br/>
+    if (Model.EditID == -1)
+    {
+        <br/>
+        <table class="table table-bordered">
+            <thead style="height:10px;">
+                <tr style="height:10px;">
+                    @for (int i = 0; i < Model.RowCount + 1; i++)
+                    {
+
+                        <th>
+                            @Model.Table[1, i]
+                        </th>
+
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 2; i<Model.ColumnCount; i++ )
+                {//Each Column Gets turned into a row
+                    <tr height="10px">
+                    @for (int j = 0; j < Model.RowCount+1;j++ )
+                    {//Each Row gets turned into a column
+                
+                        if (Model.Table[i, j] == "True")
+                        {
+                            <td align="center" width="100px" bgcolor="#00CC00">@Resources.strings.qviYESCaps</td>
+                        }
+                        else if (Model.Table[i, j] == "False")
+                        {
+                            <td align="center" width="100px" bgcolor="#FF0000">@Resources.strings.qviNOCaps</td>
+                        }
+                        else 
+                        {
+                            <td>@Model.Table[i, j]</td>
+                        }
+                    }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else 
+    {
+    <div>
+        <label>
+            @Model.name
+        </label>
+    </div>
+    <br/>
+        <div class="col-md-4">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="col-md-1">
+                            @Resources.strings.qviNameOfField
+                        </th>
+                        <th class="col-md-1">
+                            @Resources.strings.qviAccess
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.ColumnDisplayNames.Length;i++ )
+                    {
+                        <tr>
+                            <td>
+                                @Model.ColumnDisplayNames[i]
+                            </td>
+                            <td align="center">
+                                <select name="Permissions[@i]">
+                                    <option style="background-color:#00CC00" 
+                                            value="1"
+                                            >
+                                        @Resources.strings.qviYESCaps
+                                    </option>
+                                    <option style="background-color:#FF0000"
+                                            value="0"
+                                            @if(Model.Permissions[i] == 0){<text> selected </text>}
+                                            >
+                                        @Resources.strings.qviNOCaps
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    <button class="btn btn-success" value="Update" name="button" onmouseup="this.form.submit()">
+        @Resources.strings.qviUpdate
+    </button>
+    }
+}

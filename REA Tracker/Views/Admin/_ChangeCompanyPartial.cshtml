@@ -1,0 +1,92 @@
+﻿@using Microsoft.AspNet.Identity
+@model SCR_Tracker.Models.EditUserManagerViewModel
+@using HelperMethods.Infrastructure
+<script>window.onload = function ()
+{
+    var company = document.getElementById("company");
+    var othercompany = document.getElementById("othercompany");
+    if (company.options[company.selectedIndex].value != 0) {
+        othercompany.style.backgroundColor = "#D3D3D3";
+        othercompany.readOnly = true;
+
+    }
+    else {
+        othercompany.readOnly = false;
+        othercompany.style.backgroundColor = "white";
+    }
+}
+</script>
+
+
+<div class="tab-pane fade in" id="company-tab">
+    <h3 class="content-title">
+        <u>@Resources.strings.qviCompanySettings</u>
+    </h3>
+    <p class="text-success">@ViewBag.StatusMessage[3]</p>
+    <p>@Html.ValidationSummary()</p>
+    <p>
+        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+    </p><br>
+    <br>
+    <!-- start of form -->
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <label class="col-md-3">@Resources.strings.qviCompany</label>
+        <div class="col-md-7">
+            <!-- Drop down for  company -->
+        @Html.DisplaySelectList("company", Model.getCompany(), "class='form-control' onchange='OtherCompany(form.company, form.othercompany)'")
+        </div><!-- /.col -->
+    </div><!-- /.form-group -->
+    <div class="form-group">
+        <label class="col-md-3">@Resources.strings.qviOtherCompany</label>
+        <div class="col-md-7">
+            @Html.TextBoxFor(model => model.othercompany, new { @value = @Model.othercompany, @class = "form-control"})
+            @Html.ValidationMessageFor(model => model.othercompany)
+        </div><!-- /.col -->
+    </div><!-- /.form-group -->
+    <div class="form-group">
+        <label class="col-md-3">@Resources.strings.qviDepartment</label>
+        <div class="col-md-7">
+            <!-- Drop down for  company -->
+            @Html.DisplaySelectList("department", Model.getDepartment(), "class='form-control'")
+        </div><!-- /.col -->
+    </div><!-- /.form-group -->
+    <div class="form-group">
+        <label class="col-md-3">@Resources.strings.qviIsAManager</label>
+        <div class="col-md-7">
+            @Html.CheckBoxFor(model => model.ismanager)
+            @Html.ValidationMessageFor(model => model.ismanager)
+        </div><!-- /.col -->
+    </div><!-- /.form-group -->
+    
+    <div class="form-group">
+        <label class="col-md-3">@Resources.strings.qviManager</label>
+        <div class="col-md-7">
+            <!-- Drop down for  company -->
+            <select name="managerid" id="managerid" class="form-control">
+                @foreach (var item in Model.getManager())
+                {
+                    if (@item.IsDefault)
+                    {
+                        <option value="@item.ID" selected>@item.Name</option>
+                    }
+                    else
+                    {
+                        <option value="@item.ID">@item.Name</option>
+                    }
+                }
+            </select>
+        </div><!-- /.col -->
+    </div><!-- /.form-group -->
+    
+    <div class="form-group">
+        <div class="col-md-7 col-md-push-3">
+            <button type="submit" class="btn btn-primary" name="button" value="Company">@Resources.strings.qviSaveChanges</button>   <button type="reset" class="btn btn-default">@Resources.strings.qviReset</button>
+        </div><!-- /.col -->
+    </div><!-- /.form-group -->
+}
+<!-- end of form -->
+
+</div><!-- /.tab-pane -->

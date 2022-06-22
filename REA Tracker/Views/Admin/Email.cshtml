@@ -1,0 +1,212 @@
+﻿@model REA_Tracker.Models.EmailSenderViewModel
+@using (Html.BeginForm())
+{
+    <h3 class="content-title"><u>@Resources.strings.qviEmailSender</u></h3>
+    if (ViewBag.Message != null)
+    {
+        if (ViewBag.Success == true)
+        {
+            <div class="alert alert-success" role="alert">@ViewBag.Message</div>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">@ViewBag.Message</div>
+        }
+    }
+
+    <div class="panel-group accordion-panel" id="accordion-paneled">
+        <div class="panel">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-paneled" href="#collapseOne">@Resources.strings.qviWelcomeEmail</a>
+                </h4>
+            </div> <!-- /.panel-heading -->
+            <div id="collapseOne" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="form form-horizontal">
+                        <div class="form-group">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <label>@Resources.strings.qviName: <span class="required">*</span></label>
+                                @if (Model.newUserID == 0)
+                                {
+                                    <p style="color:#b94a48">
+                                        @ViewBag.alert
+                                    </p>
+                                }
+                                <select id="newUserID" name="newUserID" class="form-control" required="required">
+                                    @foreach (var item in Model.GetListofUsers())
+                                    {
+                                        <option value="@item.ID">@item.Name </option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label>@Resources.strings.qviEmailPreference: </label>
+                                <br />
+                                <input type="radio" name="emailpreference" value="yes" id="buttonDefaultEmail" onclick="document.getElementById('newUserSubject').readOnly = true; document.getElementById('newUserMessage').readOnly = true;" checked="checked" required="" />Default Email<br>
+                                <input type="radio" name="emailpreference" value="no" id="buttonCustomEmail" onclick="document.getElementById('newUserSubject').readOnly = false; document.getElementById('newUserMessage').readOnly = false;" required="" />Customised Email<br />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label>@Resources.strings.qviSubject: <span class="required">*</span></label>
+                                <input class="form-control" id="newUserSubject" name="newUserSubject" type="text" value="Welcome to REA Tracker" required="" readonly="readonly">
+                                @Html.ValidationMessageFor(model => model.newUserSubject)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label>@Resources.strings.qviMessage: <span class="required">*</span></label>
+                                <textarea class="form-control" id="newUserMessage" name="newUserMessage" rows="6" cols="40" readonly="readonly" required="">
+An REA Tracker account has been created for you.
+
+Link: http://scrtracker.ogp.qvii.com/
+ID: [[LOGON]];
+Password:[[PASSWORD]];
+
+NOTE: The username and password provided is different than your computer login. Please change your password via the Settings link in the upper right corner of the webpage.
+
+IMPORTANT: Please read the following ISO documentation.
+
+SPD-ALL-PL-0008 Software Change Request Policy
+http://64.128.119.7:8080/share/page/site/eiso/document-details?nodeRef=workspace://SpacesStore/0dd3ef37-c618-494b-948e-4c3648a23ad6
+
+SPD-ALL-WI-0018 Software Change Request Submission Process
+http://64.128.119.7:8080/share/page/site/eiso/document-details?nodeRef=workspace://SpacesStore/b95c1fe0-a260-4261-97f1-0ebcfe31b6bf
+
+Thank you,
+SCR Tracker Administration Team
+                                </textarea>
+                                @Html.ValidationMessageFor(model => model.newUserMessage)
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <button class="btn btn-success" type="submit" name="button" value="Welcome Email">Send</button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div> <!-- /.panel-body -->
+            </div> <!-- /.panel-collapse -->
+        </div>
+
+        <div class="panel">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-paneled" href="#collapseTwo">@Resources.strings.qviCustomEmail</a>
+                </h4>
+            </div> <!-- /.panel-heading -->
+            <div id="collapseTwo" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="form form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label>To: <span class="required">*</span></label><br>
+                                <input class="pull-left" type="radio" name="sendToAll" value="false">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <input class="form-control" type="email" id="sendTo" name="sendTo" value="">
+                                </div>
+                                <br />
+                            </div>
+                            <div class="col-md-12">
+                                <input class="pull-left" type="radio" name="sendToAll" value="true">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <label>Send all</label>
+                                    <br />
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <label>Send From Email: <span class="required">*</span></label>
+                                <input class="form-control" id="email" name="sendFrom" type="text" value="bugTrak.qvi@qvii.com">
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label>Subject: <span class="required">*</span></label>
+                                <input class="form-control" id="subject" name="CustomSubject" type="text" value="@Model.CustomSubject">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label>Message: <span class="required">*</span></label>
+                                <textarea class="form-control" id="sendBody" name="CustomMessage" rows="6" cols="40">@Model.sendBody</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <button class="btn btn-success" type="submit" name="button" value="Custom">@Resources.strings.qviSend</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div> <!-- /.panel-body -->
+            </div> <!-- /.panel-collapse -->
+        </div>
+
+        <div class="panel">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-paneled" href="#collapseThree">@Resources.strings.qviWatchListEmail</a>
+                </h4>
+            </div> <!-- /.panel-heading -->
+            <div id="collapseThree" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="form form-horizontal">
+                        <div class="form-group">
+                            <div class="form-inline">
+                                <select id="WatchUserID" name="WatchUserID" class="form-control" required="required">
+                                    <option value="-1">@Resources.strings.qviAllUsers</option>
+                                    @foreach (var item in Model.GetListofUsers())
+                {
+                                        <option value="@item.ID">@item.Name </option>
+                                    }
+                                </select>
+                                &nbsp;
+                                <button class="btn btn-success" value="WatchUser" name="button">@Resources.strings.qviSendWatchList</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div> <!-- /.panel-body -->
+            </div> <!-- /.panel-collapse -->
+        </div>
+ 
+        <div class="panel">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-paneled" href="#collapseFour">@Resources.strings.qviEmailSettings</a>
+                </h4>
+            </div> <!-- /.panel-heading -->
+            <div id="collapseFour" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="form form-horizontal">
+                        <div class="form-group">
+                            <div>
+                                Enter the admin email address, for multiple addresses seperate each address with a semicolon
+                            </div>
+                            <br />
+                            <input type="text" class="form-control" width="150" name="adminAddress" value="@Model.adminAddress" />
+                            <br />
+                            <div text-align="center">
+                                <button class="btn btn-success" type="submit" value="Edit" name="button">@Resources.strings.qviUpdate</button>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- /.panel-body -->
+            </div> <!-- /.panel-collapse -->
+        </div>
+
+    </div>
+}

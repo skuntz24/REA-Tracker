@@ -1,0 +1,67 @@
+﻿@model REA_Tracker.Models.NewREA
+
+
+<h3 class="content-title"><u>@Resources.strings.qviPlannedWorkDetails</u></h3>
+<p>
+    @Resources.strings.qviPleaseEnterDetailsForBackgroundMessage
+</p><br>
+<br />
+<div class="form-group">
+    <label class="col-md-2">@Resources.strings.qviBackgroundRational</label>
+    <div class="col-md-10">
+        @if (Model.IssueID == 3)
+        {
+            @Html.TextAreaFor(m => m.Background, new { @class = "form-control", @rows = "5" })
+        }
+        else
+        {
+            @Html.TextAreaFor(m => m.Background, new { @class = "form-control", @readonly = "readonly", @rows = "5" })
+
+        }
+    </div><!-- /.col -->
+</div><!-- /.form-group -->
+
+<div class="form-group">
+    <label class="col-md-2">@Resources.strings.qviStory</label>
+    <div class="col-md-10">
+        @if (Model.IssueID == 3)
+        {
+            @Html.TextAreaFor(m => m.Story, new { @class = "form-control", @rows = "5" })
+        }
+        else
+        {
+            @Html.TextAreaFor(m => m.Story, new { @class = "form-control", @readonly = "readonly", @rows = "5" })
+
+        }
+        @Html.ValidationMessageFor(m => m.Story)
+    </div><!-- /.col -->
+    @if (string.IsNullOrWhiteSpace(Model.Story))
+    {
+        <div class="col-md-2"></div><div class="col-md-10"><p style="color:#b94a48">@ViewBag.message[2]</p></div>
+    }
+    @if (Model.IssueID == 3)
+    {
+        if (!string.IsNullOrWhiteSpace(Model.Story))
+        {
+            if (Model.Story.Length > 0 && Model.Story.Length < 10)
+            {
+                <div class="col-md-2"></div><div class="col-md-10"><p style="color:#b94a48">@ViewBag.validateLength</p></div>
+            }
+        }
+    }
+</div><!-- /.form-group -->
+
+<div class="form-group">
+    <label class="col-md-2">@Resources.strings.qviAcceptanceCriteria</label>
+    <div class="col-md-10">
+        @if (Model.IssueID == 3)
+        {
+            @Html.TextAreaFor(m => m.Acceptance, new { @class = "form-control", @rows = "5" })
+        }
+        else
+        {
+            @Html.TextAreaFor(m => m.Acceptance, new { @class = "form-control", @readonly = "readonly", @rows = "5" })
+
+        }
+    </div><!-- /.col -->
+</div><!-- /.form-group -->

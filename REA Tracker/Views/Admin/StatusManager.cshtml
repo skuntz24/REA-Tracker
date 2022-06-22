@@ -1,0 +1,223 @@
+﻿@model REA_Tracker.Models.StatusManagerViewModel
+@{
+    ViewBag.Title = @Resources.strings.qviStatusManager;
+}
+<h2>@Resources.strings.qviStatusManager</h2>
+@if (ViewBag.Display)
+{
+<script>
+        alert(@Resources.strings.qviTheStatusChangeAlreadyExists)
+</script>
+}
+@if (Model.RoleID == -1)
+{
+    <div class="col-md-12">
+        <div class="col-lg-2">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th colspan="2">@Resources.strings.qviKey</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td>@Resources.strings.qviNone</td>
+                    <td bgcolor="FFFFFF"></td>
+                </tr>
+                <tr>
+                    <td>@Resources.strings.qviNormal</td>
+                    <td bgcolor="00CC00"></td>
+                </tr>
+                <tr>
+                    <td>@Resources.strings.qviException</td>
+                    <td bgcolor="CC00ff"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+}
+@using (Html.BeginForm())
+{
+    <div align="center" class="">
+        Group:
+        <select name="RoleID" id="RoleID" onchange="this.form.submit()" class="">
+            <option value="">
+                @Resources.strings.qviAll
+            </option>
+            @for (int i = 0; i < Model.RoleNames.Count; i++)
+            {
+                <option value="@Model.RoleNames.ElementAt(i).Item1"
+                        @(Model.RoleNames.ElementAt(i).Item1 == Model.RoleID ? "selected" : "")>
+                    @Model.RoleNames.ElementAt(i).Item2
+                </option>
+            }
+        </select>
+    </div>
+    if (Model.RoleID == -1)
+    {//For no role
+        <br />
+        <div align="left">
+            @for (int i = 0; i < Model.RoleNames.Count; i++)
+            {//For each Role
+                <label> @Model.RoleNames.ElementAt(i).Item2 </label>
+                <table class="table table-bordered">
+                    <tr>
+                        <th class="col-md-1"></th>
+                        @for (int j = 0; j < Model.StatusNames.Count; j++)
+                        {//For each status
+                         //Get the first letter of each string for the label
+                            <th class="col-md-1"><span title="@Model.GetStatusDescription(Model.StatusNames.ElementAt(j).Item2)">@Model.StatusNames.ElementAt(j).Item2</span></th>
+                        }
+                    </tr>
+                    @for (int j = 0; j < Model.StatusNames.Count; j++)
+                    {//For each status
+                        <tr>
+                            <td> <span title="@Model.GetStatusDescription(Model.StatusNames.ElementAt(j).Item2)">@Model.StatusNames.ElementAt(j).Item2</span></td>
+                            @for (int k = 0; k < Model.StatusNames.Count; k++)
+                            {
+                                if (j == k)
+                                {
+                                    <td bgcolor="#000000"></td>
+                                }
+                                else
+                                {
+                                    switch (Model.StatusTables.ElementAt(i)[j, k])
+                                    {
+                                        case 0://Cannot do
+                                            <td bgcolor="FFFFFF"></td>
+                                            break;
+                                        case 1://Normal
+                                            <td bgcolor="00CC00"></td>
+                                            break;
+                                        case 2://Execption
+                                            <td bgcolor="CC00FF"></td>
+                                            break;
+                                    }
+                                }
+                            }
+                        </tr>
+                    }
+                </table>
+            }
+        </div>
+    }
+    else
+    {//For Role ID
+        <br />
+        <table>
+            <tr>
+                <td>
+                    @Resources.strings.qviFrom:
+                </td>
+                <td>
+                    <select name="FromId" class="form-control">
+                        <option></option>
+                        @for (int i = 0; i < Model.StatusNames.Count; i++)
+                        {
+                            <option value="@Model.StatusNames.ElementAt(i).Item1">
+                                @Model.StatusNames.ElementAt(i).Item2
+                            </option>
+                        }
+                    </select>
+                </td>
+                <td>
+                    &nbsp;
+                    @Resources.strings.qviTo:
+                </td>
+                <td>
+                    <select name="ToId" class="form-control">
+                        <option></option>
+                        @for (int i = 0; i < Model.StatusNames.Count; i++)
+                        {
+                            <option value="@Model.StatusNames.ElementAt(i).Item1">
+                                @Model.StatusNames.ElementAt(i).Item2
+                            </option>
+                        }
+                    </select>
+                </td>
+                <td>
+                    &nbsp;
+                    @Resources.strings.qviIsException?
+                </td>
+                <td>
+                    <select name="isException" class="form-control">
+                        <option value="1">@Resources.strings.qviYes</option>
+                        <option value="0">@Resources.strings.qviNo</option>
+                    </select>
+                </td>
+                <td>
+                    &nbsp;
+                    @Resources.strings.qviIsDenied??:
+                </td>
+                <td>
+                    <select name="isDenied" class="form-control">
+                        <option value="1">@Resources.strings.qviYes</option>
+                        <option value="0">@Resources.strings.qviNo</option>
+                    </select>
+                </td>
+                <td>
+                    &nbsp;
+                    <button class="btn btn-danger" type="submit" name="button" value="Create"> @Resources.strings.qviCreate </button>
+                </td>
+            </tr>
+        </table>
+        <br />
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <td align="center">@Resources.strings.qviEdit</td>
+                    <td align="center">@Resources.strings.qviFrom</td>
+                    <td align="center">@Resources.strings.qviTo</td>
+                    <td align="center">@Resources.strings.qviException</td>
+                    <td align="center">@Resources.strings.qviDenied</td>
+                    <td align="center">@Resources.strings.qviDelete</td>
+                </tr>
+            </thead>
+            @for (int i = 0; i < Model.DisplayEdit.Count; i++)
+            {
+                <tr>
+                    <td align="center">
+                        <a href="~/Admin/StatusChangeEdit/@Model.DisplayEdit.ElementAt(i)[0]">@Resources.strings.qviEdit</a>
+                    </td>
+                    @for (int j = 1; j < Model.DisplayEdit.ElementAt(i).Length; j++)
+                    {
+                        <td>
+                            <span title="@Model.GetStatusDescription(Model.DisplayEdit.ElementAt(i)[j])">@Model.DisplayEdit.ElementAt(i)[j]</span>
+                        </td>
+                    }
+                    <td align="center">
+                        <button class="btn btn-danger" name="button"
+                                value="@Resources.strings.qviDelete @Model.DisplayEdit.ElementAt(i)[0]">
+                            <i class="glyphicon glyphicon-minus-sign"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+
+    <h3> @Resources.strings.qviStatusTable </h3>
+    <table id="statustable" class="table table-bordered tablesorter">
+        <thead>
+            <tr>
+                <th> </th>
+                <th> @Resources.strings.qviID </th>
+                <th> @Resources.strings.qviName </th>
+                <th> @Resources.strings.qviDescription </th>
+                <th> @Resources.strings.qviOrder </th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.StatusNames.Count; i++)
+            {
+                <tr>
+                    <td><a href="/Admin/EditStatusListItem/@Model.StatusNames.ElementAt(i).Item1">@Resources.strings.qviEdit</a></td>
+                    <td>@Model.StatusNames.ElementAt(i).Item1</td>
+                    <td>@Model.StatusNames.ElementAt(i).Item2</td>
+                    <td>@Model.StatusNames.ElementAt(i).Item3</td>
+                    <td>@Model.StatusNames.ElementAt(i).Item4</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}

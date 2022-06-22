@@ -1,0 +1,492 @@
+﻿@using QVICommonIntranet.Database
+@model REA_Tracker.Models.DisplayREA
+@using HelperMethods.Infrastructure;
+@{
+    if (!Request.IsAuthenticated) 
+    {
+       <div class="alert alert-danger"> Please log in <a href="/Account/Login?ReturnUrl=@Request.Path">REA Tracker</a> to view all information.</div>
+    }
+}
+
+@if(@ViewBag.Valid == false) //make this second
+{
+    <h2> This REA @ViewBag.SCRnum does not exist. </h2>
+}
+else if(@ViewBag.NoId== true)
+{
+    <h2> The value entered is an invalid REA Number. </h2>
+}
+else
+{
+    <script type="text/javascript" src="~/Scripts/PopUp.js"></script>
+    <script type="text/javascript" src="~/Scripts/CodeReview.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".toggler").click(function (e) {
+                e.preventDefault();
+                $('.' + $(this).attr('data-prod-cat')).toggle();
+                if (document.getElementById("toggler").innerHTML == "Hide Verbose") {
+                    document.getElementById("toggler").innerHTML = "Show All";
+                }
+                else {
+                    document.getElementById("toggler").innerHTML = "Hide Verbose";
+                }
+            });
+        });
+
+    $(function () { $("[data-toggle='tooltip']").tooltip(); });
+    @*$(document).ready(function () {
+        $("#tooltip-ex a").tooltip({
+            placement: ''
+        });
+    });*@
+    
+    </script>
+    <div class="row">
+        <h2 class="col-lg-11">@ViewBag.Title</h2>
+        <a class="pull-right btn btn-default hidden-print" href="~/REA/Display/@(Model.TrackingId+1)"><i class="glyphicon glyphicon-arrow-right"></i></a>
+        <a class="pull-right btn btn-default hidden-print" href="~/REA/Display/@(Model.TrackingId-1)"><i class="glyphicon glyphicon-arrow-left"></i></a>
+    </div>
+    <p class="text-success">@ViewBag.Message</p>
+    if (Model.HasAccess)
+    {
+        <section class="demo-section">
+            <!-- GENERAL INFORMATION (title) -->
+            @using (Html.BeginForm())
+            {
+                @Html.HiddenFor(m => m.TrackingId, Model.TrackingId)
+                @Html.HiddenFor(m => m.UserID, Model.UserID)
+
+                <h4 class="content-title"><u>General Information</u> 
+                @if (Request.IsAuthenticated)
+                {
+                <a href="/REA/Edit/@Model.TrackingId" class="button btn btn-success pull-right hidden-print" @*onclick="javascript: EditAuthorization()"*@><i class="fa fa-edit"></i>&nbsp;Edit</a>
+                <a href="/REA/Print/@Model.TrackingId" target="_blank" class="button btn btn-facebook pull-right hidden-print"><i class="fa fa-print"></i>&nbsp;Print</a>
+                <button class="btn btn-default pull-right hidden-print" type="submit" id="selfWatchList" value="selfWatchList" name="button">
+                    @if (!ViewBag.isInwatchList)
+                    {
+                        <text><i class="fa fa-eye"></i>&nbsp;Add To My Watchlist</text>
+                    }
+                    else
+                    {
+                        <text><i class="fa fa-eye-slash"></i>&nbsp;Remove From My Watchlist </text>
+                    }
+                </button>
+                <button onclick="javascript: popUp('/REA/AddToWatchList/@Model.TrackingId')" class="btn btn-default pull-right hidden-print" type="button">
+                    <i class="fa fa-group"></i>&nbsp;Add To Others Watchlist
+                </button>
+                }
+                </h4>
+            }
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="portlet">
+                        <!-- This empty portlet is needed for spacing, do not remove -->
+                    </div> <!-- /.portlet -->
+                </div> <!-- /.col -->
+
+                <!-- GENERAL INFORMATION (left table) -->
+                <div class="col-md-5 col-xs-6" style="margin-top: -50px">
+                    <div class="portlet">
+                        <div class="portlet-body">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr><td class="h5 qvi-medium-width">Product</td><td>@Model.Product</td></tr>
+                                    <tr><td class="h5">Priority</td><td>@Html.PriorityIcon(Model.Priority, "fa-lg", true)</td></tr>
+                                    <tr>
+                                        <td class="h5">Status</td>
+                                        <td>
+                                            <span title="@Model.StatusDescription">@Model.Status</span> @if (Model.Status == "Closed")
+                                            {@Model.ClosedReason}
+                                        </td>
+                                    </tr>
+                                    <tr><td class="h5">Assigned To</td><td>@Model.AssignedTo</td></tr>
+                                    <tr><td class="h5">Keywords<br />
+                                            @if (Model.canEditKeywords)
+                                            {
+                                        <button onclick="javascript: popUp('/SCR/AddKeywords/@Model.TrackingId')" class="btn btn-primary btn-xs hidden-print" type="button">
+                                            <i class="fa fa-key"></i>&nbsp;@Resources.strings.qviUpdate
+                                        </button>
+                                            }
+                                        </td>
+                                        <td>
+                                            @foreach (var item in Model.Keywords)
+                                            {
+                                                <span class="label label-default">@item.Name</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div> <!-- /.portlet-body -->
+                    </div> <!-- /.portlet -->
+                </div> <!-- /.col -->
+
+                @if (Model.ManagersNote.Length > 0)
+                {
+                    <div class="col-md-12 col-xs-12" style="margin-top: -40px">
+                        <div class="portlet">
+                            <div class="portlet-body">
+                                <div class="alert alert-success">
+                                    <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+                                    <strong>@Resources.strings.qviManagersNote:</strong> @Html.Nl2Br(Model.ManagersNote)
+                                </div> <!-- /.alert -->
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div> <!-- /.row -->
+
+            @if (Request.IsAuthenticated && Model.HasAccess)
+            {
+                <!-- PEOPLE AND RELEASE PLANNING & ESTIMATES-->
+                <div class="row">
+                    <!-- PEOPLE -->
+                    <div class="col-md-6">
+                        <div class="portlet">
+                            <div class="portlet-body">
+                                <h4 class="content-title"><u>People</u></h4>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>What</th>
+                                            <th>Who</th>
+                                            <th>When</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>Submitted&nbsp;By</td><td>@Model.SubmittedBy</td><td>@Model.SubmittedOn</td></tr>
+                                        <tr><td>Approved&nbsp;By</td><td>@Model.ApprovedBy</td><td>@Model.ApprovedOn</td></tr>
+                                        <tr><td>Resolved&nbsp;By</td><td>@if (Model.ResolvedBy.Equals("")) 
+                                                                    {
+                                                                        <text> The REA has not been resolved</text>
+                                                                    }
+                                                                    else 
+                                                                    {
+                                                                        @Model.ResolvedBy
+                                                                    }
+                                          </td><td>@Model.ResolvedOn</td></tr>
+                                        <tr><td>Closed By</td><td> @Model.ClosedBy</td>  <td> @Model.ClosedOn </td></tr>
+                                    @if (Model.WatchingString.Length != 0)
+                                    {
+                                        <tr><td>Watched By</td><td colspan="2">@Model.WatchingString</td></tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            </div> <!-- /.portlet-body -->
+                        </div> <!-- /.portlet -->
+                    </div> <!-- /.col -->
+
+                </div> <!-- /.row -->
+    
+                <!-- RELATED SCRS -->
+                if(Model.Related.Count() >0)
+                {
+                <h4 class="content-title"><u>Related REAs</u></h4>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="portlet">
+                            <div class="portlet-body">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>@Resources.strings.qviSCR #</th>
+                                            <th>@Resources.strings.qviProduct</th>
+                                            <th>@Resources.strings.qviTitle</th>
+                                            <th>@Resources.strings.qviStatus</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Related)
+                                        {
+                                        <tr>
+                                            <td align="center"><a href="/SCR/Display/@item.TrackingID">@item.TrackingID</a></td>
+                                            <td align="center">@item.Product</td>
+                                            <td>
+                                                @item.Title
+                                                <br />
+                                                <div style="font-size: 10pt;">
+                                                    <div class="pull-left">
+                                                        @Html.IssueIcon((string)item.Issue, "", false)
+                                                        @Html.PriorityIcon((string)item.Priority, "", false)
+                                                        @if (@item.Status == "Closed")
+                                                        {
+                                                        <b>@Resources.strings.qviClosedBy: </b>@item.ClosedBy
+                                                        }
+                                                        else
+                                                        {
+                                                            <b>@Resources.strings.qviAssignedTo </b>@item.AssignedTo
+                                                        }
+
+                                                    </div>
+                                                    <div class="pull-right">
+                                                        @if ((@item.Status == "Closed") || (@item.Status == "Fixed") || (@item.Status == "Delivered") || (@item.Status == "Built") || (@item.Status == "Testing") || (@item.Status == "On Hold"))
+                                                        {
+                                                            <b>@Resources.strings.qviRelease: </b>@item.VersionReleased
+                                                        }
+                                                        else
+                                                        {
+                                                    <b>@Resources.strings.qviPlannedRelease </b>@item.VersionPlanned
+                                                        }
+
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td align="center">
+                                                @item.Status
+                                                @if (@item.Status == "Closed")
+                                                {
+                                                <br /> @item.ClosedReason
+                                                }
+                                            </td>
+                                        </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div> <!-- /.portlet-body -->
+                        </div> <!-- /.portlet -->
+                    </div> <!-- /.col -->
+                </div> <!-- /.row -->
+                }
+            }   
+
+            <!-- ATTACHMENTS -->
+            @if(Model.Attached.Count > 0)
+            {
+                <h4 class="content-title"><u>Attachments</u></h4>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="portlet">
+                            <div class="portlet-body">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th width="165px">@Resources.strings.qviTimestamp</th>
+                                            <th width="150px">@Resources.strings.qviAddedBy</th>
+                                            <th>@Resources.strings.qviFileName</th>
+                                            <th>@Resources.strings.qviSize</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach(var item in Model.Attached){
+                                        <tr>
+                                            <td>@item.FileDate</td>
+                                            <td>@item.AddedBy</td>
+                                            <td>
+                                                @if (Request.IsAuthenticated)
+                                                {
+                                                    if (item.IsPicture)
+                                                    {
+                                                        <a class="ui-lightbox" href="@item.ImageUrl" title="@item.Description">
+                                                            <img src="@item.ImageUrl" class="thumbnail" style="display: inline-block" width="100" alt="Gallery Image">
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.ActionLink((string)item.FileName, "Download", new { @file_id = (int)item.id })
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    @item.FileName
+                                                }
+                                                <br/>@item.Description
+                                            </td>
+                                            <td>@item.FileSize </td>
+                                        </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div> <!-- /.portlet-body -->
+                        </div> <!-- /.portlet -->
+                    </div> <!-- /.col -->
+                </div> <!-- /.row -->
+            }
+
+                                                            @if (Request.IsAuthenticated && Model.HasAccess)
+            {
+                <!-- Code Review Pop Up -->
+                <div class="modal fade" id="createCodeReview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <form class="form-horizontal" role="form" method="post" action="" enctype="multipart/form-data">
+                            @Html.HiddenFor(m => m.TrackingId, Model.TrackingId)
+                            @Html.HiddenFor(m => m.UserID, Model.UserID)
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="myModalLabel">@Resources.strings.qviCreateCodeReviewForSCR @Model.TrackingId</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="portlet">
+                                        <div class="portlet-body">
+                                            <table class="table table-bordered">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="h5 qvi-medium-width">@Resources.strings.qviTitleActivity</td>
+                                                        <td>
+                                                            @Html.TextBoxFor(m => m.CodeReviewTitle, new { @class = "form-control input-sm", @style = "data-val='true' data-val-required='The title \\ activity field is required.'" })
+                                                            @Html.ValidationMessageFor(m => m.CodeReviewTitle)
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="h5 qvi-medium-width">@Resources.strings.qviProduct</td>
+                                                        <td>
+                                                            @Model.Product
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="h5 qvi-medium-width">@Resources.strings.qviReviewers</td>
+                                                        <td>
+                                                            @Resources.strings.qviAllDevelopersLeadersAndManagers
+                                                            @*@Html.AccessForTextBox("Reviewers", @Model.Reviewers )*@
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td class="h5 qvi-medium-width">@Resources.strings.qviCodeLocationStreams</td>
+                                                        <td>@Html.TextBoxFor(m => m.CodeLocation, new { @class = "form-control", @style = "" }) </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="h5 qvi-medium-width">@Resources.strings.qviNotesSubject</td>
+                                                        <td>
+                                                            @Html.TextAreaFor(m => m.Notes, 5, 200, new { @class = "form-control", @style = "" })
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="h5 qvi-medium-width">@Resources.strings.qviFileList</td>
+                                                        <td>
+                                                            @Html.TextAreaFor(x => x.FileList, 5, 200, new { @class = "form-control", @style = "", @id = "fileNames" })
+                                                            @Html.ValidationMessageFor(m => m.FileList)
+                                                            <div>
+                                                                <div class="col-md-5 btn btn-info pull-right" onclick="javascript: cleanFileNames($('#fileNames'));" style="margin-top:20px; margin-left:20px;"><i class="fa fa-plus-circle"></i> @Resources.strings.qviCleanFilepaths</div>
+                                                                <div class="col-md-5 btn btn-danger pull-right" onclick="$('#fileNames').val('').empty();" style="margin-top:20px;"><i class="fa fa-times-circle"></i> @Resources.strings.qviClearTextarea</div>
+                                                                <div class="col-md-2"></div>
+                                                            </div>
+                                                            <ul class="col-md-12" id="cleanedFileNames" style="margin-top:20px; font-size: 12px; font-weight:bold"></ul>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.strings.qviClose</button>
+                                    <button type="submit" name="button" class="btn btn-primary" id="CreateCR" value="CreateCodeReview" @*onclick="javascript: checkCleanFiles();"*@>@Resources.strings.qviSubmit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+            }
+            <!-- HISTORY -->
+            <h4 class="content-title"><u>@Resources.strings.qviHistory</u></h4>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="portlet">
+                        <div class="portlet-body">
+                            <a id="toggler" href="#" class="toggler" data-prod-cat="Verbose">@Resources.strings.qviHideVerbose</a>
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="qvi-col-datetime">@Resources.strings.qviTimestamp</th>
+                                        <th class="qvi-col-name">@Resources.strings.qviChangedBy</th>
+                                        <th>@Resources.strings.qviDescription</th>
+                                    </tr>
+                                </thead>
+                                @if (Request.IsAuthenticated && Model.HasAccess)
+                                {
+                                    <tbody>
+                                        @foreach(var item in Model.History)
+                                        {
+                                        <tr class="@if ((item.Type == 1) || (item.Type == 2) || (item.Type == 3)) { @Html.Raw("Details"); } else { @Html.Raw("Verbose"); }" style="display:normal">
+                                            <td align="center">
+                                                <div>
+                                                @item.MadeOn
+                                                </div>
+                                            </td>
+                                          
+                                            <td align="center">
+                                                <a style="cursor:pointer;" onclick="javascript: popUp('/Account/ViewUser/@item.MadeById')">@item.MadeBy</a>
+                                            </td>
+                                          @if ((@item.fileID == null) && ((@item.Type == 26) || (@item.Type == 4)))
+                                          {
+                                            <td>File @item.FileName attached</td>
+                                          }
+                                         
+                                          else if ((@item.fileID != "") && (@item.fileID != null) && ((@item.Type == 26) || (@item.Type == 4)))
+                                          {
+                                            <td>
+                                                File @Html.ActionLink((string)(String.IsNullOrEmpty(item.FileName) ?
+                                                        "No file name stored in history." :
+                                                        (string)item.FileName),
+                                                    "Download", new { @file_id = Convert.ToInt32(item.fileID) }) was attached.
+                                            </td>
+                                          }
+                                          else if (Convert.ToInt32(item.Type) == 8 && Convert.ToInt32(item.LinkSCR) == 0)
+                                          {
+                                                <td>
+                                                    @Resources.strings.qviRelatedREAHasBeenRemoved
+                                                </td>
+                                            }
+                                          else if (Convert.ToInt32(item.Type) == 8)
+                                          {
+                                                <td>
+                                                    @Resources.strings.qviRelatedREA #
+                                                    <a href='@item.LinkSCR' target='_blank'>@item.LinkSCR</a> - @item.Title
+                                                </td>
+                                            }
+                                          else
+                                          {
+                                                <td>
+                                                    <div>@Html.ViewHistory((string)item.Description, (int)item.Type, (bool)item.DisplayHtml)</div>
+                                                </td>
+                                            }
+                                        </tr>
+                                        }
+                                    </tbody>
+                                }
+                                else
+                                {
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div>
+                                                    @Model.History.ElementAt(Model.History.Count-1).MadeOn
+                                                </div>
+                                            </td>
+                                            <td>
+                                                 @Model.History.ElementAt(Model.History.Count - 1).MadeBy
+                                            </td>
+                                            @if (@Model.History.ElementAt(Model.History.Count - 1).fileID != "" && @Model.History.ElementAt(Model.History.Count - 1).fileID != null && @Model.History.ElementAt(Model.History.Count - 1).Description == "")
+                                            {
+                                                <td>
+                                                    File @Html.ActionLink( (string) Convert.ToString(Model.History.ElementAt(Model.History.Count - 1).FileName)  
+                                                        , "Download", new { @file_id = Convert.ToInt32(Model.History.ElementAt(Model.History.Count - 1).fileID) }) was attached.
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td>
+                                                    @Html.ViewHistory((string)Model.History.ElementAt(Model.History.Count - 1).Description, (int)Model.History.ElementAt(Model.History.Count - 1).Type, (bool)Model.History.ElementAt(Model.History.Count - 1).DisplayHtml)
+                                                </td>
+                                            }
+                                        </tr>
+                                    </tbody>
+                                }
+                            </table>
+                        </div> <!-- /.portlet-body -->
+                    </div> <!-- /.portlet -->
+                </div> <!-- /.col -->
+            </div> <!-- /.row -->
+
+        </section>
+    
+    }
+    else
+    {
+        <p>@Resources.strings.qviYouDoNotHaveAccessMessage</p>
+    }
+}

@@ -1,0 +1,61 @@
+﻿@model REA_Tracker.Models.HomeIndexViewModel
+@using HelperMethods.Infrastructure;
+
+
+<div id="layout-responsive" data-title="Responsive Stacking" class="bs-docs-section-sub">
+    @{string lastProduct = ""; int lastIndex = 0;}
+    @for (int i = 0; i < Model.toDoListDisplay.Count; i++)
+    {
+        //Header for table
+        if (lastProduct != Model.toDoListDisplay[i].ProductName)
+        {
+            lastProduct = Model.toDoListDisplay[i].ProductName;
+            <h5 class="text-primary">@Model.toDoListDisplay[i].ProductName</h5>
+            @Html.Raw(
+             "<table id='Table" + Model.toDoListDisplay[i].ProductID + "' class='example table table-bordered table-hover tablesorter'>" +
+             "<thead> " +
+                 "<tr class='header'>" +
+                     "<th align='center' class='qvi-col-trackingid'>REA #</th>" +
+                     "<th align='left' >Title</th>" +
+                     "<th align='center' class='col-md-1'>Priority&nbsp;</th>" +
+                     "<th align='center' class='qvi-col-type'>Type</th>" +
+                     "<th align='center' class='qvi-col-status'>Status</th>" +
+                 "</tr>" +
+             "</thead>" +
+             "<tbody>"
+             );
+        }
+
+        //Each item in the table
+
+
+        @Html.Raw(
+                "<tr>" +
+                    "<td align='center'>" + "<a href='/REA/Display/" + Model.toDoListDisplay[i].TrackingID + "' target='_blank'>" + Model.toDoListDisplay[i].TrackingID + "</a>" + "</td>" +
+                    "<td align='left'>" + Model.toDoListDisplay[i].Title.Replace("<", "&lt;").Replace(">", "&gt;"));
+
+        if (!Model.toDoListDisplay[i].ManagersNote.IsEmpty())
+        {
+            @Html.Raw("</br><b>Manager's Note:</b>&nbsp;" + Model.toDoListDisplay[i].ManagersNote);
+        }
+
+        @Html.Raw(
+                "</td>" +
+                    "<td align='center'>" + @Html.PriorityIcon(Model.toDoListDisplay[i].PriorityID.ToString(), "fa-2x") + "<div class='hidden'>" + Model.toDoListDisplay[i].PriorityID + "</div>" + "</td>" +
+                    "<td align='center'>" + @Html.IssueIcon(Model.toDoListDisplay[i].IssueID.ToString(), "fa-2x") + "<div class='hidden'>" + Model.toDoListDisplay[i].IssueID + "</div>" + "</td>" +
+                    "<td align='center'>" + "<div class='hidden'>" + Model.toDoListDisplay[i].StatusID + "</div>" + Model.toDoListDisplay[i].StatusName + "</td>" +
+                "</tr>"
+                        );
+        if (i + 1 >= Model.toDoListDisplay.Count || Model.toDoListDisplay[i + 1].ProductName != lastProduct)
+        {
+            @Html.Raw(
+                    "</tbody>" +
+                    "<tfoot>" +
+                        "<tr><td colspan='8'>TOTAL RECORDS FOUND: <strong>" + (i - lastIndex + (lastIndex == 0 ? 1 : 0)) + "</strong></td></tr>" +
+                    "</tfoot>" +
+                "</table>"
+                );
+            lastIndex = i;
+        }
+    }
+</div>

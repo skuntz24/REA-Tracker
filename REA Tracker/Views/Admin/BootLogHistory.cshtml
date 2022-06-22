@@ -1,0 +1,61 @@
+﻿@model REA_Tracker.Models.BootLogHistoryViewModel
+@{
+    ViewBag.Title = @Resources.strings.qviBootLogHistory;
+}
+
+<h2>@Resources.strings.qviBootLogHistory</h2>
+<p>@Html.ValidationMessageFor(m => m.inputdays)</p>
+@using (Html.BeginForm("BootLogHistory", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    <div class="display: inline-block; vertical-align: top;">
+        <div style="float:left">
+            <p>@Resources.strings.qviDisplayLastNumberOfDays</p>
+        </div>
+        <div style="float:left" class="col-md-3">
+            <div class="input-group">
+                @Html.TextBoxFor(m => m.inputdays, new { @class = "form-control" })
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">@Resources.strings.qviSubmit</button>
+                </span>
+            </div><!-- /input-group -->
+        </div>
+    </div>
+}
+<br/>
+<table class="table table-bordered"  style="margin: auto;">
+    <thead>
+        <tr class="header">
+            <th style="text-align: center;">
+                @Resources.strings.qviIP
+            </th>
+            <th style="text-align: center;">
+                @Resources.strings.qviMachineName
+            </th>
+            <th style="text-align: center;">
+                @Resources.strings.qviLogDate
+            </th>
+            <th style="text-align: center;">
+                @Resources.strings.qviSQLLogDate
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(System.Data.DataRow data in Model.Logs)
+        {
+        <tr>
+            <td style ="text-align: center;">
+                @Convert.ToString(data["IPADDRESS"])
+            </td>
+            <td style="text-align: center;">
+                @Convert.ToString(data["MACHINE_NAME"])
+            </td>
+            <td style="text-align: center;">
+                @Convert.ToString(data["LOG_DATE"])
+            </td>
+            <td style="text-align: center;">
+                @Convert.ToString(data["SQL_SERVER_DATE"])
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,139 @@
+﻿@using Microsoft.AspNet.Identity
+@model SCR_Tracker.Models.EditUserManagerViewModel
+@using HelperMethods.Infrastructure;
+<script>
+    window.ParsleyValidator.Validator;
+</script>
+<h3 class="content-title">
+    <u>@Resources.strings.qviEditProfile</u>
+</h3>
+<p class="text-success">@ViewBag.StatusMessage[0]</p>
+<p>@Html.ValidationSummary()</p>
+<p>
+    <!-- TO-DO replace with content -->
+    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+</p>
+<br>
+<br>
+<!-- start of form -->
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal", role = "form", @enctype = "multipart/form-data" }))
+{
+    <input type="hidden" name="userID" value="@Model.userID" />
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <label class="col-md-3">@Resources.strings.qviAccountType</label>
+        <div class="col-md-7">
+
+            @Html.DisplaySelectList("AccountType", Model.AccountTypes, "class='form-control'")
+        </div><!-- /.col -->
+    </div><!-- /.form-group -->
+    <div class="form-group">
+        <label class="col-md-3">@Resources.strings.qviEmployeeNum</label>
+        <div class="col-md-7">
+            @Html.TextBoxFor(m => m.EmployeeNum, new { @value = @Model.EmployeeNum, @class = "form-control" })
+        </div><!-- /.col -->
+    </div><!-- /.form-group -->
+
+    <div class="form-group">
+        <label class="col-md-3">@Resources.strings.qviUsername</label>
+        <div class="col-md-7">
+            @Html.TextBoxFor(m => m.Logon, new { @value = @Model.Logon, @class = "form-control" })
+        </div><!-- /.col -->
+    </div><!-- /.form-group -->
+    <div class="form-group">
+        <label class="col-md-3">@Resources.strings.qviFirstName</label>
+        <div class="col-md-7">
+            @Html.TextBoxFor(m => m.FirstName, new { @value = @Model.FirstName, @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.FirstName)
+        </div><!-- /.col -->
+    </div><!-- /.form-group -->
+    <div class="form-group">
+        <label class="col-md-3">@Resources.strings.qviLastName</label>
+        <div class="col-md-7">
+            @Html.TextBoxFor(m => m.LastName, new { @value = @Model.LastName, @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.LastName)
+        </div><!-- /.col -->
+    </div><!-- /.form-group -->
+    <div class="form-group">
+        <label class="col-md-3">@Resources.strings.qviTitle</label>
+        <div class="col-md-7">
+            @Html.TextBoxFor(m => m.title, new { @value = @Model.title, @class = "form-control" })
+        </div><!-- /.col -->
+    </div><!-- /.form-group -->
+    <div class="form-group">
+        <label class="col-md-3">@Resources.strings.qviEmailAddress</label>
+        <div class="col-md-7">
+            @Html.TextBoxFor(m => m.Email, new { @value = @Model.Email, @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Email)
+        </div><!-- /.col -->
+    </div><!-- /.form-group -->
+    <div class="form-group">
+        <label class="col-md-3">@Resources.strings.qviDefaultProduct</label>
+        <div class="col-md-7">
+            @Html.DisplaySelectList("defaultProduct", Model.getProducts(), "class='form-control'")
+
+        </div><!-- /.col -->
+    </div><!-- /.form-group -->
+    @*
+        <div class="form-group">
+            <label class="col-md-3">Has Access To Raw SQL</label>
+            <div class="col-md-7">
+                <select id="RawSQLAccess" name="RawSQLAccess" class="form-control">
+                    <option value="0" @if (Model.RawSQLAccess==0) { <text> selected </text>    }> No </option>
+                    <option value="1" @if (Model.RawSQLAccess==1) { <text> selected </text>   }> Yes </option>
+                </select>
+            </div><!-- /.col -->
+        </div><!-- /.form-group -->
+    *@
+    <div class="form-group">
+        <label class="col-md-3">@Resources.strings.qviHasAccessToWhereSQL</label>
+        <div class="col-md-7">
+            <select id="BlockWhere" name="BlockWhere" class="form-control">
+                <option value="1" @if (Model.BlockWhere == 1) { <text> selected </text> }> @Resources.strings.qviNo </option>
+                <option value="0" @if (Model.BlockWhere == 0) { <text> selected </text> }> @Resources.strings.qviYes </option>
+            </select>
+        </div><!-- /.col -->
+    </div><!-- /.form-group -->
+    <div class="form-group">
+        <label class="col-md-3">@Resources.strings.qviPassword</label>
+        <div class="col-md-7">
+            @Html.TextBoxFor(m => m.Password, new { @class = "form-control", @value = Model.Password })
+            @Html.ValidationMessageFor(model => model.Password)
+        </div><!-- /.col -->
+    </div><!-- /.form-group -->
+    <div class="form-group">
+        <label class="col-md-3">@Resources.strings.qviPhoto</label>
+        <div class="col-md-7">
+            <input type="file" name="photo" class="form-control" value="" />
+        </div><!-- /.col -->
+    </div><!-- /.form-group -->
+    <div class="form-group">
+        <label class="col-md-3">@Resources.strings.qviPhoto</label>
+        <div class="col-md-7">
+            @if (Model.CurrentPhoto != null)
+            {
+                var base64 = Convert.ToBase64String(Model.CurrentPhoto);
+                var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                <img src="@imgSrc" class="navbar-profile-avatar" />
+            }
+            else
+            {
+                <img src="~/img/blank-md.png" class="navbar-profile-avatar" alt="">
+            }
+            <button type="submit" name="button" value="DeletePhoto" class="btn btn-danger">@Resources.strings.qviClearPhoto</button>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-3">@Resources.strings.qviLanguage</label>
+        <div class="col-md-7">
+            @Html.DisplaySelectList("LanguageCode", Model.getLanguages(), "class='form-control'")
+
+        </div><!-- /.col -->
+    </div><!-- /.form-group -->
+    <div class="form-group">
+        <div class="col-md-7 col-md-push-3">
+            <button type="submit" class="btn btn-primary" name="button" value="Profile">@Resources.strings.qviSaveChanges</button>   <button type="reset" class="btn btn-default">@Resources.strings.qviReset</button>
+        </div><!-- /.col -->
+    </div><!-- /.form-group -->
+}
+<!-- end of form -->

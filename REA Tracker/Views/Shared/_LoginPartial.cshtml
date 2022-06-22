@@ -1,0 +1,24 @@
+﻿<!--
+    This files gets loaded in from _Layout.cshtml
+-->
+@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+    @Html.AntiForgeryToken()
+
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            @Html.ActionLink("Hello x" + User.Identity.GetUserName() + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })
+        </li>
+        <li><a href="javascript:document.getElementById('logoutForm').submit()">@Resources.strings.qviLogOff</a></li>
+    </ul>
+    }
+}
+else
+{
+    <!--
+        Never gets here because we are always authenticated by the time the file is loaded.
+    -->
+}

@@ -1,0 +1,391 @@
+﻿@model REA_Tracker.Models.SearchViewModel
+@using HelperMethods.Infrastructure;
+@using QVICommonIntranet.Database;
+@{
+    ViewBag.Title = Resources.strings.qviAdvancedSearch;
+}
+@Scripts.Render("~/bundles/REASearch")
+
+<script type="text/javascript" src="~/Scripts/TableSort/jquery.tablesorter.js"></script> 
+    <Script>
+        /*
+       function createigGrid(){
+            $.ig.loader("igGrid.*", function () {
+                $('#ReportGrid').igGrid({
+                    dataSource: Model.DataRows.AsQueryable(),
+                    responseDataKey: "Records",
+                    autoGenerateColumns: true,
+                    features: [
+                        {
+                            recordCountKey: 'TotalRecordsCount',
+                            pageIndexUrlKey: 'page',
+                            pageSizeUrlKey: 'pageSize',
+                            name: 'Paging',
+                            height: '100%',
+                            width: '100%',
+
+                        }
+                    ],
+                    localSchemaTransform: true
+                });
+            });
+        }
+        */
+        $(document).ready(function () {
+            //if (document.getElementById("LastOpenPanel") != null &&
+            //    document.getElementById("LastOpenPanel").value != null
+            //    ) {
+            //    var LastOpenID = document.getElementById("LastOpenPanel").value;
+            //    if (document.getElementById(LastOpenID) != null)
+            //    {
+            //        document.getElementById("GeneralListItem").className = "";
+            //        document.getElementById(LastOpenID).className += " active ";
+            //    }
+            //}
+            //if (document.getElementById("LastOpenCollapse") != null &&
+            //    document.getElementById("LastOpenCollapse").value != null
+            //    ) {
+            //    var LastOpenCollapseID = document.getElementById("LastOpenCollapse").value;
+            //    if (document.getElementById(LastOpenCollapseID) != null)
+            //    {
+            //        document.getElementById(LastOpenCollapseID).className += " in ";
+            //    }
+            //}
+            //createigGrid();
+            $('#Table').tablesorter();
+            $(window).keydown(function (event) {
+                if (event.keyCode == 13) {
+                    autoFillHiddenString(HiddenString, RightSelectTag);
+                    autoFillHiddenString(HiddenStringSortBy, RightSelectTagSort);
+                    autoFillHiddenString(HiddenProductString, RightSelectTagProducts);
+                }
+            });
+            var compare = document.getElementById("SCRComparator");
+            var selected = compare.options[compare.selectedIndex].value;
+            var scr2 = document.getElementById("SCRNumber2");
+            if (selected != 4)
+            {
+                scr2.style.backgroundColor = "#C4C4A7";
+                scr2.readOnly = true;
+            }
+            var Reported = document.getElementById("CustomerReported")
+            var SelectedReported = Reported.options[Reported.selectedIndex].value;
+            var Company          = document.getElementById("CustomerCompany");
+            var Location         = document.getElementById("CustomerLocation");
+            var Contact          = document.getElementById("CustomerContact");
+            //var SyteLine         = document.getElementById("CustomerSyteLine");
+            //var MachineSN        = document.getElementById("CustomerMachineSN");
+
+            if( SelectedReported == 1 )
+            {
+                Company.style.backgroundColor = "white";
+                Location.style.backgroundColor = "white";
+                Contact.style.backgroundColor = "white";
+                //SyteLine.style.backgroundColor = "white";
+                //MachineSN.style.backgroundColor = "white";
+                Company.readOnly = false;
+                Location.readOnly = false;
+                Contact.readOnly = false;
+                //SyteLine.readOnly = false;
+                //MachineSN.readOnly = false;
+            }
+            else {
+                Company.value = "";
+                Location.value = "";
+                Contact.value = "";
+                //SyteLine.value = "";
+                //MachineSN.value = "";
+                Company.style.backgroundColor = "#C4C4A7";
+                Location.style.backgroundColor = "#C4C4A7";
+                Contact.style.backgroundColor = "#C4C4A7";
+                //SyteLine.style.backgroundColor = "#C4C4A7";
+                //MachineSN.style.backgroundColor = "#C4C4A7";
+                Company.readOnly = true;
+                Location.readOnly = true;
+                Contact.readOnly = true;
+                //SyteLine.readOnly = true;
+                //MachineSN.readOnly = true;
+            }
+        });
+    jQuery(function () {
+        jQuery('#myTab a').on('click', function () {
+            $(this).tab('show');
+        });
+    })
+    function RecordLastTab(number)
+    {
+        document.getElementById("lastTab").value = number;
+    }
+    
+</script>
+
+<div class="hidden-print">
+    @using (Html.BeginForm())
+    {
+        <input type="hidden" value="@Model.UserID" name="UserID" />
+        <!--input type="hidden" value="Model.SCRNumber" name="SCRNumber"/-->
+        <div class="col-md-12 col-sm-8">
+            <div class="portlet">
+                <h4 class="portlet-title">
+                    <u>@ViewBag.Title</u>
+                    <button type="submit"
+                            onmousedown="javascript:
+									autoFillHiddenString(form.HiddenString, form.RightSelectTag);
+									autoFillHiddenString(form.HiddenStringSortBy, form.RightSelectTagSort);
+									autoFillHiddenString(form.HiddenProductString, form.RightSelectTagProducts);
+									return validate(false);
+									"
+                            title="Search" class="btn btn-primary pull-right">
+                        @Resources.strings.qviSearch
+                    </button>
+                    <font class="pull-right">
+                        &nbsp;
+                    </font>
+                    <button type="button" onclick="location.href='/SCR/Search'" class="btn btn-info pull-right">Reset</button>                    
+                </h4>
+                @if (ViewBag.Message != null)
+                {
+                    <font color="green">
+                        @ViewBag.Message
+                    </font>
+                }
+                <input type="hidden" id="SelectStatement" name="SelectStatement" value="@Model.SelectStatement" />
+                <input type="hidden" id="SortByStatement" name="SortByStatement" value="@Model.SortByStatement" />
+                <input type="hidden" id="ReportID" name="ReportID" value="@Model.ReportID" />
+                <input type="hidden" id="UserID" name="ReportID" value="@Model.UserID" />
+                <input type="hidden" id="lastTab" name="lastTab" value="@Model.lastTab" />
+                <div class="portlet-body">
+                    <ul id="myTab1" class="nav nav-tabs">
+
+                        <li id="GeneralListItem" onclick="RecordLastTab(0)" @if (Model.lastTab == null || Model.lastTab == 0) { @Html.Raw("class='active'")  }><a data-target="#general" data-toggle="tab">@Resources.strings.qviGeneral</a></li>
+                        <li id="ProductListItem" onclick="RecordLastTab(1)" @if (Model.lastTab == 1) { @Html.Raw("class='active'")  }><a data-target="#product" data-toggle="tab">@Resources.strings.qviExtra</a></li>
+                        <li id="PeopleListItem" onclick="RecordLastTab(3)" @if (Model.lastTab == 2) { @Html.Raw("class='active'")   }><a data-target="#people" data-toggle="tab">@Resources.strings.qviPeopleTime</a></li>
+                        @if (User.IsInRole("Administrator") || Model.CanUseWhere)
+                            {
+                        <li id="WhereListItem" onclick="RecordLastTab(5)" @if (Model.lastTab == 3) { @Html.Raw("class='active'")    }><a data-target="#where" data-toggle="tab">@Resources.strings.qviWhere</a></li>
+                            }
+                        <li id="DisplayListItem" onclick="RecordLastTab(6)" @if (Model.lastTab == 4) { @Html.Raw("class='active'")    }><a data-target="#display" data-toggle="tab">@Resources.strings.qviDisplaySorting</a></li>
+                        @if (ViewBag.DisplayRawSQL)
+                            {
+                        <li id="SQLListItem" onclick="RecordLastTab(7)" @if (Model.lastTab == 5) { @Html.Raw("class='active'")    }><a data-target="#RawSQL" data-toggle="tab">@Resources.strings.qviRawSQL</a></li>
+                            }
+                    </ul>
+                    <div id="myTab1Content" class="tab-content">
+                        <div class="tab-pane fade @if (Model.lastTab == null || Model.lastTab == 0)
+                        { @Html.Raw("in active")}" id="general">
+                            @Html.Partial("SearchPartials/_SearchGeneral")
+                        </div> <!-- /.tab-pane -->
+                        <div class="tab-pane fade  @if (Model.lastTab == 1)
+                        { @Html.Raw("in active")}" id="product">
+                            @Html.Partial("SearchPartials/_SearchProduct")
+                        </div> <!-- /.tab-pane -->
+                        <div class="tab-pane fade @if (Model.lastTab == 2)
+                        { @Html.Raw("in active")}" id="people">
+                            @Html.Partial("SearchPartials/_SearchPeople")
+                        </div> <!-- /.tab-pane -->
+                        @if (User.IsInRole("Administrator") || Model.CanUseWhere)
+                        {
+                            <div class="tab-pane fade @if (Model.lastTab == 3)
+                            { @Html.Raw("in active")}" id="where">
+                                @Html.Partial("SearchPartials/_SearchWhere")
+                            </div> <!-- /.tab-pane -->
+                        }
+                        <div class="tab-pane fade @if (Model.lastTab == 4)
+                        { @Html.Raw("in active")}" id="display">
+                            @Html.Partial("SearchPartials/_SearchDisplaySorting")
+                        </div> <!-- /.tab-pane -->
+                        @if (ViewBag.DisplayRawSQL)
+                        {
+                            <div class="tab-pane fade @if (Model.lastTab == 5)
+                            { @Html.Raw("in active") }" id="RawSQL">
+                                @Html.Partial("SearchPartials/_SearchSQL")
+                            </div> <!-- /.tab-pane -->
+                        }
+                    </div> <!-- /.tab-content -->
+                </div>
+            </div>
+        </div>
+
+        <div id="MainContent" class="col-md-12 col-sm-8 ">
+            <!-- CONTENT GOES HERE -->
+            @if (!String.IsNullOrEmpty(Model.SQLDebuggingQuery))
+            {
+            <!-- Copy to Clipboard -->
+                if (User.IsInRole("Administrator"))
+                {
+
+                    <div class="bs-docs-section">
+                        <h6>SQL Command</h6>
+                        <div class="bs-example">
+                            <pre>@Html.Raw(Model.SQLDebuggingQuery);</pre>
+                        </div>
+                    </div>
+                }
+                <div>
+                    <div class="form-inline form-group">
+                        <table>
+                            <tr>
+                                <td>
+                                    <label><b>Report Title:</b></label>&nbsp;<input class="form-control" size="100" type="text" id="NameOfReport" name="NameOfReport" value="@Model.NameOfReport" /><!-- Title -->
+                                </td>
+                                <td>
+                                    &nbsp;
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    <div class="pull-right">
+                                        <label><b>Max Rows:</b></label>&nbsp;<input class="form-control" size="5" type="text" id="MaxRows" name="MaxRows" maxlength="5" value="@Model.MaxRows" /><!-- Max Rows -->
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="form-inline form-group">
+                        <label> Report Type: </label>
+                        &nbsp;
+                        &nbsp;
+                        <div class="radio">
+                            <label>
+                                <input id="PublicReport" @if (Model.PublicReport == 1 || Model.PublicReport == null) { <text> checked </text> } name="PublicReport" value="1" type="radio" />@Resources.strings.qviPublic
+                            </label>
+                        </div><!-- Public or Private -->
+                        &nbsp;
+                        <div class="radio">
+                            <label>
+                                <input id="PublicReport" @if (Model.PublicReport == 0) { <text> checked </text>    } name="PublicReport" value="0" type="radio" />@Resources.strings.qviPrivate
+                            </label>
+                        </div>
+                        <div class="pull-right">
+                            @if (Model.ReportID != null
+&& Model.ReportID != 0
+&& Model.Owner != null
+&& (Model.Owner == Convert.ToInt32(Session["st_userID"]) || User.IsInRole("Administrator"))
+)
+                            {
+                                <button class="btn btn-danger" name="button" value="Delete">
+                                    Delete
+                                </button>
+                                <font>
+                                    &nbsp;
+                                </font>
+                                <button onmousedown='javascript:
+                                            validate( true);
+                                            autoFillHiddenString(form.HiddenString, form.RightSelectTag);
+                                            autoFillHiddenString(form.HiddenStringSortBy, form.RightSelectTagSort);
+                                            autoFillHiddenString(form.HiddenProductString, form.RightSelectTagProducts);'
+                                        class="btn btn-success" name="button" value="Update">
+                                    Update
+                                </button>
+                                <font>
+                                    &nbsp;
+                                </font>
+                            }
+                            <button type="button" onmouseup="return PrintMe();" class="btn btn-secondary">
+                                Print
+                            </button><!-- Print -->
+                            &nbsp;
+                            <button onmousedown='javascript:
+                                                    validate(true);
+                                                    autoFillHiddenString(form.HiddenString, form.RightSelectTag);
+                                                    autoFillHiddenString(form.HiddenStringSortBy, form.RightSelectTagSort);
+                                                    autoFillHiddenString(form.HiddenProductString, form.RightSelectTagProducts);'
+                                    class="btn btn-success" type="Submit" name="button" value="Save">
+                                Save As New
+                            </button> <!-- Save -->
+                        </div>
+                    </div>
+                </div>
+            }
+            <!-- IGgrid Data  -->
+            @*
+                @if (Model.DisplayGrid != null)
+                {
+                    <label>Row Count:&nbsp;&nbsp;</label>
+                     <b><font color="#d74b4b">@ViewBag.RowCount</font></b>
+                    @Html.Infragistics().Grid(Model.DisplayGrid);
+                <table id="ReportGrid"></table>
+                }
+            *@
+            @if (Model.ResultsTable != null)
+            {
+                <table id="Table" name="Table" class="table table-striped table-bordered table-hover tablesorter">
+                    <thead>
+                        <tr>
+                            @foreach (var col in Model.ResultsTable.Columns)
+                            {
+                                <th>
+                                    @col.ToString()
+                                </th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody id="tBody">
+                        @foreach (System.Data.DataRow row in Model.ResultsTable.Rows)
+                        {
+                            <tr>
+                                @for (int i = 0; i < row.ItemArray.Count(); i++)
+                                {
+                                    if (Model.ResultsTable.Columns[i].ToString() == "Priority")
+                                    {
+                                        <td align="center">
+                                            <div class="hidden">@Convert.ToString(row[i])</div>
+                                            @Html.PriorityIcon(Convert.ToString(row[i]))
+                                        </td>
+                                    }
+                                    else if (Model.ResultsTable.Columns[i].ToString() == "Issue")
+                                    {
+                                        <td align="center">
+                                            <div class="hidden">@Convert.ToString(row[i])</div>
+                                            @Html.IssueIcon(Convert.ToString(row[i]))
+                                        </td>
+                                    }
+                                    else if (Model.ResultsTable.Columns[i].ToString() == "REA")
+                                    {
+                                        <td align="center"><a href="~/SCR/Display/@row[i]" target="_blank">@row[i].ToString()</a></td>
+                                    }
+                                    else if (Model.ResultsTable.Columns[i].ToString() == "Related REAs")
+                                    {
+                                        <td align="center">
+                                        @{
+                                            string[] related_scrs = (row[i].ToString().Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries));
+                                            int count = related_scrs.Length;
+                                            if (count > 0)
+                                            {
+                                                <div class="btn-group demo-element">
+                                                    <button type="button" class="btn btn-tertiary dropdown-toggle" data-toggle="dropdown">@count <span class="caret"></span></button>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        @{
+                                                            REATrackerDB sql = new REATrackerDB();
+                                                            System.Data.DataTable dt = sql.GetREAInfoForDashBoard(row[i].ToString()); //passing in common delimited SCRs
+                                                            foreach (System.Data.DataRow dr in dt.Rows)
+                                                            {
+                                                                <li><a target="blank" href="~/REA/Display/@dr["TRACKING_ID"]">REA#@dr["TRACKING_ID"] - @dr["TITLE"].ToString().Replace("<", "&lt;").Replace(">", "&gt;")</a></li>
+                                                            }
+                                                        }
+                                                    </ul>
+                                                </div> <!-- /.btn-gruop -->
+                                            }
+                                        }
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>@Convert.ToString(row[i])</td>
+                                    }
+                                } <!-- foreach item-->
+                                </tr>
+                            } <!-- foreach row-->
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="@Model.ResultsTable.Columns.Count"> Total Records Found @Model.ResultsTable.Rows.Count </td>
+                            </tr>
+                        </tfoot>
+                        </table>
+                                                }<!-- if the datatable exists -->
+        </div><!--sidebar-->
+    }
+</div>
+<font size="0" style="position:absolute; top:0px; right:0px;">
+    <table id="grid1print" class="visible-print table table-striped" style="display:none"></table>
+</font>

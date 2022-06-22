@@ -1,0 +1,220 @@
+﻿@model REA_Tracker.Models.NewREA
+@using HelperMethods.Infrastructure;
+
+    <h3 class="content-title"><u>General Settings</u></h3>
+
+<p>
+      Required Fields For a New REA
+    </p><br>
+    <br>
+    <div class="form-group">
+        <label class="col-md-2">Title</label><div class="col-md-10"> @Html.TextBoxFor(m => m.Title, new { @class = "form-control", @spellcheck="true" }) </div><!-- /.col -->
+        <div class="col-md-2"></div><div class="col-md-10">@Html.ValidationMessageFor(m => m.Title)</div>
+    </div><!-- /.form-group -->
+    <div class="form-group">
+        <label class="col-md-2">Product</label>
+        <div class="col-md-5">
+            <select id="ProductID" name="ProductID" class="form-control fixed-width" onchange="this.form.submit();">
+                @foreach (var item in Model.ProductList)
+                {
+                    <option value=@item.ID @item.IsDefault> @item.Name </option>
+                }
+            </select>
+        </div><!-- /.col -->
+    </div><!-- /.form-group -->
+    <div class="form-group">
+        <label class="col-md-2">Priority</label><div class="col-md-8">
+            <select id="PriorityID" name="PriorityID" class="form-control fixed-width" data-val="true" data-val-required="Required.">
+                @foreach (var item in Model.PriorityList)
+                {
+                    <option value=@item.ID @item.IsDefault> @item.Name </option>
+                }
+            </select>
+            @Html.ValidationMessageFor(m => m.PriorityID)
+        </div><!-- /.col -->
+        <input id="OpenButton" name="buttonDetermine" value="?" class="btn btn-facebook pull-left col-md-1" style="left: -250px;" onclick="javascript: openDeterminePriority()" />
+    </div><!-- /.form-group -->
+    <div class="form-group">
+        <label class="col-md-2">Details</label>
+        <div class="col-md-10">
+            @if (Model.IssueID == 1)
+            {
+                @Html.TextAreaFor(m => m.Details, new { @class = "form-control", @rows = "5" })
+            }
+            else
+            {
+                @Html.TextAreaFor(m => m.Details, new { @class = "form-control", @readonly = "readonly", @rows = "5" })
+
+            }
+            @if (Model.IssueID == 1)
+            {
+                if (!string.IsNullOrWhiteSpace(Model.Details))
+                {
+                    if (Model.Details.Length > 0 && Model.Details.Length < 10)
+                    {
+                        <div class="col-md-10"><p style="color:#b94a48">@ViewBag.validateLength</p></div>
+                    }
+                }
+                if (string.IsNullOrWhiteSpace(Model.Details))
+                {
+                    <div class="col-md-10"><p style="color:#b94a48">@ViewBag.message[0]</p></div>
+                }
+            }
+        <!-- style="resize: none" -->
+        </div><!-- /.col -->
+    </div><!-- /.form-group -->
+
+<div class="modal fade" id="determinePriority" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="form-horizontal" role="form" method="post" action="" enctype="multipart/form-data" id="formPriority" name="formPriority">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">@Resources.strings.qviDeterminePriorityLevel</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="portlet">
+                        <div class="portlet-body">
+                            <ul id="myTab1" class="nav nav-tabs">
+                                <li class="active"><a href="#impact" data-toggle="tab">@Resources.strings.qviImpact</a></li>
+                                <li class=""><a href="#frequency" data-toggle="tab">@Resources.strings.qviFrequency</a></li>
+                                <li class=""><a href="#workaround" data-toggle="tab">@Resources.strings.qviWorkaround</a></li>
+                            </ul>
+
+                            <div id="myTab1Content" class="tab-content">
+                                <div class="tab-pane fade active in" id="impact">
+                                    <p>@Resources.strings.qviImpactToUserDescription</p>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr><td colspan="2">@Resources.strings.qviImpactToTheUser</td></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="qvi-medium-width"><input type="radio" name="radioImpact" id="impact5" value="5" />@Resources.strings.qviUnacceptable</td>
+                                                <td>
+                                                    <ul>
+                                                        <li>@Resources.strings.qviSafetyIssue</li>
+                                                        <li>@Resources.strings.qviMachineRunaway</li>
+                                                        <li>@Resources.strings.qviLossOfMajorFunctionality</li>
+                                                        <li>@Resources.strings.qviMeasurementErrors</li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="radio" name="radioImpact" id="impact4" value="4" />@Resources.strings.qviSubstantial</td>
+                                                <td>
+                                                    <ul>
+                                                        <li>@Resources.strings.qviOperationNeverCompletes</li>
+                                                        <li>@Resources.strings.qviOutputDataIncorrectly</li>
+                                                        <li>@Resources.strings.qviMachineControllerPCLocksUp</li>
+                                                        <li>@Resources.strings.qviImproperRecoveryFromAMachineStoppage</li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="radio" name="radioImpact" id="impact3" value="3" />@Resources.strings.qviSignificant</td>
+                                                <td>
+                                                    <ul>
+                                                        <li>@Resources.strings.qviDegradationOfSystemPerformance</li>
+                                                        <li>@Resources.strings.qviIncorrectErrorMessages</li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="radio" name="radioImpact" id="impact2" value="2" />@Resources.strings.qviMinimal</td>
+                                                <td>
+                                                    <ul>
+                                                        <li>@Resources.strings.qviCosmeticProblems</li>
+                                                        <li>@Resources.strings.qviTypographicalErrors</li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="radio" name="radioImpact" id="impact1" value="1" />@Resources.strings.qviIncidental</td>
+                                                <td>
+                                                    <ul>
+                                                        <li>@Resources.strings.qviFeaturesThatTechnicallDescription</li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div> <!-- /.tab-pane -->
+
+                                <div class="tab-pane fade" id="frequency">
+                                    <p>@Resources.strings.qviFrequencyDescription</p>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr><td colspan="2">@Resources.strings.qviFrequencyOfTheProblem</td></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>@Resources.strings.qviDoesTheProblemOccurQuestion</td>
+                                                <td><input type="checkbox" name="frequency" id="frequency5" value="1" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>@Resources.strings.qviDoesTheProblemAffectQuestion</td>
+                                                <td><input type="checkbox" name="frequency" id="frequency4" value="1" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>@Resources.strings.qviAreTwoOrMoreMachineQuestion</td>
+                                                <td><input type="checkbox" name="frequency" id="frequency3" value="1" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>@Resources.strings.qviIsTheProblemStraightforwardQuestion</td>
+                                                <td><input type="checkbox" name="frequency" id="frequency2" value="1" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>@Resources.strings.qviDoMostUsersUseTheFeatureQuestion</td>
+                                                <td><input type="checkbox" name="frequency" id="frequency1" value="1" /></td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div> <!-- /.tab-pane -->
+
+                                <div class="tab-pane fade" id="workaround">
+                                    <p>@Resources.strings.qviWorkaroundDescription</p>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr><td colspan="2">@Resources.strings.qviDifficultyOfTheWorkaround</td></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="qvi-medium-width"><input type="radio" name="radioDifficulty" id="difficulty5" value="5" />@Resources.strings.qviNoneExists</td>
+                                                <td>@Resources.strings.qviRequiresPowerCycleNoWorkaround</td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="radio" name="radioDifficulty" id="difficulty4" value="4" />@Resources.strings.qviExtremelyDifficult</td>
+                                                <td>@Resources.strings.qviRequiresPowerCycleHasWorkaround</td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="radio" name="radioDifficulty" id="difficulty3" value="3" />@Resources.strings.qviDifficult</td>
+                                                <td>@Resources.strings.qviRequiresRerun</td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="radio" name="radioDifficulty" id="difficulty2" value="2" />@Resources.strings.qviSimple</td>
+                                                <td>@Resources.strings.qviHasASimpleAndObviousWorkaround</td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="radio" name="radioDifficulty" id="difficulty1" value="1" />@Resources.strings.qviMinimal</td>
+                                                <td>@Resources.strings.qviInvolvesErroneousMessage</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div> <!-- /.tab-pane -->
+
+                            </div> <!-- /.tab-content -->
+
+                        </div> <!-- /.portlet-body -->
+                    </div> <!-- /.portlet -->
+                </div> <!-- /.model-body -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="doButton" onclick="javascript: doPriority();">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

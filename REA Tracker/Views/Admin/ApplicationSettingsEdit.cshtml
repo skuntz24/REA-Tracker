@@ -1,0 +1,68 @@
+﻿@model REA_Tracker.Models.ApplicationSettingsEditViewModel
+@using HelperMethods.Infrastructure
+@{
+    ViewBag.Title = Resources.strings.qviEditApplicationVariable;
+}
+<script>
+    function ValidateUpdateVariable() {
+        var valid = true;
+        var ErrorString = "";
+        var keyword = document.getElementById("labelValue").value;
+        keyword = keyword.trim();
+        if (keyword.length == 0) {
+            valid = false;
+            ErrorString += @Resources.strings.qviTheKeywordFieldCannotBeEmptyOrSpaces
+        }
+
+        if (valid == false) {
+            alert(ErrorString);
+        }
+        return valid;
+    }
+</script>
+
+<section class="demo-section">
+    <h4 class="content-title"><u>@ViewBag.Title</u></h4>
+    <p>
+        @Resources.strings.qviTheFollowingRestrictionsMessage
+        <ul>
+            <li>@Resources.strings.qviMaximumLengthNameMessage</li>
+            <li>@Resources.strings.qviMaximumLengthVariableMessage</li>
+        </ul>
+    </p>
+    @using (Html.BeginForm("ApplicationSettingsEdit", "Admin", FormMethod.Post, new { @onsubmit = "return ValidateUpdateVariable();" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <form class="form">
+            <div class="row">
+                <div class="form-group col-md-1">
+                    <label for="labelID">@Resources.strings.qviID</label>
+                    <input type="text" readonly class="form-control" id="ID" name="ID" placeholder="ID" value="@ViewBag.ID">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="labelVariable">@Resources.strings.qviVariable</label>
+                    <input type="text" readonly class="form-control" id="labelVariable" name="Variable" placeholder="Variable" value="@ViewBag.Variable">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label for="labelValue">@Resources.strings.qviValue</label>
+                    <input type="text" class="form-control" id="Value" name="Value" placeholder="Value" size="255" value="@ViewBag.Value">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <a class="btn btn-default hidden-print" href="~/Admin/ApplicationSettings"><i class="glyphicon glyphicon-arrow-left"></i> @Resources.strings.qviBack</a>
+                    <button type="submit" class="btn btn-success" title="Save" value="Update" name="button"><i class="fa fa-save fa-lg"></i> @Resources.strings.qviSave</button>
+                </div>
+            </div>
+            <div class="row">
+                @if (ViewBag.Result != null)
+                {
+                    @Html.DisplayMessage((bool)ViewBag.Result, (string)ViewBag.Message)
+                }
+            </div>
+        </form>
+    }
+</section>

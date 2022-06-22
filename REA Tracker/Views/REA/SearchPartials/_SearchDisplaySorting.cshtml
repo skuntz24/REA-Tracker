@@ -1,0 +1,335 @@
+﻿@model REA_Tracker.Models.SearchViewModel
+@using HelperMethods.Infrastructure;
+
+<div class="row">
+    <div class="col-sm-6 col-md-6">
+        <div class="row-stat">
+            <p class="row-stat-label">Display</p>
+            <table>
+                <tr>
+                    <td align="center">
+                        <b>All</b>
+                    </td>
+                    <td>
+                        <!-- Hidden Field to auto fill into Model -->
+                        <input id="HiddenString" name="HiddenString" class="form-group" type="hidden" value="" />
+                    </td>
+                    <td>
+                    </td>
+                    <td align="center">
+                        <b>
+                            Display
+                        </b>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <select class="pull-left" id="LeftSelectTag" multiple="multiple" name="LeftSelectTag" size="20" style="width:215px">
+                            <!-- fill from hidden -->
+                            <optgroup label='Frequent Columns'>
+                                <!-- Frequently Used-->
+                                @for (int i = 0; i < Model.Translator.Keys.Count; i++)
+                                {
+                                    if (
+                                        (!Model.DisplayItems.Contains(Model.Translator[Model.Translator.Keys.ElementAt(i)])) &&
+                                        Model.IsFrequentColumn(Model.Translator.Keys.ElementAt(i))
+                                        )
+                                    {
+                                        <option value="@Model.Translator[Model.Translator.Keys.ElementAt(i)]"> @Model.Translator.Keys.ElementAt(i)</option>
+                                    }
+                                }
+                            </optgroup>
+                            <optgroup label=@Resources.strings.qviVersionFound>
+                                <!-- Version Found -->
+                                @for (int i = 0; i < Model.Translator.Keys.Count; i++)
+                                {
+                                    if (
+                                        (!Model.DisplayItems.Contains(Model.Translator[Model.Translator.Keys.ElementAt(i)])) &&
+                                        Model.IsVersion("VF_", Model.Translator.ElementAt(i).Value)
+                                        )
+                                    {
+                                        <option value="@Model.Translator[Model.Translator.Keys.ElementAt(i)]"> @Model.Translator.Keys.ElementAt(i)</option>
+                                    }
+                                }
+                            </optgroup>
+                            <optgroup label=@Resources.strings.qviVersionPlanned>
+                                <!-- Version Planned -->
+                                @for (int i = 0; i < Model.Translator.Keys.Count; i++)
+                                {
+                                    if (
+                                        (!Model.DisplayItems.Contains(Model.Translator[Model.Translator.Keys.ElementAt(i)])) &&
+                                        Model.IsVersion("VP_", Model.Translator.ElementAt(i).Value)
+                                        )
+                                    {
+                                        <option value="@Model.Translator[Model.Translator.Keys.ElementAt(i)]"> @Model.Translator.Keys.ElementAt(i)</option>
+                                    }
+                                }
+                            </optgroup>
+                            <optgroup label=@Resources.strings.qviVersionClosed>
+                                <!-- Version Closed -->
+                                @for (int i = 0; i < Model.Translator.Keys.Count; i++)
+                                {
+                                    if (
+                                        (!Model.DisplayItems.Contains(Model.Translator[Model.Translator.Keys.ElementAt(i)])) &&
+                                        Model.IsVersion("VC_", Model.Translator.ElementAt(i).Value)
+                                        )
+                                    {
+                                        <option value="@Model.Translator[Model.Translator.Keys.ElementAt(i)]"> @Model.Translator.Keys.ElementAt(i)</option>
+                                    }
+                                }
+                            </optgroup>
+                            <optgroup label=@Resources.strings.qviVersionResolved>
+                                <!-- Version Closed -->
+                                @for (int i = 0; i < Model.Translator.Keys.Count; i++)
+                                {
+                                    if (
+                                        (!Model.DisplayItems.Contains(Model.Translator[Model.Translator.Keys.ElementAt(i)])) &&
+                                        Model.IsVersion("VR_", Model.Translator.ElementAt(i).Value)
+                                        )
+                                    {
+                                        <option value="@Model.Translator[Model.Translator.Keys.ElementAt(i)]"> @Model.Translator.Keys.ElementAt(i)</option>
+                                    }
+                                }
+                            </optgroup>
+                            <optgroup label=@Resources.strings.qviActualHours>
+                                <!-- Actual Hours -->
+                                @for (int i = 0; i < Model.Translator.Keys.Count; i++)
+                                {
+                                    if (
+                                        (!Model.DisplayItems.Contains(Model.Translator[Model.Translator.Keys.ElementAt(i)])) &&
+                                        Model.IsVersion("ACT_HOUR", Model.Translator.ElementAt(i).Value)
+                                        )
+                                    {
+                                        <option value="@Model.Translator[Model.Translator.Keys.ElementAt(i)]"> @Model.Translator.Keys.ElementAt(i)</option>
+                                    }
+                                }
+                            </optgroup>
+                            <optgroup label=@Resources.strings.qviEstimatedHours>
+                                <!-- EstimatedHours -->
+                                @for (int i = 0; i < Model.Translator.Keys.Count; i++)
+                                {
+                                    if (
+                                        (!Model.DisplayItems.Contains(Model.Translator[Model.Translator.Keys.ElementAt(i)])) &&
+                                        Model.IsVersion("EST_HOUR", Model.Translator.ElementAt(i).Value)
+                                        )
+                                    {
+                                        <option value="@Model.Translator[Model.Translator.Keys.ElementAt(i)]"> @Model.Translator.Keys.ElementAt(i)</option>
+                                    }
+                                }
+                            </optgroup>
+                            <optgroup label=@Resources.strings.qviEnhancementDetails>
+                                <!-- Enhancement Details -->
+                                @for (int i = 0; i < Model.Translator.Keys.Count; i++)
+                                {
+                                    if (
+                                        (!Model.DisplayItems.Contains(Model.Translator[Model.Translator.Keys.ElementAt(i)])) &&
+                                        Model.IsEnhancement(Model.Translator.Keys.ElementAt(i))
+                                        )
+                                    {
+                                        <option value="@Model.Translator[Model.Translator.Keys.ElementAt(i)]"> @Model.Translator.Keys.ElementAt(i)</option>
+                                    }
+                                }
+                            </optgroup>
+                            <optgroup label=@Resources.strings.qviCustomerDetails>
+                                <!-- Customer Details -->
+                                @for (int i = 0; i < Model.Translator.Keys.Count; i++)
+                                {
+                                    if (
+                                        (!Model.DisplayItems.Contains(Model.Translator[Model.Translator.Keys.ElementAt(i)])) &&
+                                        Model.IsCustomerDetails(Model.Translator.Keys.ElementAt(i))
+                                        )
+                                    {
+                                        <option value="@Model.Translator[Model.Translator.Keys.ElementAt(i)]"> @Model.Translator.Keys.ElementAt(i)</option>
+                                    }
+                                }
+                            </optgroup>
+                            <!-- Rest of the Select tags -->
+                            @for (int i = 0; i < Model.Translator.Keys.Count; i++)
+                            {
+                                if (
+                                    (!Model.DisplayItems.Contains(Model.Translator[Model.Translator.Keys.ElementAt(i)])) &&
+                                    Model.IsRest(Model.Translator.Keys.ElementAt(i))
+                                    )
+                                {
+                                    <option value="@Model.Translator[Model.Translator.Keys.ElementAt(i)]"> @Model.Translator.Keys.ElementAt(i)</option>
+                                }
+                            }
+                            </select>
+                        </td>
+                        <td>
+                            <!-- Move to Hidden-->
+                            <button type="button" class="pull-right" onmouseup="javascript: SearchSelectMoveRows(form.RightSelectTag, form.LeftSelectTag)">
+                                <span class="glyphicon glyphicon-arrow-left"></span>
+                            </button>
+                        </td>
+                        <td>
+                            <!-- Move to Display -->
+                            <button type="button" class="pull-right" onmouseup="javascript: SearchSelectMoveRows(form.LeftSelectTag, form.RightSelectTag)">
+                                <span class="glyphicon glyphicon-arrow-right"></span>
+                            </button>
+                        </td>
+                        
+                        <td>
+                            <select class="pull-right" id="RightSelectTag" multiple="multiple" name="RightSelectTag" size="20" style="width:215px">
+                                <!-- fill from display -->
+                                @foreach (var SQLDisplayName in Model.DisplayItems)
+                                {
+                                    string s = SQLDisplayName.Trim();
+                                    <option value="@s"> @Model.Translator.First(x => x.Value.Trim() == s).Key </option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <table class="pull-right">
+                                <tr>
+                                    <td>
+                                        <!-- Up and Down Buttons -->
+                                        <div class="ui-tooltip" data-toggle="tooltip" data-trigger="hover" data-placement="right" title="Move Up Display Message">
+                                            <button type="button" class="" onmouseup="MoveUpDisplay()">
+                                                <span class="glyphicon glyphicon-arrow-up"></span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="ui-tooltip" data-toggle="tooltip" data-trigger="hover" data-placement="right" title=@Resources.strings.qviMoveDownDisplayMessage>
+                                            <button type="button" class="" onmouseup="MoveDownDisplay()">
+                                                <span class="glyphicon glyphicon-arrow-down"></span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+            </table>
+                           
+            
+
+        </div> <!-- /.row-stat -->
+    </div> <!-- /.col -->
+
+    <div class="col-sm-6 col-md-6">
+        <div class="row-stat">
+            <p class="row-stat-label">Sort</p>
+        <table>
+            <tr>
+                <td align="center">
+                    <b>@Resources.strings.qviAll</b>
+                </td>
+                <td>
+                    <!-- Hidden Field to auto fill into Model -->
+                    <input id="HiddenStringSortBy" name="HiddenStringSortBy" class="form-group" type="hidden" value="" />
+                </td>
+                <td align="center">
+                    <b>@Resources.strings.qviSortBy</b>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <select id="LeftSelectTagSort" multiple="multiple" name="LeftSelectTagSort" size="20" style="width:215px">
+                        <!-- fill from hidden -->
+                        @for (int i = 0; i < Model.Translator.Keys.Count; i++)
+                        {
+                            if (Model.SortByItems.Where(x => x.Split(", ".ToCharArray())[0] == Model.Translator[Model.Translator.Keys.ElementAt(i)]).Count() == 0)
+                            {
+                                if (!Model.ListOfNtext.Contains(Model.Translator[Model.Translator.Keys.ElementAt(i)]))
+                                {
+                                    <option value="@Model.SortByFilter(Model.Translator[Model.Translator.Keys.ElementAt(i)]) ASC"> @Model.Translator.Keys.ElementAt(i)</option>
+                                }
+                            }
+                        }
+                    </select>
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                <!-- Move to Display -->
+                                <button type="button" class="" onmouseup="javascript: SearchSelectMoveRows(form.RightSelectTagSort, form.LeftSelectTagSort)">
+                                    <span class="glyphicon glyphicon-arrow-left"></span>
+                                </button>
+                            </td>
+                            <td>
+                                <!-- Move to Hidden -->
+                                <button type="button" class="" onmouseup="javascript: SearchSelectMoveRows(form.LeftSelectTagSort, form.RightSelectTagSort)">
+                                    <span class="glyphicon glyphicon-arrow-right"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <select id="RightSelectTagSort" multiple="multiple" name="RightSelectTagSort" size="20" style="width:215px">
+                        <!-- fill from display -->
+                        @for (int i = 0; i < Model.SortByItems.Count; i++)
+                        {
+                            var temp = Model.SortByItems[i].Split(" ".ToCharArray());
+                            <option value="@Model.SortByItems[i]">                                 
+                                @if (temp.Length >= 2 && temp[temp.Length - 1] == "ASC") {<text>↑</text>} else {<text>↓</text>}
+
+                                @{
+                                    var key = "";
+                                    for (int j = 0; j < temp.Length - 1; j++)
+                                    {
+                                        key += temp[j];
+                                        //For the names to display properly
+                                        key += " ";
+                                    }
+                                }
+                                @Model.Translator.First(x => x.Value.Contains(key.Trim())).Key
+                            </option>
+                        }
+                    </select>
+                </td>
+                <td>
+                    <!-- Up and Down Buttons -->
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="ui-tooltip" data-toggle="tooltip" data-trigger="hover" data-placement="right" title=@Resources.strings.qviMoveUpSortPriority>
+                                    <button type="button" class="" onmouseup="MoveUpSort()">
+                                        <span class="glyphicon glyphicon-arrow-up"></span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="ui-tooltip" data-toggle="tooltip" data-trigger="hover" data-placement="right" title=@Resources.strings.qviMoveDownSortPriority>
+                                    <button type="button" class="" onmouseup="MoveDownSort()">
+                                        <span class="glyphicon glyphicon-arrow-down"></span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="ui-tooltip" data-toggle="tooltip" data-trigger="hover" data-placement="right" title=@Resources.strings.qviSwitchAscDesc>
+                                    <button type="button" class="" onmouseup="javascript: Alternate()">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <span class="fa fa-sort-amount-desc"></span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="fa fa-sort-amount-asc"></span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        </div> <!-- /.row-stat -->
+    </div> <!-- /.col -->
+</div> <!-- /.row -->

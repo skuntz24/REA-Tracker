@@ -1,0 +1,60 @@
+﻿@model REA_Tracker.Models.HomeIndexViewModel
+@using HelperMethods.Infrastructure;
+
+@using (Html.BeginForm())
+{
+<div id="layout-responsive" data-title="Responsive Stacking" class="bs-docs-section-sub">
+    <table border="0" width="100%">
+        <tbody><tr><td colspan="6"><button class="btn btn-warning pull-right" type="button" name="button" onmousedown="SelectClosedSCRsWatchList()"><i class="fa fa-crosshairs"></i>Select Closed</button></td></tr></tbody>
+    </table>
+    <table id="watchlist" name="myTable" class="table table-bordered table-hover tablesorter">
+        <thead>
+            <tr class="header">
+                <th align="center" class="qvi-col-trackingid">REA #</th>
+                <th align="center" class="qvi-col-ProductName">Product</th>
+                <th align="left">Title</th>
+                <th align="center" class="qvi-col-status">Status</th>
+                <th align="center" class="qvi-col-status">Last Updated</th>
+                <th align="center" class="qvi-col-version">
+                    <button class="btn btn-danger cancel" type="submit" name="button" value="RemoveWatchList">
+                        <i class="fa fa-remove"></i>
+                        Remove
+                    </button>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.watchListDisplay.Count; i++)
+            {
+                <tr>
+                    <td align="center"><a href="/SCR/Display/@Model.watchListDisplay[i].TrackingID" target="_blank">@Model.watchListDisplay[i].TrackingID</a>@Html.HiddenFor(m => m.watchListDisplay[i].WatchListID)</td>
+                    <td align="center">@Model.watchListDisplay[i].ProductName</td>
+                    <td align="left">
+                        @Model.watchListDisplay[i].Title
+                        <br />
+                        <div style="font-size: 10pt;">
+                            @Html.PriorityIcon(Model.watchListDisplay[i].PriorityID.ToString())
+                            @Html.IssueIcon(Model.watchListDisplay[i].IssueID.ToString())
+                            @if (Model.watchListDisplay[i].IsClosed)
+                            {<text>Closed By: &nbsp;<a onclick="javascript: popUp('/Account/ViewUser/@Model.watchListDisplay[i].ClosedByID')" style="cursor:pointer;">@Model.watchListDisplay[i].ClosedByName</a></text> }
+                        else
+                        {<text>Assigned To &nbsp;<a onclick="javascript: popUp('/Account/ViewUser/@Model.watchListDisplay[i].AssignedToID')" style="cursor:pointer;">@Model.watchListDisplay[i].AssignedToName</a></text>}
+                            @if (!Model.watchListDisplay[i].ManagersNote.IsEmpty())
+                            {
+                                <br />
+                                <b>Managers Note: &nbsp;</b> @Model.watchListDisplay[i].ManagersNote
+                            }
+                        </div>
+                    </td>
+                    <td align="center"><div class="hidden"> @Html.HiddenFor(M => M.watchListDisplay[i].StatusName) @Model.watchListDisplay[i].StatusID</div>@Model.watchListDisplay[i].StatusName</td>
+                    <td align="center">@Model.watchListDisplay[i].LastUpdated</td>
+                    <td align="center">@Html.CheckBoxFor(m => m.watchListDisplay[i].Remove, new { id = @Model.watchListDisplay[i].TrackingID })</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr><td colspan="6">Total Records Found <strong>@Model.watchListDisplay.Count</strong></td></tr>
+        </tfoot>
+    </table>
+</div>
+}

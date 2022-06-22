@@ -1,0 +1,41 @@
+﻿@model SCR_Tracker.Models.EditStatusListItemViewModel
+@{
+    ViewBag.Title = "EditStatusListItem";
+}
+
+<h2>@Resources.strings.qviEditStatus</h2>
+
+@using HelperMethods.Infrastructure
+<script>
+    @if(ViewBag.Message != "" && ViewBag.Message != null )
+    {<text>
+        var message2 = "@ViewBag.Message";
+        alert(message2);
+    </text>
+    }
+</script>
+<h5>@Resources.strings.qviAddNewStatus</h5>
+@using (Html.BeginForm("EditStatusListItem", "Admin", FormMethod.Post, new { @onsubmit = "return ValidateCurrentForm();" }))
+{
+    @Html.HiddenFor(m=>m.id)
+    @Html.AntiForgeryToken()
+    <font color="#b94a48"> @Html.Nl2BrEscapeCharacters((String)ViewBag.Message)</font>
+    <table>
+        <tr>
+            <td><p style="float:left">@Resources.strings.qviName:</p></td>
+            <td>@Html.TextBoxFor(m => m.Name, new { @class = "form-control" })</td>
+        </tr>
+        <tr></tr>
+        <tr>
+            <td><p style="float:left">@Resources.strings.qviDescription:</p></td>
+            <td>@Html.TextBoxFor(m => m.Description, new { @class = "form-control" })</td>
+        </tr>
+        <tr>
+            <td><p style="float:left">@Resources.strings.qviSortOrder:</p></td>
+            <td>@Html.TextBoxFor(m => m.SortOrder, new { @class = "form-control" })</td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Submit" class="btn btn-default form-control" /></td>
+        </tr>
+    </table>
+}

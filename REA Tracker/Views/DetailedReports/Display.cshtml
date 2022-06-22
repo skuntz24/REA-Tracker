@@ -1,0 +1,322 @@
+﻿@model SCR_Tracker.Models.SearchViewModel
+@using HelperMethods.Infrastructure;
+
+@{
+    ViewBag.Title = ViewBag.ReportTitle;
+}
+@Scripts.Render("~/bundles/SCRSearch")
+<script type="text/javascript" src="~/Scripts/TableSort/jquery.tablesorter.js"></script>
+<script>
+    $.tablesorter.addParser({
+        id: 'versions',
+        is: function (s) {
+            return false;
+        },
+        format: function (s) {
+            // format your data for normalization 
+            var finalString = "";
+            var value = s.split('.')
+            //iterate and append the padded value
+            for(var i =0; i<value.length; i++)
+            {
+                finalString+=value[i].padLeft(2,' ')
+            }
+            return finalString;
+        },
+        // set type, either numeric or text 
+        type: 'text'
+    });
+    $(document).ready(function () {
+        $("#myTable").tablesorter();
+    });
+</script>
+<script>
+    @*
+    function createigGrid(){
+        $.ig.loader("igGrid.*", function () {
+            $('#ReportGrid').igGrid({
+                dataSource: @Model.DataRows.AsQueryable(),
+                responseDataKey: "Records",
+                autoGenerateColumns: true,
+                features: [
+                    {
+                        recordCountKey: 'TotalRecordsCount',
+                        pageIndexUrlKey: 'page',
+                        pageSizeUrlKey: 'pageSize',
+                        name: 'Paging',
+                        height: '100%',
+                        width: '100%',
+
+                    }
+                ],
+                localSchemaTransform: true
+            });
+        });
+    }*@
+    function selectElementContents(el) {
+        var body = document.body, range, sel;
+        if (document.createRange && window.getSelection) {
+            range = document.createRange();
+            sel = window.getSelection();
+            sel.removeAllRanges();
+            try {
+                range.selectNodeContents(el);
+                sel.addRange(range);
+            } catch (e) {
+                range.selectNode(el);
+                sel.addRange(range);
+            }
+            document.execCommand("copy");
+        } else if (body.createTextRange) {
+            range = body.createTextRange();
+            range.moveToElementText(el);
+            range.select();
+            range.execCommand("Copy");
+        }
+    }
+</script>
+
+<div class="hidden-print">
+</div>
+@if (!String.IsNullOrEmpty(Model.SQLDebuggingQuery))
+{
+    <h4 class="portlet-title">
+        <u> @ViewBag.ReportTitle <span class="text-sm row-stat-label"></span></u>
+        <l class="pull-right">
+            <a href="~/DetailedReports/Kanban/@Model.ReportID" target="_blank" class="btn btn-primary">
+                <i class="fa fa-columns"></i> @Resources.strings.qviKanban
+            </a>
+            <a href="~/DetailedReports/Expanded/@Model.ReportID" target="_blank" class="btn btn-default">
+                <i class="glyphicon glyphicon-resize-full"></i> @Resources.strings.qviExpand
+            </a>
+            @if (ViewBag.IsManagerOrAdmin)
+            {
+                <a href="~/SCR/MassUpdate/@Model.ReportID">
+                    <input class="btn btn-danger" type="button" value=@Resources.strings.qviMassUpdate/>
+                </a>
+            }
+            @if (User.IsInRole("Administrator") || Model.Owner == Model.UserID)
+            {
+
+                <a href="~/SCR/Search/@Model.ReportID">
+                    <input class="btn btn-success" type="button" value=@Resources.strings.qviEdit />
+                </a>
+            }
+            <a onclick="selectElementContents(document.getElementById('myTable'));"><i class="fa fa-copy ui-tooltip" data-toggle="tooltip" data-trigger="hover" data-placement="bottom" title=@Resources.strings.qviCopyDataToClipboard></i></a>
+        </l>
+    </h4>
+
+    <div class="portlet-body">
+        <div id="layout-responsive" data-title="Responsive Stacking" class="bs-docs-section-sub">
+
+            <table id="myTable" class="table table-striped table-bordered table-hover  tablesorter">
+                <thead>
+                    <tr>
+                        @foreach (var col in Model.ResultsTable.Columns)
+                        {
+
+                            if (col.ToString() == "Issue" || col.ToString() == "Priority")
+                            {
+                                <th class="col-md-1">
+                                    @col.ToString()
+                                </th>
+                            }
+                            else
+                            {
+                                <th>
+                                    @col.ToString()
+                                </th>
+                            }
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (System.Data.DataRow row in Model.ResultsTable.Rows)
+                    {
+                        
+                        <tr>
+                            @for (int i = 0; i < Model.ResultsTable.Columns.Count; i++)
+                            {
+                                if (Model.ResultsTable.Columns[i].ToString() == "Priority")
+                                {
+                                    <td align="center">
+                                        <text class="hidden">
+                                            @row[i]
+                                        </text>
+                                        @Html.PriorityIcon(Convert.ToString(row[i]))
+                                    </td>
+                                }
+                                else if (Model.ResultsTable.Columns[i].ToString() == "Issue")
+                                {
+                                    <td align="center">
+                                        <text class="hidden">
+                                            @row[i]
+                                        </text>
+                                        @Html.IssueIcon(Convert.ToString(row[i]))
+                                    </td>
+                                }
+                                else if (Model.ResultsTable.Columns[i].ToString() == "SCR")
+                                {
+                                    <td align="center" href="~/SCR/Display/@row[i]"><a href="~/SCR/Display/@row[i]" target="_blank">@row[i].ToString()</a></td>
+                                }
+                                else if (Model.ResultsTable.Columns[i].ToString().ToLower().Contains("title"))
+                                {
+                                    <td>@Convert.ToString(row[i])</td>
+                                }
+                                else if (Model.ResultsTable.Columns[i].ToString().ToLower().Contains("version") ||
+                                    Model.ResultsTable.Columns[i].ToString().ToLower().Contains("release")
+                                    )
+                                {
+
+                                    <td align="center"> @Html.VersionHiddenSorting(Convert.ToString(row[i])) @Convert.ToString(row[i])</td>
+                                }
+                                else
+                                {
+                                    <td align="center">@Convert.ToString(row[i])</td>
+                                }
+                            }
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="@Model.ResultsTable.Columns.Count"> @Resources.strings.qviTotalRecordsFound @Model.ResultsTable.Rows.Count </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <br/>
+            <div class="portlet">
+                <h4 class="portlet-title">
+                    <u>@Resources.strings.qviMetricsCount</u>
+                </h4>
+                <table class="table table-borderless">
+                    <tr>
+                        <td>
+                            <div name="graphs" class="col-lg-12">
+                                @for (int i = 0; i < Model.xValues.Count(); i++)
+                        {
+                        <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+                            <img src="@Url.Action("ReportChart", "Home", new
+                            {
+                                //Title = Model.Title,
+                                ArgsxValues = Model.xValues[i],
+                                ArgsyValues = Model.yValues[i],
+                                ArgsMetrics = Model.yMetricValues[i]
+                                //ParamWidth = Model.width,
+                                //ParamHeight = Model.hieght
+                            })" alt="SimpleChart" />
+                        </div>
+                        }
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div>
+                                <table class="table table-bordered table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th align="center" colspan="2"><b>&Sigma;</b>&nbsp;@Resources.strings.qviTotal</th>
+                                            <th align="center" colspan="2">@Html.IssueIcon("Problem", "", true)</th>
+                                            <th align="center" colspan="2">@Html.IssueIcon("Enhancement", "", true)</th>
+                                            <th align="center" colspan="2">@Html.IssueIcon("Planned Work", "", true)</th>
+                                        </tr>
+                                        <tr>
+                                            <th></th>
+                                            <th align="center"> @Resources.strings.qviMetric </th>
+                                            <th align="center"> @Resources.strings.qviCount </th>
+                                            <th align="center"> @Resources.strings.qviMetric </th>
+                                            <th align="center"> @Resources.strings.qviCount </th>
+                                            <th align="center"> @Resources.strings.qviMetric </th>
+                                            <th align="center"> @Resources.strings.qviCount </th>
+                                            <th align="center"> @Resources.strings.qviMetric </th>
+                                            <th align="center"> @Resources.strings.qviCount </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><b>@Html.PriorityIcon("Low", "", true)</b></td>
+                                            <td align="center"> @Model.TotalMetric[0]       </td>
+                                            <td align="center"> @Model.TotalCount[0]        </td>
+                                            <td align="center"> @Model.ProblemMetric[0]     </td>
+                                            <td align="center"> @Model.ProblemCount[0]      </td>
+                                            <td align="center"> @Model.EnhancementMetric[0] </td>
+                                            <td align="center"> @Model.EnhancementCount[0]  </td>
+                                            <td align="center"> @Model.PlannedWorkMetric[0] </td>
+                                            <td align="center"> @Model.PlannedWorkCount[0]  </td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>@Html.PriorityIcon("Medium", "", true)</b></td>
+                                            <td align="center"> @Model.TotalMetric[1]       </td>
+                                            <td align="center"> @Model.TotalCount[1]        </td>
+                                            <td align="center"> @Model.ProblemMetric[1]     </td>
+                                            <td align="center"> @Model.ProblemCount[1]      </td>
+                                            <td align="center"> @Model.EnhancementMetric[1] </td>
+                                            <td align="center"> @Model.EnhancementCount[1]  </td>
+                                            <td align="center"> @Model.PlannedWorkMetric[1] </td>
+                                            <td align="center"> @Model.PlannedWorkCount[1]  </td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>@Html.PriorityIcon("High", "", true)</b></td>
+                                            <td align="center"> @Model.TotalMetric[2]       </td>
+                                            <td align="center"> @Model.TotalCount[2]        </td>
+                                            <td align="center"> @Model.ProblemMetric[2]     </td>
+                                            <td align="center"> @Model.ProblemCount[2]      </td>
+                                            <td align="center"> @Model.EnhancementMetric[2] </td>
+                                            <td align="center"> @Model.EnhancementCount[2]  </td>
+                                            <td align="center"> @Model.PlannedWorkMetric[2] </td>
+                                            <td align="center"> @Model.PlannedWorkCount[2]  </td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>@Html.PriorityIcon("Critical", "", true)</b></td>
+                                            <td align="center"> @Model.TotalMetric[3]       </td>
+                                            <td align="center"> @Model.TotalCount[3]        </td>
+                                            <td align="center"> @Model.ProblemMetric[3]     </td>
+                                            <td align="center"> @Model.ProblemCount[3]      </td>
+                                            <td align="center"> @Model.EnhancementMetric[3] </td>
+                                            <td align="center"> @Model.EnhancementCount[3]  </td>
+                                            <td align="center"> @Model.PlannedWorkMetric[3] </td>
+                                            <td align="center"> @Model.PlannedWorkCount[3]  </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td> <b>&Sigma;</b>&nbsp;<b>@Resources.strings.qviTotal</b> </td>
+                                            <td align="center"> <b>@(Model.TotalMetric[3] + Model.TotalMetric[2] + Model.TotalMetric[1] + Model.TotalMetric[0])                             </b></td>
+                                            <td align="center"> <b>@(Model.TotalCount[3] + Model.TotalCount[2] + Model.TotalCount[1] + Model.TotalCount[0])                                 </b></td>
+                                            <td align="center"> <b>@(Model.ProblemMetric[3] + Model.ProblemMetric[2] + Model.ProblemMetric[1] + Model.ProblemMetric[0])                     </b></td>
+                                            <td align="center"> <b>@(Model.ProblemCount[3] + Model.ProblemCount[2] + Model.ProblemCount[1] + Model.ProblemCount[0])                         </b></td>
+                                            <td align="center"> <b>@(Model.EnhancementMetric[3] + Model.EnhancementMetric[2] + Model.EnhancementCount[1] + Model.EnhancementMetric[0])      </b></td>
+                                            <td align="center"> <b>@(Model.EnhancementCount[3] + Model.EnhancementCount[2] + Model.EnhancementCount[1] + Model.EnhancementCount[0])         </b></td>
+                                            <td align="center"> <b>@(Model.PlannedWorkMetric[3] + Model.PlannedWorkMetric[2] + Model.PlannedWorkCount[1] + Model.PlannedWorkMetric[0])      </b></td>
+                                            <td align="center"> <b>@(Model.PlannedWorkCount[3] + Model.PlannedWorkCount[2] + Model.PlannedWorkCount[1] + Model.PlannedWorkCount[0])         </b></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div> <!-- /.portlet -->
+            @*
+                if (Model.DisplayGrid != null)
+                {
+                    <button type="button" onmouseup="return PrintMe();" class="btn btn-secondary pull-right">
+                        Print
+                    </button><!-- Print -->
+                    <br/>
+                    <label>Row Count:&nbsp;&nbsp;</label>
+                    <b><font color="#d74b4b">@ViewBag.RowCount</font></b>
+                    @Html.Infragistics().Grid(Model.DisplayGrid);
+                    <table id="ReportGrid"></table>
+                }   *@
+        </div>
+    </div>
+}
+            else
+            { <h2>@ViewBag.ReportTitle</h2>}
+
+            <font size="0" style="position:absolute; top:0px; right:0px;">
+                <table id="grid1print" class="visible-print table table-striped table-hover col-lg-12" style="display:none"></table>
+            </font>

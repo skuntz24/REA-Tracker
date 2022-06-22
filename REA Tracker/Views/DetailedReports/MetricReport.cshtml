@@ -1,0 +1,108 @@
+﻿@model SCR_Tracker.Models.MetricReportViewModel
+@using HelperMethods.Infrastructure;
+@{
+    ViewBag.Title = Resources.strings.qviMetricReport;
+}
+<script>
+    function selectElementContents(el) {
+        var body = document.body, range, sel;
+        if (document.createRange && window.getSelection) {
+            range = document.createRange();
+            sel = window.getSelection();
+            sel.removeAllRanges();
+            try {
+                range.selectNodeContents(el);
+                sel.addRange(range);
+            } catch (e) {
+                range.selectNode(el);
+                sel.addRange(range);
+            }
+            document.execCommand("copy");
+        } else if (body.createTextRange) {
+            range = body.createTextRange();
+            range.moveToElementText(el);
+            range.select();
+            range.execCommand("Copy");
+        }
+    }
+</script>
+
+<div class="layout layout-main-left layout-stack-sm">
+    <div class="layout-main col-md-3 col-sm-4 hidden-print">
+        <h4 class="portlet-title">
+            <u>@Resources.strings.qviMetricReportSettings<span class="text-sm row-stat-label"></span></u>
+        </h4>
+        @using (Html.BeginForm())
+        {
+            <select class="form-control" name="SelectedProduct">
+                <option value="-1">
+                    @Resources.strings.qviAllProducts
+                </option>
+                @for (int i = 0; i < Model.Products.Count; i++)
+                {
+                    <option value="@Model.Products[i].ID" @Model.Products[i].Selected>
+                        @Model.Products[i].Name
+                    </option>
+                }
+            </select>
+            <br />
+            <input type="radio" @if (Model.Type.ToLower() == "problems") { <text> checked </text> } name="type" value="Problems" /> <text>@Resources.strings.qviProblemSCRs</text> <br />
+            <input type="radio" @if (Model.Type.ToLower() == "all") { <text> checked </text> } name="type" value="All" /> <text>@Resources.strings.qviAllSCRs</text><br />
+            <br />
+            <button class="btn btn-danger" type="submit">@Resources.strings.qviUpdate</button>
+        }
+    </div>  
+    <div class="layout-sidebar col-md-9 col-sm-8 ">
+        <div class="portlet">
+            <h4 class="portlet-title">
+                <u>@ViewBag.TitleReport<span class="text-sm row-stat-label"></span></u>
+                <a onclick="selectElementContents(document.getElementById('mytable'));" class="pull-right"><i class="fa fa-copy ui-tooltip" data-toggle="tooltip" data-trigger="hover" data-placement="bottom" title=@Resources.strings.qviCopyDataToClipboard></i></a>
+            </h4>
+            <table id="mytable" name="mytable" class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>@Resources.strings.qviProduct</th>
+                        <th>@Resources.strings.qviLow</th>
+                        <th>@Resources.strings.qviMedium</th>
+                        <th>@Resources.strings.qviHigh</th>
+                        <th>@Resources.strings.qviCritical</th>
+                        <th>@Resources.strings.qviSumOfSquares</th>
+                        <th>@Resources.strings.qviTotalOpen</th>
+                        <th>@Resources.strings.qviDeferred</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Reports.Count; i++)
+                    {
+
+                        bool iswhite = Model.CurrentProduct.Equals(Model.Reports[i].product);
+
+                        <tr id="@Model.Reports[i].product"
+                            @if (Model.CurrentProduct.Equals(Model.Reports[i].product)) { <text> class="highlight" style="color:#ffffff" </text>    }>
+                            <td align=@if(Model.SelectedProduct!=-1 && Model.ProductName != Model.Reports[i].product)
+                                      { <text> "right" </text> } else { <text> "left" </text>  }>
+                                @Model.Reports[i].product
+                            </td>
+                            <td align="center">@Html.MetricsHyperLink((int)Model.Reports[i].productID, 1, Model.displayAll, (int)Model.Reports[i].low, iswhite)</td>
+                            <td align="center"> @Html.MetricsHyperLink((int)Model.Reports[i].productID, 2, Model.displayAll, (int)Model.Reports[i].medium, iswhite)</td>
+                            <td align="center"> @Html.MetricsHyperLink((int)Model.Reports[i].productID, 3, Model.displayAll, (int)Model.Reports[i].high, iswhite)</td>
+                            <td align="center"> @Html.MetricsHyperLink((int)Model.Reports[i].productID, 4, Model.displayAll, (int)Model.Reports[i].critical, iswhite)</td>
+                            <td align="center" @if (iswhite) { <text> style="color:#ffffff" </text> }> @Model.Reports[i].SumoSqaures</td>
+                            <td align="center" @if (iswhite) { <text> style="color:#ffffff" </text>  }> @Model.Reports[i].TotalOpen</td>
+                            <td align="center" @if (iswhite) { <text> style="color:#ffffff" </text>  }> @Model.Reports[i].deffered</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td><b>Total</b></td>
+                        @for (int i = 0; i < Model.Totals.Count; i++)
+                        {
+                            <td align="center">    @Model.Totals[i]    </td>
+                        }
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

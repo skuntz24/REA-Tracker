@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31702.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REA Tracker", "REA Tracker\REA Tracker.csproj", "{487C6A3E-C959-40A8-82EF-BDC952BD3512}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QVICommonIntranet", "QVICommonIntranet\QVICommonIntranet.csproj", "{EBFE9380-DDDE-45B7-ABA4-88F58DCEAB2C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{487C6A3E-C959-40A8-82EF-BDC952BD3512}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{487C6A3E-C959-40A8-82EF-BDC952BD3512}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{487C6A3E-C959-40A8-82EF-BDC952BD3512}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{487C6A3E-C959-40A8-82EF-BDC952BD3512}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBFE9380-DDDE-45B7-ABA4-88F58DCEAB2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBFE9380-DDDE-45B7-ABA4-88F58DCEAB2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBFE9380-DDDE-45B7-ABA4-88F58DCEAB2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBFE9380-DDDE-45B7-ABA4-88F58DCEAB2C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {13847201-72F3-413F-8833-FB4C2F2516CF}
+	EndGlobalSection
+EndGlobal

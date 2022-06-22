@@ -1,0 +1,88 @@
+﻿@model REA_Tracker.Models.HomeIndexViewModel
+@using HelperMethods.Infrastructure;
+
+<div id="layout-responsive" data-title="Responsive Stacking" class="bs-docs-section-sub">
+    <h5 class="text-primary">Author</h5>
+    <table id="myCodeReviewList" name="myTable" class="table table-bordered table-hover">
+        <thead>
+            <tr class="header">
+                <th align="center" class="qvi-col-trackingid">SCR #</th>
+                <th align="center" class="qvi-col-ProductName">Product Name</th>
+                <th align="left">Title</th>
+                <th align="center" class="qvi-col-status">No. of Days Open</th>
+                <th align="center" class="qvi-col-name">People Accepted</th>
+                <th align="center" class="qvi-col-type">Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CRCreatedWatchlist)
+            {
+                <tr>
+                    <td align="center">
+                        <a href="/SCR/Display/@item.TrackingId" target="_blank">@item.TrackingId</a>
+                    </td>
+                    <td align="center">
+                        @item.Product
+                    </td>
+                    <td>
+                        @item.Title
+                    </td>
+                    <td align="center">
+                        @item.CreatedOn
+                    </td>
+                    <td>
+                        @Html.Raw(@item.Reviewers)
+                    </td>
+                    <td align="center">
+                        <a href="/CodeReview/Display/@item.TrackingId" target="_blank">Link</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr><td colspan="7">Total Records Found <strong> @Model.CRCreatedWatchlist.Count</strong></td></tr>
+        </tfoot>
+    </table>
+
+    <h5 class="text-primary">Reviewer</h5>
+    <table id="otherCodeReviewList" name="myCommentedTable" class="table table-bordered table-hover">
+        <thead>
+            <tr class="header">
+                <th align="center" class="qvi-col-trackingid">SCR #</th>
+                <th align="center" class="qvi-col-ProductName">Product Name</th>
+                <th align="left">Title</th>
+                <th align="center" class="qvi-col-status">No. of Days Open</th>
+                <th align="center" class="qvi-col-name">People Accepted</th>
+                <th align="center" class="qvi-col-type">Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CRCommentedWatchlist)
+            {
+                <tr>
+                    <td align="center">
+                        <a href="/SCR/Display/@item.TrackingId" target="_blank">@item.TrackingId</a>
+                    </td>
+                    <td align="center">
+                        @item.Product
+                    </td>
+                    <td>
+                        @item.Title
+                    </td>
+                    <td align="center">
+                        @item.CreatedOn
+                    </td>
+                    <td>
+                        @Html.Raw(@item.Reviewers)
+                    </td>
+                    <td align="center">
+                        <a href="/CodeReview/Display/@item.TrackingId" target="_blank">Link</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr><td colspan="7">Total Records Found <strong> @Model.CRCommentedWatchlist.Count</strong></td></tr>
+        </tfoot>
+    </table>
+</div>

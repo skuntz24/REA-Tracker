@@ -1,0 +1,130 @@
+﻿@model REA_Tracker.Models.NewREA
+
+
+<h3 class="content-title"><u>@Resources.strings.qviEnhancementDetails</u></h3>
+<p>
+    @Resources.strings.qviPleaseEnterEnhancementDetailsMessage
+</p><br>
+<br />
+<div class="form-group">
+    <label class="col-md-2">@Resources.strings.qviProblemOpportunity</label>
+    <div class="col-md-10">
+        @if (Model.IssueID == 2)
+        {
+            @Html.TextAreaFor(m => m.Problem, new { @class = "form-control", @rows = "5" })
+        }
+        else
+        {
+            @Html.TextAreaFor(m => m.Problem, new { @class = "form-control", @readonly = "readonly", @rows = "5" })
+
+        }
+        @Html.ValidationMessageFor(m => m.Problem)
+    </div><!-- /.col -->
+    @if ( (Model.IssueID == 2) && (string.IsNullOrWhiteSpace(Model.Problem)) )
+    {
+        <div class="col-md-2"></div><div class="col-md-10"><p style="color:#b94a48">@ViewBag.message[2]</p></div>
+
+    }
+    @if (Model.IssueID == 2)
+    {
+
+       if ((Model.Benefit != "" && Model.Solution != "") || (Model.Problem != "" && Model.Benefit != "") || (Model.Problem != "" && Model.Solution != ""))
+        {
+            if (Model.Problem == Model.Solution || Model.Problem == Model.Benefit)
+            {
+                <div class="col-md-2"></div><div class="col-md-10"><p style="color:#b94a48">@ViewBag.validatetext</p></div>
+
+            }
+        }
+
+        if (Model.Problem.Length > 0 && Model.Problem.Length < 10)
+        {
+            <div class="col-md-2"></div><div class="col-md-10"><p style="color:#b94a48">@ViewBag.validateLength</p></div>
+
+        }
+    }
+
+
+</div><!-- /.form-group -->
+<div class="form-group">
+    <label class="col-md-2">@Resources.strings.qviProposedSolution</label>
+    <div class="col-md-10">
+        @if (Model.IssueID == 2)
+            {
+            @Html.TextAreaFor(m => m.Solution, new { @class = "form-control", @rows = "5" })
+        }
+        else
+        {
+            @Html.TextAreaFor(m => m.Solution, new { @class = "form-control", @readonly = "readonly", @rows = "5" })
+
+        }
+        @Html.ValidationMessageFor(m => m.Solution)
+
+
+    </div><!-- /.col -->
+    @if ((Model.IssueID == 2) && (string.IsNullOrWhiteSpace(Model.Solution)))
+    {
+        <div class="col-md-2"></div><div class="col-md-10"><p style="color:#b94a48">@ViewBag.message[2]</p></div>
+
+    }
+    @if (Model.IssueID == 2)
+    {
+        if ((Model.Benefit != "" && Model.Solution != "") || (Model.Problem != "" && Model.Benefit != "") || (Model.Problem != "" && Model.Solution != ""))
+        {
+            if (Model.Solution == Model.Problem || Model.Solution == Model.Benefit)
+            {
+                <div class="col-md-2"></div><div class="col-md-10"><p style="color:#b94a48">@ViewBag.validatetext</p></div>
+
+            }
+        }
+        if (Model.Solution.Length > 0 && Model.Solution.Length < 10)
+        {
+            <div class="col-md-2"></div><div class="col-md-10"><p style="color:#b94a48">@ViewBag.validateLength</p></div>
+
+        }
+    }
+
+
+
+
+</div><!-- /.form-group -->
+<div class="form-group">
+    <label class="col-md-2">@Resources.strings.qviBenefit</label>
+    <div class="col-md-10">
+        @if (Model.IssueID == 2)
+        {
+            @Html.TextAreaFor(m => m.Benefit, new { @class = "form-control", @rows = "5" })
+        }
+        else
+        {
+            @Html.TextAreaFor(m => m.Benefit, new { @class = "form-control", @readonly = "readonly", @rows = "5" })
+
+        }
+        @Html.ValidationMessageFor(m => m.Benefit)
+
+
+    </div><!-- /.col -->
+    @if ((Model.IssueID == 2) && (string.IsNullOrWhiteSpace(Model.Benefit)))
+    {
+        <div class="col-md-2"></div><div class="col-md-10"><p style="color:#b94a48">@ViewBag.message[2]</p></div>
+
+    }
+    @if (Model.IssueID == 2)
+    {
+        if ((Model.Benefit != "" && Model.Solution != "") || (Model.Problem != "" && Model.Benefit != "") || (Model.Problem != "" && Model.Solution != ""))
+        {
+            if (Model.Benefit == Model.Solution || Model.Benefit == Model.Problem)
+            {
+                <div class="col-md-2"></div><div class="col-md-10"><p style="color:#b94a48">@ViewBag.validatetext</p></div>
+
+            }
+        }
+        if (Model.Benefit.Length > 0 && Model.Benefit.Length < 10)
+        {
+            <div class="col-md-2"></div><div class="col-md-10"><p style="color:#b94a48">@ViewBag.validateLength</p></div>
+
+        }
+    }
+
+
+</div><!-- /.form-group -->

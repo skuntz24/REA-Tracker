@@ -1,0 +1,56 @@
+﻿@model REA_Tracker.Models.LockControlViewModel
+@{
+    ViewBag.Title = Resources.strings.qviLockControl;
+}
+
+<h4>@Resources.strings.qviLockControl</h4>
+@using(Html.BeginForm())
+{
+    <br/>
+    <h6>
+        @if (Model.Lock)
+        {<text>
+            @Resources.strings.qviTheLockIsCurrentlyActiveMessage
+        </text>
+    }
+    else
+    {
+        <text>
+            @Resources.strings.qviTheLockIsCurrentlyInactiveMessage
+        </text>
+    }
+    </h6>
+    <button class=" btn btn-success">
+        @Resources.strings.qviSubmit
+    </button>
+    <br/>
+
+    <br/>
+    <table class="table table-borderless">
+        <tr>
+            <td>
+                @Resources.strings.qviLockStatus
+            </td>
+            <td>
+                <select name="Lock">
+                    <option value="false">
+                        @Resources.strings.qviOFFCaps
+                    </option>
+                    <option value="true"
+                            @if( Model.Lock ){<text> selected </text>}
+                            >
+                        @Resources.strings.qviONCaps
+                    </option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Resources.strings.qviLockMessage
+            </td>
+            <td>
+                @Html.TextAreaFor(m => m.Message)
+            </td>
+        </tr>
+    </table>
+}

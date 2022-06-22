@@ -1,0 +1,264 @@
+﻿@model REA_Tracker.Models.SearchViewModel
+@using HelperMethods.Infrastructure;
+<div class="row">
+    <div class="row">
+
+        <div class="col-sm-6 col-md-6">
+            <div class="row-stat">
+
+                <p class="row-stat-label">Priority</p>
+                <table class="table table-condensed table-borderless table-responsive">
+                    <tr>
+                        <td>
+                            <input type="hidden" id="SelectedPriority[0].ID" name="SelectedPriority[0].ID" value="@Model.Priorities[0].ID">
+                            <div class="checkbox"><label><input id="SelectedPriority[0].Selected" name="SelectedPriority[0].Selected" @if (Model.SelectedPriority[0].Selected) { <text> checked </text> } value="true" type="checkbox">@Model.Priorities[0].Name</label></div>
+                            <input type="hidden" id="SelectedPriority[1].ID" name="SelectedPriority[1].ID" value="@Model.Priorities[1].ID">
+                            <div class="checkbox"><label><input id="SelectedPriority[1].Selected" name="SelectedPriority[1].Selected" @if (Model.SelectedPriority[1].Selected) { <text> checked </text> } value="true" type="checkbox">@Model.Priorities[1].Name</label></div>
+                            <input type="hidden" id="SelectedPriority[2].ID" name="SelectedPriority[2].ID" value="@Model.Priorities[2].ID">
+                            <div class="checkbox"><label><input id="SelectedPriority[2].Selected" name="SelectedPriority[2].Selected" @if (Model.SelectedPriority[2].Selected) { <text> checked </text> } value="true" type="checkbox">@Model.Priorities[2].Name</label></div>
+                            <input type="hidden" id="SelectedPriority[3].ID" name="SelectedPriority[3].ID" value="@Model.Priorities[3].ID">
+                            <div class="checkbox"><label><input id="SelectedPriority[3].Selected" name="SelectedPriority[3].Selected" @if (Model.SelectedPriority[3].Selected) { <text> checked </text> } value="true" type="checkbox">@Model.Priorities[3].Name</label></div>
+                        </td>
+                    </tr>
+                </table>
+
+            </div> <!-- /.row-stat -->
+        </div> <!-- /.col -->
+    </div>
+
+    <div class="col-md-4">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="row-stat">
+                    <p class="row-stat-label">Status</p>
+                    <table class="table table-condensed table-borderless table-responsive">
+                        <tr>
+                            <td>
+                                <input type="hidden" id="SelectedStatus[0].ID" name="SelectedStatus[0].ID" value="@Model.Statuses[0].ID">
+                                <div class="checkbox"><label><input id="SelectedStatus[0].Selected" name="SelectedStatus[0].Selected" value="true" @if (Model.SelectedStatus[0].Selected) { <text> checked </text> } type="checkbox">@Model.Statuses[0].Name</label></div>
+                                <input type="hidden" id="SelectedStatus[1].ID" name="SelectedStatus[1].ID" value="@Model.Statuses[1].ID">
+                                <div class="checkbox"><label><input id="SelectedStatus[1].Selected" name="SelectedStatus[1].Selected" value="true" @if (Model.SelectedStatus[1].Selected) { <text> checked </text> } type="checkbox">@Model.Statuses[1].Name</label></div>
+                                <input type="hidden" id="SelectedStatus[2].ID" name="SelectedStatus[2].ID" value="@Model.Statuses[2].ID">
+                                <div class="checkbox"><label><input id="SelectedStatus[2].Selected" name="SelectedStatus[2].Selected" value="true" @if (Model.SelectedStatus[2].Selected) { <text> checked </text> } type="checkbox">@Model.Statuses[2].Name</label></div>
+                                <input type="hidden" id="SelectedStatus[3].ID" name="SelectedStatus[3].ID" value="@Model.Statuses[3].ID">
+                                <div class="checkbox"><label><input id="SelectedStatus[3].Selected" name="SelectedStatus[3].Selected" value="true" @if (Model.SelectedStatus[3].Selected) { <text> checked </text> } type="checkbox">@Model.Statuses[3].Name</label></div>
+                                <input type="hidden" id="SelectedStatus[4].ID" name="SelectedStatus[4].ID" value="@Model.Statuses[4].ID">
+                                <div class="checkbox"><label><input id="SelectedStatus[4].Selected" name="SelectedStatus[4].Selected" value="true" @if (Model.SelectedStatus[4].Selected) { <text> checked </text> } type="checkbox">@Model.Statuses[4].Name</label></div>
+                            </td>
+                            <td>
+                                <input type="hidden" id="SelectedStatus[5].ID" name="SelectedStatus[5].ID" value="@Model.Statuses[5].ID">
+                                <div class="checkbox"><label><input id="SelectedStatus[5].Selected" name="SelectedStatus[5].Selected" value="true" @if (Model.SelectedStatus[5].Selected) { <text> checked </text> } type="checkbox">@Model.Statuses[5].Name</label></div>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                    </table>
+                </div> <!-- /.row-stat -->
+            </div> <!-- /.col -->
+        </div><!-- /.row -->
+
+    </div><!-- col -->
+
+    <div class="col-md-8">
+        <div class="row">
+
+            <div class="row-stat">
+                <p class="row-stat-label">PRODUCT</p>
+                <div class="form-inline form-group">
+
+                    @Html.DisplaySelectListForSearch("LeftSelectTagProducts", Model.UnSelectedProducts.Cast<dynamic>().ToList(), Model.SelectedProducts.Cast<dynamic>().ToList());
+
+                    <!-- Hidden Field to auto fill into Model -->
+                    <input id="HiddenProductString" name="HiddenProductString" class="form-group" type="hidden" value="" />
+                    <!-- Move to Hidden-->
+                    <button class="form-control" type="button" onmouseup="javascript: SearchSelectMoveRows(form.RightSelectTagProducts, form.LeftSelectTagProducts)">
+                        <span class="glyphicon glyphicon-arrow-left"></span>
+                    </button>
+
+                    <!-- Move to Display -->
+                    <button class="form-control" type="button" onmouseup="javascript: SearchSelectMoveRows(form.LeftSelectTagProducts, form.RightSelectTagProducts)">
+                        <span class="glyphicon glyphicon-arrow-right"></span>
+                    </button>
+                    &nbsp;
+
+                    <select ondblclick="javascript: SearchSelectMoveRows(form.RightSelectTagProducts, form.LeftSelectTagProducts)"
+                            class="form-control" id="RightSelectTagProducts" multiple="multiple" name="RightSelectTagProducts" size="14" style="width:300px">
+                        <!-- fill from display -->
+                        @for (int i = 0; i < Model.SelectedProducts.Count(); i++)
+                        {
+                            <option value="@Model.SelectedProducts[i].ID">
+                                @Model.SelectedProducts[i].Name
+                            </option>
+                        }
+                    </select>
+                </div>
+            </div> <!-- /.row-stat -->
+        </div>
+        <div class="row">
+            <div class="row-stat">
+                <p class="row-stat-label">REA TITLE</p>
+                <div class="form-inline form-group">
+                    <input class="form-control" id="TitleText" name="TitleText" value="@Model.TitleText" type="text" size="65" maxlength="250">
+                    <select class="form-control pull-right" id="TextTypeSearch" name="TextTypeSearch">
+                        <option @if (Model.TextTypeSearch == 2) { <text> selected </text> } value=2>All Words </option>
+                        <option @if (Model.TextTypeSearch == 1) { <text> selected </text> } value=1>Any Words </option>
+                        <option @if (Model.TextTypeSearch == 3) { <text> selected </text> } value=3>Any Of </option>
+                    </select>
+                </div>
+
+                <p class="row-stat-label">HISTORY</p>
+                <div class="form-inline form-group">
+                    <input class="form-control" id="HistoryTerm" name="HistoryTerm" value="@Model.HistoryTerm" type="text" size="65">
+                    <select class="form-control pull-right" id="HistorySearchLogic" name="HistorySearchLogic">
+                        <option @if (Model.HistorySearchLogic == 2) { <text> selected </text> } value=2>Any Of    </option>
+                        <option @if (Model.HistorySearchLogic == 1) { <text> selected </text> } value=1>All Words </option>
+                        <option @if (Model.HistorySearchLogic == 0) { <text> selected </text> } value=0>Any Words </option>
+                    </select>
+                </div>
+            </div> <!-- /.row-stat -->
+        </div>
+    </div> <!-- /.col -->
+    @*
+            different views for seeing different arrangements
+        <div class="col-sm-6 col-md-5">
+            <div class="row-stat">
+
+                <p class="row-stat-label">SCR NUMBER</p>
+                <div class="form-inline form-group">
+                    <select class="form-control" id="SCRComparator" name="SCRComparator" onchange="SCRNumberReveal()">
+                        <option @if (Model.SCRComparator == 0) { <text> selected </text>       } value=0>             </option>
+                        <option @if (Model.SCRComparator == 1) { <text> selected </text>       } value=1>is exactly   </option>
+                        <option @if (Model.SCRComparator == 2) { <text> selected </text>       } value=2>is at least  </option>
+                        <option @if (Model.SCRComparator == 3) { <text> selected </text>       } value=3>is at most   </option>
+                        <option @if (Model.SCRComparator == 4) { <text> selected </text>       } value=4>is between   </option>
+                    </select>
+                    &nbsp;
+                    <input class="form-control" id="SCRNumber" name="SCRNumber" value="@Model.SCRNumber" type="text" size="6" maxlength="6">
+                    and
+                    <!-- DO NOT REMOVE EMPTY STYLE TAG FROM SCR2  JS WILL FILL IT TO HIDE AND REVEAL IT OR CHANGE IT-->
+                    <input class="form-control" id="SCRNumber2" name="SCRNumber2" style="" value="@Model.SCRNumber2" type="text" size="6" maxlength="6" />
+                </div>
+
+            </div> <!-- /.row-stat -->
+        </div> <!-- /.col -->
+    *@
+    @*
+        <div class="col-sm-6 col-md-7">
+            <div class="row-stat">
+
+        <p class="row-stat-label">TITLE</p>
+        <div class="form-inline form-group">
+            <input class="form-control" id="TitleText" name="TitleText" value="@Model.TitleText" type="text" size="50" maxlength="250">
+            <select class="form-control pull-right" id="TextTypeSearch" name="TextTypeSearch">
+                <option @if (Model.TextTypeSearch == 1) { <text> selected </text>       } value=1>any words </option>
+                <option @if (Model.TextTypeSearch == 2) { <text> selected </text>       } value=2>all words </option>
+                <option @if (Model.TextTypeSearch == 3) { <text> selected </text>       } value=3>any of </option>
+            </select>
+        </div>
+
+            </div> <!-- /.row-stat -->
+        </div> <!-- /.col -->
+    *@
+</div> <!-- /.row -->
+            
+<div class="row">
+    @*
+        <div class="col-sm-6 col-md-2">
+            <div class="row-stat">
+
+                <p class="row-stat-label">Issue Type</p>
+                <table class="table table-condensed table-borderless table-responsive">
+                    <tr>
+                        <td>
+                            <input type="hidden" id="SelectedIssueTypes[0].ID" name="SelectedIssueTypes[0].ID" value="@Model.IssueTypes[0].ID">
+                            <div class="checkbox"><label><input id="SelectedIssueTypes[0].Selected" name="SelectedIssueTypes[0].Selected" @if (Model.SelectedIssueTypes[0].Selected) { <text> checked </text>  } value="true" type="checkbox">@Model.IssueTypes[0].Name</label></div>
+                            <input type="hidden" id="SelectedIssueTypes[1].ID" name="SelectedIssueTypes[1].ID" value="@Model.IssueTypes[1].ID">
+                            <div class="checkbox"><label><input id="SelectedIssueTypes[1].Selected" name="SelectedIssueTypes[1].Selected" @if (Model.SelectedIssueTypes[1].Selected) { <text> checked </text>  } value="true" type="checkbox">@Model.IssueTypes[1].Name</label></div>
+                            <input type="hidden" id="SelectedIssueTypes[2].ID" name="SelectedIssueTypes[2].ID" value="@Model.IssueTypes[2].ID">
+                            <div class="checkbox"><label><input id="SelectedIssueTypes[2].Selected" name="SelectedIssueTypes[2].Selected" @if (Model.SelectedIssueTypes[2].Selected) { <text> checked </text>  } value="true" type="checkbox">@Model.IssueTypes[2].Name</label></div>
+                        </td>
+                    </tr>
+                </table>
+
+
+            </div> <!-- /.row-stat -->
+        </div> <!-- /.col -->
+    *@
+    @*
+        <div class="col-sm-6 col-md-2">
+            <div class="row-stat">
+
+                <p class="row-stat-label">Priority</p>
+                <table class="table table-condensed table-borderless table-responsive">
+                    <tr>
+                        <td>
+                            <input type="hidden" id="SelectedPriority[0].ID" name="SelectedPriority[0].ID" value="@Model.Priorities[0].ID">
+                            <div class="checkbox"><label><input id="SelectedPriority[0].Selected" name="SelectedPriority[0].Selected" @if (Model.SelectedPriority[0].Selected) { <text> checked </text>  } value="true" type="checkbox">@Model.Priorities[0].Name</label></div>
+                            <input type="hidden" id="SelectedPriority[1].ID" name="SelectedPriority[1].ID" value="@Model.Priorities[1].ID">
+                            <div class="checkbox"><label><input id="SelectedPriority[1].Selected" name="SelectedPriority[1].Selected" @if (Model.SelectedPriority[1].Selected) { <text> checked </text>  } value="true" type="checkbox">@Model.Priorities[1].Name</label></div>
+                            <input type="hidden" id="SelectedPriority[2].ID" name="SelectedPriority[2].ID" value="@Model.Priorities[2].ID">
+                            <div class="checkbox"><label><input id="SelectedPriority[2].Selected" name="SelectedPriority[2].Selected" @if (Model.SelectedPriority[2].Selected) { <text> checked </text>  } value="true" type="checkbox">@Model.Priorities[2].Name</label></div>
+                            <input type="hidden" id="SelectedPriority[3].ID" name="SelectedPriority[3].ID" value="@Model.Priorities[3].ID">
+                            <div class="checkbox"><label><input id="SelectedPriority[3].Selected" name="SelectedPriority[3].Selected" @if (Model.SelectedPriority[3].Selected) { <text> checked </text>  } value="true" type="checkbox">@Model.Priorities[3].Name</label></div>
+                        </td>
+                    </tr>
+                </table>
+
+            </div> <!-- /.row-stat -->
+        </div> <!-- /.col -->
+    *@
+            @*
+        <div class="col-sm-6 col-md-3">
+            <div class="row-stat">
+
+                <p class="row-stat-label">Flags</p>
+                <table class="table table-condensed table-borderless table-responsive">
+                    <tr>
+                        <td>
+                            <input type="hidden">
+                            <div class="checkbox">
+                                <select id="ReqDocChg" name="ReqDocChg" class="">
+                                    <option value="" ></option>
+                                    <option value="0" @if(Model.ReqDocChg == 0){ <text> selected </text> }>No </option>
+                                    <option value="1" @if(Model.ReqDocChg == 1){ <text> selected </text> }>Yes </option>
+                                    <option value="2" @if(Model.ReqDocChg == 2){ <text> selected </text> }>Done </option>
+                                    <option value="3" @if(Model.ReqDocChg == 3){ <text> selected </text> }>TBD </option>
+                                </select>
+                                <label>
+                                    Help Changed
+                                </label>
+                            </div>
+                            <input type="hidden">
+                            <div class="checkbox">
+                                <select id="ReqReqChg" name="ReqReqChg" class="">
+                                    <option value=""></option>
+                                    <option value="0" @if(Model.ReqDocChg == 0){ <text> selected </text> }>No </option>
+                                    <option value="1" @if(Model.ReqDocChg == 1){ <text> selected </text> }>Yes </option>
+                                    <option value="2" @if(Model.ReqDocChg == 2){ <text> selected </text> }>Done </option>
+                                    <option value="3" @if(Model.ReqDocChg == 3){ <text> selected </text> }>TBD </option>
+                                </select>
+                                <label>
+                                    Requirements Change
+                                </label>
+                            </div>
+                            <input type="hidden">
+                            <div class="checkbox">
+                                <select id="ReqDBChg" name="ReqDBChg" class="">
+                                    <option value="" ></option>
+                                    <option value="0" @if (Model.ReqDBChg == 1) { <text> selected </text>  }>No </option>
+                                    <option value="1" @if (Model.ReqDBChg == 2) { <text> selected </text> }>Yes</option>
+                                </select>
+                                <label>
+                                        Database Change
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+            </div> <!-- /.row-stat -->
+        </div> <!-- /.col -->
+            *@
+</div> <!-- /.row -->
+
+    

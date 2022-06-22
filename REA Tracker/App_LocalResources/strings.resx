@@ -1,0 +1,2456 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="qviAbout" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="qviAccept" xml:space="preserve">
+    <value>Accept</value>
+  </data>
+  <data name="qviAcceptanceCriteria" xml:space="preserve">
+    <value>Acceptance Criteria</value>
+  </data>
+  <data name="qviAcceptsOnlyNumericCharacters" xml:space="preserve">
+    <value>Accepts only numeric characters (0-9)</value>
+  </data>
+  <data name="qviAccess" xml:space="preserve">
+    <value>Access</value>
+  </data>
+  <data name="qviAccountType" xml:space="preserve">
+    <value>Account Type</value>
+  </data>
+  <data name="qviAction" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="qviActive" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="qviActual" xml:space="preserve">
+    <value>Actual</value>
+  </data>
+  <data name="qviActualHours" xml:space="preserve">
+    <value>Actual Hours</value>
+  </data>
+  <data name="qviActualVersion" xml:space="preserve">
+    <value>Actual Version</value>
+  </data>
+  <data name="qviAdd" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="qviAddAndRemoveKeywords" xml:space="preserve">
+    <value>Add &amp; Remove Keywords</value>
+  </data>
+  <data name="qviAddAttachments" xml:space="preserve">
+    <value>Add Attachments</value>
+  </data>
+  <data name="qviAddComment" xml:space="preserve">
+    <value>Add Comment</value>
+  </data>
+  <data name="qviAddCustomerInformation" xml:space="preserve">
+    <value>Add Customer Information</value>
+  </data>
+  <data name="qviAddedBy" xml:space="preserve">
+    <value>Added By</value>
+  </data>
+  <data name="qviAddedOn" xml:space="preserve">
+    <value>Added On</value>
+  </data>
+  <data name="qviAddEnhancementDetails" xml:space="preserve">
+    <value>Add Enhancement Details</value>
+  </data>
+  <data name="qviAddingUsersToWatchlist" xml:space="preserve">
+    <value>Adding Users to Watchlist</value>
+  </data>
+  <data name="qviAdditionalComment" xml:space="preserve">
+    <value>Additional Comment</value>
+  </data>
+  <data name="qviAddNewCompany" xml:space="preserve">
+    <value>Add New Company</value>
+  </data>
+  <data name="qviAddNewKeyword" xml:space="preserve">
+    <value>Add New Keyword</value>
+  </data>
+  <data name="qviAddNewStatus" xml:space="preserve">
+    <value>Add New Status</value>
+  </data>
+  <data name="qviAddNewTeammate" xml:space="preserve">
+    <value>Add New Teammate</value>
+  </data>
+  <data name="qviAddNotes" xml:space="preserve">
+    <value>Add Notes</value>
+  </data>
+  <data name="qviAddPlannedWorkDetails" xml:space="preserve">
+    <value>Add Planned Work Details</value>
+  </data>
+  <data name="qviAddPlanningDetails" xml:space="preserve">
+    <value>Add Planning Details</value>
+  </data>
+  <data name="qviAddRelatedREA" xml:space="preserve">
+    <value>Add Related REA</value>
+  </data>
+  <data name="qviAddToMyWatchlist" xml:space="preserve">
+    <value>Add to my Watchlist</value>
+  </data>
+  <data name="qviAddToOthersWatchlist" xml:space="preserve">
+    <value>Add to Other's Watchlist</value>
+  </data>
+  <data name="qviAddUser" xml:space="preserve">
+    <value>Add User</value>
+  </data>
+  <data name="qviAdministration" xml:space="preserve">
+    <value>Administration</value>
+  </data>
+  <data name="qviAdministrationMenu" xml:space="preserve">
+    <value>Administration Menu</value>
+  </data>
+  <data name="qviAdministrator" xml:space="preserve">
+    <value>Administrator</value>
+  </data>
+  <data name="qviAdvancedSearch" xml:space="preserve">
+    <value>Advanced Search</value>
+  </data>
+  <data name="qviAdvancedSearchFunctionality" xml:space="preserve">
+    <value>Advanced search functionality</value>
+  </data>
+  <data name="qviAll" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="qviAllCurrentReviewers" xml:space="preserve">
+    <value>All Current Reviewers</value>
+  </data>
+  <data name="qviAllDevelopersLeadersAndManagers" xml:space="preserve">
+    <value>All Developers, Leaders, and Managers</value>
+  </data>
+  <data name="qviAllKeywords" xml:space="preserve">
+    <value>All Keywords</value>
+  </data>
+  <data name="qviAllMetrics" xml:space="preserve">
+    <value>All Metrics</value>
+  </data>
+  <data name="qviAllProducts" xml:space="preserve">
+    <value>All Products</value>
+  </data>
+  <data name="qviAllReleases" xml:space="preserve">
+    <value>All Releases</value>
+  </data>
+  <data name="qviAllReleasesFor" xml:space="preserve">
+    <value>All Releases for</value>
+  </data>
+  <data name="qviAllSCRs" xml:space="preserve">
+    <value>All SCRs</value>
+  </data>
+  <data name="qviAllSCRsSubmittedInTheLast8Days" xml:space="preserve">
+    <value>All SCRs Submitted in the Last 8 Days</value>
+  </data>
+  <data name="qviAllUsers" xml:space="preserve">
+    <value>All Users</value>
+  </data>
+  <data name="qviAllWords" xml:space="preserve">
+    <value>all words</value>
+  </data>
+  <data name="qviAnd" xml:space="preserve">
+    <value>and</value>
+  </data>
+  <data name="qviAnErrorHasOccurred" xml:space="preserve">
+    <value>An error has occurred.</value>
+  </data>
+  <data name="qviAnErrorOccurredMessage" xml:space="preserve">
+    <value>An error occurred while processing your request </value>
+  </data>
+  <data name="qviAnyOf" xml:space="preserve">
+    <value>any of</value>
+  </data>
+  <data name="qviAnyWords" xml:space="preserve">
+    <value>any words</value>
+  </data>
+  <data name="qviApplicationSettings" xml:space="preserve">
+    <value>Application Settings</value>
+  </data>
+  <data name="qviApproved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="qviApprovedBy" xml:space="preserve">
+    <value>Approved By</value>
+  </data>
+  <data name="qviAPPROVEDCaps" xml:space="preserve">
+    <value>APPROVED</value>
+  </data>
+  <data name="qviApprovedWithComments" xml:space="preserve">
+    <value>Approved w/ Comments</value>
+  </data>
+  <data name="qviAreTwoOrMoreMachineQuestion" xml:space="preserve">
+    <value>Are two or more machine product configurations affected?</value>
+  </data>
+  <data name="qviAreYouSureYouWantToDeleteThisKeyword" xml:space="preserve">
+    <value>Are you sure you want to delete this keyword?</value>
+  </data>
+  <data name="qviAreYouSureYouWantToDeleteThisReport" xml:space="preserve">
+    <value>Are you sure you want to delete this report?</value>
+  </data>
+  <data name="qviAssignedTo" xml:space="preserve">
+    <value>Assigned To</value>
+  </data>
+  <data name="qviAssignedToCAPS" xml:space="preserve">
+    <value>ASSIGNED TO</value>
+  </data>
+  <data name="qviAssociateYourAccount" xml:space="preserve">
+    <value>Associate your %s account</value>
+  </data>
+  <data name="qviAssociationForm" xml:space="preserve">
+    <value>Association Form</value>
+  </data>
+  <data name="qviAttachAnSCR" xml:space="preserve">
+    <value>Attach an SCR</value>
+  </data>
+  <data name="qviAttachmentManager" xml:space="preserve">
+    <value>Attachment Manager</value>
+  </data>
+  <data name="qviAttachments" xml:space="preserve">
+    <value>Attachments</value>
+  </data>
+  <data name="qviAttachmentsThatTheSCRUses" xml:space="preserve">
+    <value>Attachments that the SCR uses</value>
+  </data>
+  <data name="qviBack" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="qviBackgroundRational" xml:space="preserve">
+    <value>Background/Rational</value>
+  </data>
+  <data name="qviBasic" xml:space="preserve">
+    <value>Basic</value>
+  </data>
+  <data name="qviBenefit" xml:space="preserve">
+    <value>Benefit</value>
+  </data>
+  <data name="qviBillingCode" xml:space="preserve">
+    <value>Billing Code</value>
+  </data>
+  <data name="qviBody" xml:space="preserve">
+    <value>Body</value>
+  </data>
+  <data name="qviBootLogHistory" xml:space="preserve">
+    <value>Boot Log History</value>
+  </data>
+  <data name="qviBoss" xml:space="preserve">
+    <value>Boss</value>
+  </data>
+  <data name="qviBrowser" xml:space="preserve">
+    <value>Browser</value>
+  </data>
+  <data name="qviBrowserTest" xml:space="preserve">
+    <value>Browser Test</value>
+  </data>
+  <data name="qviBuild" xml:space="preserve">
+    <value>Build</value>
+  </data>
+  <data name="qviBuildReleaseFor" xml:space="preserve">
+    <value>Build release for</value>
+  </data>
+  <data name="qviBuiltBy" xml:space="preserve">
+    <value>Built By</value>
+  </data>
+  <data name="qviBuiltOn" xml:space="preserve">
+    <value>Built On</value>
+  </data>
+  <data name="qviCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="qviChangedBy" xml:space="preserve">
+    <value>Changed By</value>
+  </data>
+  <data name="qviChangePassword" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="qviChangingFileDescription" xml:space="preserve">
+    <value>Note, changing the file will change the data, but will be given the name in the File Name Field.</value>
+  </data>
+  <data name="qviChild" xml:space="preserve">
+    <value>Child</value>
+  </data>
+  <data name="qviChooseFile" xml:space="preserve">
+    <value>Choose File</value>
+  </data>
+  <data name="qviCleanFilepaths" xml:space="preserve">
+    <value>Clean Filepaths</value>
+  </data>
+  <data name="qviClearPhoto" xml:space="preserve">
+    <value>Clear Photo</value>
+  </data>
+  <data name="qviClearTextarea" xml:space="preserve">
+    <value>Clear Textarea</value>
+  </data>
+  <data name="qviClose" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="qviClosed" xml:space="preserve">
+    <value>Closed</value>
+  </data>
+  <data name="qviClosedBy" xml:space="preserve">
+    <value>Closed By</value>
+  </data>
+  <data name="qviClosedByCAPS" xml:space="preserve">
+    <value>CLOSED BY</value>
+  </data>
+  <data name="qviClosedCAPS" xml:space="preserve">
+    <value>CLOSED</value>
+  </data>
+  <data name="qviClosedPerDay" xml:space="preserve">
+    <value>Closed Per Day</value>
+  </data>
+  <data name="qviClosedSCRsMessage" xml:space="preserve">
+    <value>Closed SCRs have been removed from your watchlist</value>
+  </data>
+  <data name="qviCode" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="qviCodeCriticalCount" xml:space="preserve">
+    <value>Code Critical Count</value>
+  </data>
+  <data name="qviCodeDefect" xml:space="preserve">
+    <value>Code Defect</value>
+  </data>
+  <data name="qviCodeDefectCount" xml:space="preserve">
+    <value>Code Defect Count</value>
+  </data>
+  <data name="qviCodeHighCount" xml:space="preserve">
+    <value>Code High Count</value>
+  </data>
+  <data name="qviCodeLocation" xml:space="preserve">
+    <value>Code Location</value>
+  </data>
+  <data name="qviCodeLocationStreams" xml:space="preserve">
+    <value>Code Location/Streams</value>
+  </data>
+  <data name="qviCodeMetric" xml:space="preserve">
+    <value>Code Metric</value>
+  </data>
+  <data name="qviCodeReview" xml:space="preserve">
+    <value>Code Review</value>
+  </data>
+  <data name="qviCodeReviewID" xml:space="preserve">
+    <value>Code Review ID</value>
+  </data>
+  <data name="qviCodeReviews" xml:space="preserve">
+    <value>Code Reviews</value>
+  </data>
+  <data name="qviComment" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="qviCompany" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="qviCompanyCAPS" xml:space="preserve">
+    <value>COMPANY</value>
+  </data>
+  <data name="qviCompanyManager" xml:space="preserve">
+    <value>Company Manager</value>
+  </data>
+  <data name="qviCompanyName" xml:space="preserve">
+    <value>CompanyName</value>
+  </data>
+  <data name="qviCompanySettings" xml:space="preserve">
+    <value>Company Settings</value>
+  </data>
+  <data name="qviComponents" xml:space="preserve">
+    <value>Components</value>
+  </data>
+  <data name="qviContact" xml:space="preserve">
+    <value>Contact</value>
+  </data>
+  <data name="qviContactCAPS" xml:space="preserve">
+    <value>CONTACT</value>
+  </data>
+  <data name="qviContactPerson" xml:space="preserve">
+    <value>Contact Person</value>
+  </data>
+  <data name="qviContinue" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="qviCopyDataToClipboard" xml:space="preserve">
+    <value>Copy data to clipboard</value>
+  </data>
+  <data name="qviCopyright" xml:space="preserve">
+    <value>Copyright</value>
+  </data>
+  <data name="qviCorrelate" xml:space="preserve">
+    <value>Correlate</value>
+  </data>
+  <data name="qviCosmeticProblems" xml:space="preserve">
+    <value>Cosmetic problems</value>
+  </data>
+  <data name="qviCount" xml:space="preserve">
+    <value>Count</value>
+  </data>
+  <data name="qviCreate" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="qviCreateAnAccount" xml:space="preserve">
+    <value>Create an account!</value>
+  </data>
+  <data name="qviCreateANewAccount" xml:space="preserve">
+    <value>Create a new account.</value>
+  </data>
+  <data name="qviCreateCodeReviewForSCR" xml:space="preserve">
+    <value>Create Code Review for SCR</value>
+  </data>
+  <data name="qviCreatedBy" xml:space="preserve">
+    <value>Created By</value>
+  </data>
+  <data name="qviCreateLocalLogin" xml:space="preserve">
+    <value>Create Local Login</value>
+  </data>
+  <data name="qviCreateModule" xml:space="preserve">
+    <value>Create Module</value>
+  </data>
+  <data name="qviCreateNewModule" xml:space="preserve">
+    <value>Create New Module</value>
+  </data>
+  <data name="qviCreateNewSCR" xml:space="preserve">
+    <value>Create new SCR</value>
+  </data>
+  <data name="qviCreateUser" xml:space="preserve">
+    <value>Create User</value>
+  </data>
+  <data name="qviCreating" xml:space="preserve">
+    <value>Creating</value>
+  </data>
+  <data name="qviCreationDate" xml:space="preserve">
+    <value>Creation Date</value>
+  </data>
+  <data name="qviCritical" xml:space="preserve">
+    <value>Critical</value>
+  </data>
+  <data name="qviCriticalCount" xml:space="preserve">
+    <value>Critical Count</value>
+  </data>
+  <data name="qviCriticalDescription" xml:space="preserve">
+    <value>Must be fixed soon; problem impact is most severe and it interferes extremely with reasonable product use. Frequency of the problem occurring is most of the time to always. There is no ready workaround. Problem is considered a “showstopper” and will prevent shipment.</value>
+  </data>
+  <data name="qviCurrentProduct" xml:space="preserve">
+    <value>Current Product</value>
+  </data>
+  <data name="qviCurrentRole" xml:space="preserve">
+    <value>Current Role</value>
+  </data>
+  <data name="qviCustomEmail" xml:space="preserve">
+    <value>Custom Email</value>
+  </data>
+  <data name="qviCustomer" xml:space="preserve">
+    <value>Customer</value>
+  </data>
+  <data name="qviCustomerCompany" xml:space="preserve">
+    <value>Customer Company</value>
+  </data>
+  <data name="qviCustomerContactPerson" xml:space="preserve">
+    <value>Customer Contact Person</value>
+  </data>
+  <data name="qviCustomerDetails" xml:space="preserve">
+    <value>Customer Details</value>
+  </data>
+  <data name="qviCustomerInformation" xml:space="preserve">
+    <value>Customer Information</value>
+  </data>
+  <data name="qviCustomerLocation" xml:space="preserve">
+    <value>Customer Location</value>
+  </data>
+  <data name="qviCustomerReported" xml:space="preserve">
+    <value>Customer Reported</value>
+  </data>
+  <data name="qviDatabaseChange" xml:space="preserve">
+    <value>Database Change</value>
+  </data>
+  <data name="qviDatabaseChanged" xml:space="preserve">
+    <value>Database Changed</value>
+  </data>
+  <data name="qviDatabaseVersion" xml:space="preserve">
+    <value>Database Version</value>
+  </data>
+  <data name="qviDaysOpen" xml:space="preserve">
+    <value>Days Open</value>
+  </data>
+  <data name="qviDefaultAndCustomReportingOptions" xml:space="preserve">
+    <value>Default and custom reporting options</value>
+  </data>
+  <data name="qviDefaultHomePage" xml:space="preserve">
+    <value>Default Home Page</value>
+  </data>
+  <data name="qviDefaultProduct" xml:space="preserve">
+    <value>Default Product</value>
+  </data>
+  <data name="qviDefaultTester" xml:space="preserve">
+    <value>Default Tester</value>
+  </data>
+  <data name="qviDefectCount" xml:space="preserve">
+    <value>Defect Count</value>
+  </data>
+  <data name="qviDefectMetric" xml:space="preserve">
+    <value>Defect Metric</value>
+  </data>
+  <data name="qviDeferred" xml:space="preserve">
+    <value>Deferred</value>
+  </data>
+  <data name="qviDegradationOfSystemPerformance" xml:space="preserve">
+    <value>Degradation of system performance</value>
+  </data>
+  <data name="qviDelete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="qviDeleteCodeReview" xml:space="preserve">
+    <value>Delete Code Review</value>
+  </data>
+  <data name="qviDeletingAKeywordMessage" xml:space="preserve">
+    <value>Deleting a keyword will remove it from all SCRs that reference it</value>
+  </data>
+  <data name="qviDELIVEREDCaps" xml:space="preserve">
+    <value>DELIVERED</value>
+  </data>
+  <data name="qviDenied" xml:space="preserve">
+    <value>Denied</value>
+  </data>
+  <data name="qviDeny" xml:space="preserve">
+    <value>Deny</value>
+  </data>
+  <data name="qviDepartment" xml:space="preserve">
+    <value>Department</value>
+  </data>
+  <data name="qviDepartmentHead" xml:space="preserve">
+    <value>Department Head</value>
+  </data>
+  <data name="qviDepartmentManager" xml:space="preserve">
+    <value>Department Manager</value>
+  </data>
+  <data name="qviDeptHead" xml:space="preserve">
+    <value>Dept Head</value>
+  </data>
+  <data name="qviDescription" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="qviDetailedReports" xml:space="preserve">
+    <value>Detailed Reports</value>
+  </data>
+  <data name="qviDetails" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="qviDeterminePriorityLevel" xml:space="preserve">
+    <value>Determine Priority Level</value>
+  </data>
+  <data name="qviDEVELOPERCaps" xml:space="preserve">
+    <value>DEVELOPER</value>
+  </data>
+  <data name="qviDifficult" xml:space="preserve">
+    <value>Difficult</value>
+  </data>
+  <data name="qviDifficultyOfTheWorkaround" xml:space="preserve">
+    <value>Difficulty of the workaround</value>
+  </data>
+  <data name="qviDisplay" xml:space="preserve">
+    <value>Display</value>
+  </data>
+  <data name="qviDisplayAllFiles" xml:space="preserve">
+    <value>Display All Files</value>
+  </data>
+  <data name="qviDisplayCAPS" xml:space="preserve">
+    <value>DISPLAY</value>
+  </data>
+  <data name="qviDisplayLastNumberOfDays" xml:space="preserve">
+    <value>Display Last Number of days</value>
+  </data>
+  <data name="qviDisplayMetric" xml:space="preserve">
+    <value>Display Metric</value>
+  </data>
+  <data name="qviDisplayNamePreference" xml:space="preserve">
+    <value>Display Name Preference</value>
+  </data>
+  <data name="qviDisplayOptions" xml:space="preserve">
+    <value>Display Options</value>
+  </data>
+  <data name="qviDisplaySettings" xml:space="preserve">
+    <value>Display Settings</value>
+  </data>
+  <data name="qviDisplaySorting" xml:space="preserve">
+    <value>Display/Sorting</value>
+  </data>
+  <data name="qviDistributionList" xml:space="preserve">
+    <value>Distribution List</value>
+  </data>
+  <data name="qviDN4407" xml:space="preserve">
+    <value>DN4407</value>
+  </data>
+  <data name="qviDocumentationChanged" xml:space="preserve">
+    <value>Documentation Changed</value>
+  </data>
+  <data name="qviDoesTheProblemAffectQuestion" xml:space="preserve">
+    <value>Does the problem affect all current software versions?</value>
+  </data>
+  <data name="qviDoesTheProblemOccurQuestion" xml:space="preserve">
+    <value>Does the problem occur multiple times during the course of the week?</value>
+  </data>
+  <data name="qviDoMostUsersUseTheFeatureQuestion" xml:space="preserve">
+    <value>Do most users use the feature or operation that exposes the problem?</value>
+  </data>
+  <data name="qviDone" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="qviDontHaveAnAccount" xml:space="preserve">
+    <value>Don't have an account?</value>
+  </data>
+  <data name="qviEdit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="qviEditApplicationDescription" xml:space="preserve">
+    <value>The following restrictions are automatically enforced
+
+Maximum length of a variable's name is 50 characters
+Maximum length of a variable's value is 255 characters</value>
+  </data>
+  <data name="qviEditApplicationVariable" xml:space="preserve">
+    <value>Edit Application Variable</value>
+  </data>
+  <data name="qviEditAttachment" xml:space="preserve">
+    <value>Edit Attachment</value>
+  </data>
+  <data name="qviEditCodeReview" xml:space="preserve">
+    <value>Edit Code Review</value>
+  </data>
+  <data name="qviEditComment" xml:space="preserve">
+    <value>Edit Comment</value>
+  </data>
+  <data name="qviEditCompany" xml:space="preserve">
+    <value>Edit Company</value>
+  </data>
+  <data name="qviEditKeyword" xml:space="preserve">
+    <value>Edit Keyword</value>
+  </data>
+  <data name="qviEditProfile" xml:space="preserve">
+    <value>Edit Profile</value>
+  </data>
+  <data name="qviEditRelease" xml:space="preserve">
+    <value>Edit Release</value>
+  </data>
+  <data name="qviEditSCR" xml:space="preserve">
+    <value>Edit SCR</value>
+  </data>
+  <data name="qviEditStatus" xml:space="preserve">
+    <value>Edit Status</value>
+  </data>
+  <data name="qviEmail" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="qviEmailAddress" xml:space="preserve">
+    <value>Email Address</value>
+  </data>
+  <data name="qviEmailFormat" xml:space="preserve">
+    <value>Email Format</value>
+  </data>
+  <data name="qviEmailPreference" xml:space="preserve">
+    <value>Email Preference</value>
+  </data>
+  <data name="qviEmailSender" xml:space="preserve">
+    <value>Email Sender</value>
+  </data>
+  <data name="qviEmailSettings" xml:space="preserve">
+    <value>Email Settings</value>
+  </data>
+  <data name="qviEmployee" xml:space="preserve">
+    <value>Employee</value>
+  </data>
+  <data name="qviEmployeeNum" xml:space="preserve">
+    <value>Employee Num</value>
+  </data>
+  <data name="qviEndDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="qviEnding" xml:space="preserve">
+    <value>Ending</value>
+  </data>
+  <data name="qviEndingDate" xml:space="preserve">
+    <value>Ending Date</value>
+  </data>
+  <data name="qviEnhancement" xml:space="preserve">
+    <value>Enhancement</value>
+  </data>
+  <data name="qviEnhancementDescription" xml:space="preserve">
+    <value>Please enter enhancement details for problems, solution, and benefits.</value>
+  </data>
+  <data name="qviEnhancementDetails" xml:space="preserve">
+    <value>Enhancement Details</value>
+  </data>
+  <data name="qviEnterSearchTerms" xml:space="preserve">
+    <value>Enter search term(s)</value>
+  </data>
+  <data name="qviError" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="qviErrorExclamation" xml:space="preserve">
+    <value>ERROR!</value>
+  </data>
+  <data name="qviEstimatedHours" xml:space="preserve">
+    <value>Estimated Hours</value>
+  </data>
+  <data name="qviException" xml:space="preserve">
+    <value>Exception</value>
+  </data>
+  <data name="qviExistingMetrics" xml:space="preserve">
+    <value>Existing Metrics</value>
+  </data>
+  <data name="qviExpand" xml:space="preserve">
+    <value>Expand</value>
+  </data>
+  <data name="qviExtra" xml:space="preserve">
+    <value>Extra</value>
+  </data>
+  <data name="qviExtremelyDifficult" xml:space="preserve">
+    <value>Extremely Difficult</value>
+  </data>
+  <data name="qviFailure" xml:space="preserve">
+    <value>Failure</value>
+  </data>
+  <data name="qviFeaturesThatTechnicallDescription" xml:space="preserve">
+    <value>Features that technically meet specification but are clumsy or awkward to use</value>
+  </data>
+  <data name="qviFile" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="qviFileAttached" xml:space="preserve">
+    <value>File %s Attached</value>
+  </data>
+  <data name="qviFileList" xml:space="preserve">
+    <value>FileList</value>
+  </data>
+  <data name="qviFileName" xml:space="preserve">
+    <value>File Name</value>
+  </data>
+  <data name="qviFileNumber" xml:space="preserve">
+    <value>File Number</value>
+  </data>
+  <data name="qviFiles" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="qviFilterData" xml:space="preserve">
+    <value>Filter Data</value>
+  </data>
+  <data name="qviFirstName" xml:space="preserve">
+    <value>First Name</value>
+  </data>
+  <data name="qviFixed" xml:space="preserve">
+    <value>Fixed</value>
+  </data>
+  <data name="qviFIXEDCaps" xml:space="preserve">
+    <value>FIXED</value>
+  </data>
+  <data name="qviFlags" xml:space="preserve">
+    <value>Flags</value>
+  </data>
+  <data name="qviFlagsCAPS" xml:space="preserve">
+    <value>FLAGS</value>
+  </data>
+  <data name="qviForgot" xml:space="preserve">
+    <value>Forgot</value>
+  </data>
+  <data name="qviForSCR" xml:space="preserve">
+    <value>For SCR</value>
+  </data>
+  <data name="qviFound" xml:space="preserve">
+    <value>Found</value>
+  </data>
+  <data name="qviFoundCAPS" xml:space="preserve">
+    <value>FOUND</value>
+  </data>
+  <data name="qviFrequency" xml:space="preserve">
+    <value>Frequency</value>
+  </data>
+  <data name="qviFrequencyDescription" xml:space="preserve">
+    <value>Frequency indicates how often a problem occurs within a certain amount of time based on typical user’s usage. The problem may or may not be easily reproducible and therefore there are different guidelines to the rating based on whether the problem is reproducible. This rating should be based on the user base overall, not on one specific user.</value>
+  </data>
+  <data name="qviFrequencyOfTheProblem" xml:space="preserve">
+    <value>Frequency of the problem</value>
+  </data>
+  <data name="qviFrequentColumns" xml:space="preserve">
+    <value>Frequent Columns</value>
+  </data>
+  <data name="qviFrequentlyAskedQuestions" xml:space="preserve">
+    <value>Frequently Asked Questions</value>
+  </data>
+  <data name="qviFrom" xml:space="preserve">
+    <value>from</value>
+  </data>
+  <data name="qviFromState" xml:space="preserve">
+    <value>From State</value>
+  </data>
+  <data name="qviFullName" xml:space="preserve">
+    <value>Full Name</value>
+  </data>
+  <data name="qviGeneral" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="qviGeneralInformation" xml:space="preserve">
+    <value>General Information</value>
+  </data>
+  <data name="qviGeneralQuestions" xml:space="preserve">
+    <value>General Questions</value>
+  </data>
+  <data name="qviGeneralReports" xml:space="preserve">
+    <value>General Reports</value>
+  </data>
+  <data name="qviGeneralSettings" xml:space="preserve">
+    <value>General Settings</value>
+  </data>
+  <data name="qviGroup" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="qviHasAccessToWhereSQL" xml:space="preserve">
+    <value>Has Access to Where SQL</value>
+  </data>
+  <data name="qviHasASimpleAndObviousWorkaround" xml:space="preserve">
+    <value>Has a simple and obvious workaround</value>
+  </data>
+  <data name="qviHavingTroubleSigningIn" xml:space="preserve">
+    <value>Having trouble signing in?</value>
+  </data>
+  <data name="qviHelp" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="qviHelpAndFrequentlyAskedQuestions" xml:space="preserve">
+    <value>Help and frequently asked questions</value>
+  </data>
+  <data name="qviHelpChanged" xml:space="preserve">
+    <value>Help Changed</value>
+  </data>
+  <data name="qviHidePrivate" xml:space="preserve">
+    <value>Hide Private</value>
+  </data>
+  <data name="qviHideVerbose" xml:space="preserve">
+    <value>Hide Verbose</value>
+  </data>
+  <data name="qviHigh" xml:space="preserve">
+    <value>High</value>
+  </data>
+  <data name="qviHighCount" xml:space="preserve">
+    <value>High Count</value>
+  </data>
+  <data name="qviHighDescription" xml:space="preserve">
+    <value>Must be fixed; impact of the problem is fairly severe and it seriously interferes with reasonable use of the product. Frequency of the problem occurring is often or most of the time, based on common user’s usage. Workarounds may be available.</value>
+  </data>
+  <data name="qviHistory" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="qviHISTORYCaps" xml:space="preserve">
+    <value>HISTORY</value>
+  </data>
+  <data name="qviHistoryComments" xml:space="preserve">
+    <value>History / Comments</value>
+  </data>
+  <data name="qviHome" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="qviHomePageLayout" xml:space="preserve">
+    <value>Home Page Layout</value>
+  </data>
+  <data name="qviHours" xml:space="preserve">
+    <value>hours</value>
+  </data>
+  <data name="qviIcon" xml:space="preserve">
+    <value>Icon</value>
+  </data>
+  <data name="qviID" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="qviIForgotMyPassword" xml:space="preserve">
+    <value>I forgot my password</value>
+  </data>
+  <data name="qviIForgotMyUserID" xml:space="preserve">
+    <value>I forgot my user ID</value>
+  </data>
+  <data name="qviImHavingOtherProblemsSigningIn" xml:space="preserve">
+    <value>I'm having other problems signing in</value>
+  </data>
+  <data name="qviImpact" xml:space="preserve">
+    <value>Impact</value>
+  </data>
+  <data name="qviImpactToTheUser" xml:space="preserve">
+    <value>Impact to the User</value>
+  </data>
+  <data name="qviImpactToUserDescription" xml:space="preserve">
+    <value>Impact to user indicates the degree of impairment the problem causes to the user base as a whole.</value>
+  </data>
+  <data name="qviImplementationHours" xml:space="preserve">
+    <value>Implementation Hours</value>
+  </data>
+  <data name="qviImproperRecoveryFromAMachineStoppage" xml:space="preserve">
+    <value>Improper recovery from a machine stoppage</value>
+  </data>
+  <data name="qviIncidental" xml:space="preserve">
+    <value>Incidental</value>
+  </data>
+  <data name="qviIncludeExEmployee" xml:space="preserve">
+    <value>Include Ex-Employee</value>
+  </data>
+  <data name="qviIncorrectErrorMessages" xml:space="preserve">
+    <value>Incorrect error messages</value>
+  </data>
+  <data name="qviInformationCustomerMessage" xml:space="preserve">
+    <value>Information on the customer the SCR affects</value>
+  </data>
+  <data name="qviInnerExceptions" xml:space="preserve">
+    <value>Inner Exceptions</value>
+  </data>
+  <data name="qviINPROCESSCaps" xml:space="preserve">
+    <value>IN PROCESS</value>
+  </data>
+  <data name="qviInvalidEmail" xml:space="preserve">
+    <value>Invalid Email</value>
+  </data>
+  <data name="qviInvalidPassword" xml:space="preserve">
+    <value>Invalid password.</value>
+  </data>
+  <data name="qviInvalidProjectIdNumber" xml:space="preserve">
+    <value>Invalid project ID number</value>
+  </data>
+  <data name="qviInvalidSCR" xml:space="preserve">
+    <value>Invalid SCR</value>
+  </data>
+  <data name="qviInvolvesErroneousMessage" xml:space="preserve">
+    <value>Involves erroneous message or instructions which require a little or no effort</value>
+  </data>
+  <data name="qviIP" xml:space="preserve">
+    <value>IP</value>
+  </data>
+  <data name="qviIsAManager" xml:space="preserve">
+    <value>Is a Manager</value>
+  </data>
+  <data name="qviIsAtLeast" xml:space="preserve">
+    <value>is at least</value>
+  </data>
+  <data name="qviIsAtMost" xml:space="preserve">
+    <value>is at most</value>
+  </data>
+  <data name="qviIsBetween" xml:space="preserve">
+    <value>is between</value>
+  </data>
+  <data name="qviIsDenied" xml:space="preserve">
+    <value>Is Denied</value>
+  </data>
+  <data name="qviIsExactly" xml:space="preserve">
+    <value>is exactly</value>
+  </data>
+  <data name="qviIsException" xml:space="preserve">
+    <value>Is Exception</value>
+  </data>
+  <data name="qviIsInternal" xml:space="preserve">
+    <value>Is Internal</value>
+  </data>
+  <data name="qviIsItInternal" xml:space="preserve">
+    <value>Is it internal</value>
+  </data>
+  <data name="qviISODocuments" xml:space="preserve">
+    <value>ISO Documents</value>
+  </data>
+  <data name="qviIssue" xml:space="preserve">
+    <value>Issue</value>
+  </data>
+  <data name="qviIssueType" xml:space="preserve">
+    <value>Issue Type</value>
+  </data>
+  <data name="qviIssueTypeManager" xml:space="preserve">
+    <value>Issue Type Manager</value>
+  </data>
+  <data name="qviIsTheProblemStraightforwardQuestion" xml:space="preserve">
+    <value>Is the problem straightforward and simple to re-create?</value>
+  </data>
+  <data name="qviKanban" xml:space="preserve">
+    <value>Kanban</value>
+  </data>
+  <data name="qviKanbanBoardFor" xml:space="preserve">
+    <value>Kanban Board For</value>
+  </data>
+  <data name="qviKey" xml:space="preserve">
+    <value>Key</value>
+  </data>
+  <data name="qviKeyword" xml:space="preserve">
+    <value>Keyword</value>
+  </data>
+  <data name="qviKeywordDetails" xml:space="preserve">
+    <value>Keyword Details</value>
+  </data>
+  <data name="qviKeywordManager" xml:space="preserve">
+    <value>Keyword Manager</value>
+  </data>
+  <data name="qviKeywords" xml:space="preserve">
+    <value>Keywords</value>
+  </data>
+  <data name="qviKeywordsCAPS" xml:space="preserve">
+    <value>KEYWORDS</value>
+  </data>
+  <data name="qviKeywordsHaveNotBeenCreatedYet" xml:space="preserve">
+    <value>Keywords have not been created yet.</value>
+  </data>
+  <data name="qviKeywordsMessage" xml:space="preserve">
+    <value>This page allows you to add, remove and update keywords that can be added to REAs. If a keyword is removed from the table, then the keyword associations to all REAs will be also removed.</value>
+  </data>
+  <data name="qviKeywordsMustBeUnique" xml:space="preserve">
+    <value>Keywords must be unique</value>
+  </data>
+  <data name="qviKeywordsMustBeUpperCase" xml:space="preserve">
+    <value>Keywords must be upper case</value>
+  </data>
+  <data name="qviLanguage" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="qviLast10InstancesCAPS" xml:space="preserve">
+    <value>(LAST 10 INSTANCES)</value>
+  </data>
+  <data name="qviLast30Days" xml:space="preserve">
+    <value>Last 30 days</value>
+  </data>
+  <data name="qviLast5InstancesCAPS" xml:space="preserve">
+    <value>LAST 5 INSTANCES</value>
+  </data>
+  <data name="qviLastInstances" xml:space="preserve">
+    <value>Last %s Instances</value>
+  </data>
+  <data name="qviLastName" xml:space="preserve">
+    <value>Last Name</value>
+  </data>
+  <data name="qviLastUpdated" xml:space="preserve">
+    <value>Last Updated</value>
+  </data>
+  <data name="qviLastUpdatedOnCAPS" xml:space="preserve">
+    <value>LAST UPDATED ON</value>
+  </data>
+  <data name="qviLatestInformationAboutAProduct" xml:space="preserve">
+    <value>Latest information about a product</value>
+  </data>
+  <data name="qviLatestReleases" xml:space="preserve">
+    <value>Latest Releases</value>
+  </data>
+  <data name="qviLatestSubmitted" xml:space="preserve">
+    <value>Latest Submitted</value>
+  </data>
+  <data name="qviLatestSubmittedRowsDisplayed" xml:space="preserve">
+    <value>Latest Submitted Rows Displayed</value>
+  </data>
+  <data name="qviLegacySCR" xml:space="preserve">
+    <value>Legacy SCR</value>
+  </data>
+  <data name="qviLegends" xml:space="preserve">
+    <value>Legends</value>
+  </data>
+  <data name="qviLegendsDescription" xml:space="preserve">
+    <value>The following icons are used throughout the SCR Tracker application.</value>
+  </data>
+  <data name="qviLine" xml:space="preserve">
+    <value>Line</value>
+  </data>
+  <data name="qviLineNo" xml:space="preserve">
+    <value>Line No</value>
+  </data>
+  <data name="qviLineNoSelectFile" xml:space="preserve">
+    <value>Line No/Select File</value>
+  </data>
+  <data name="qviLink" xml:space="preserve">
+    <value>link</value>
+  </data>
+  <data name="qviListOfProjectsCreatedDescription" xml:space="preserve">
+    <value>The follow is a list of projects created either by the Engineering department or the Software Product Development department. The codes are used for tracking time and resources for their respective projects.</value>
+  </data>
+  <data name="qviLocation" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="qviLocationCAPS" xml:space="preserve">
+    <value>LOCATION</value>
+  </data>
+  <data name="qviLockControl" xml:space="preserve">
+    <value>Lock Control</value>
+  </data>
+  <data name="qviLockMessage" xml:space="preserve">
+    <value>Lock Message</value>
+  </data>
+  <data name="qviLockStatus" xml:space="preserve">
+    <value>Lock Status</value>
+  </data>
+  <data name="qviLogDate" xml:space="preserve">
+    <value>Log Date</value>
+  </data>
+  <data name="qviLogin" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="qviLoginFailure" xml:space="preserve">
+    <value>Login Failure</value>
+  </data>
+  <data name="qviLogOff" xml:space="preserve">
+    <value>Log Off</value>
+  </data>
+  <data name="qviLogOn" xml:space="preserve">
+    <value>Log On</value>
+  </data>
+  <data name="qviLossOfMajorFunctionality" xml:space="preserve">
+    <value>Loss of major functionality</value>
+  </data>
+  <data name="qviLow" xml:space="preserve">
+    <value>Low</value>
+  </data>
+  <data name="qviLowDescription" xml:space="preserve">
+    <value>May be fixed; very minor problem, generally cosmetic in nature and not affecting product use. Usually low in impact to the user, and may have an easy workaround available.</value>
+  </data>
+  <data name="qviMachineControllerPCLocksUp" xml:space="preserve">
+    <value>Machine controller PC locks up</value>
+  </data>
+  <data name="qviMachineName" xml:space="preserve">
+    <value>Machine Name</value>
+  </data>
+  <data name="qviMachineRunaway" xml:space="preserve">
+    <value>Machine runaway</value>
+  </data>
+  <data name="qviMachineSN" xml:space="preserve">
+    <value>Machine S/N</value>
+  </data>
+  <data name="qviMachineSNCAPS" xml:space="preserve">
+    <value>MACHINE S/N</value>
+  </data>
+  <data name="qviMajor" xml:space="preserve">
+    <value>Major</value>
+  </data>
+  <data name="qviManageProfile" xml:space="preserve">
+    <value>Manage Profile</value>
+  </data>
+  <data name="qviManager" xml:space="preserve">
+    <value>Manager</value>
+  </data>
+  <data name="qviMANAGERCaps" xml:space="preserve">
+    <value>MANAGER</value>
+  </data>
+  <data name="qviManagerInfo" xml:space="preserve">
+    <value>Manager Info</value>
+  </data>
+  <data name="qviManagersNote" xml:space="preserve">
+    <value>Manager's Note</value>
+  </data>
+  <data name="qviManagersNotes" xml:space="preserve">
+    <value>Manager's Notes</value>
+  </data>
+  <data name="qviManageUsersProfile" xml:space="preserve">
+    <value>Manage User's Profile</value>
+  </data>
+  <data name="qviMassUpdate" xml:space="preserve">
+    <value>Mass Update</value>
+  </data>
+  <data name="qviMaximumLengthNameMessage" xml:space="preserve">
+    <value>Maximum length of a variable's name is 50 characters</value>
+  </data>
+  <data name="qviMaximumLengthOfAKeyword" xml:space="preserve">
+    <value>Maximum length of a keyword is 50 characters</value>
+  </data>
+  <data name="qviMaximumLengthOfAProjectName" xml:space="preserve">
+    <value>Maximum length of a project name is 50 characters</value>
+  </data>
+  <data name="qviMaximumLengthVariableMessage" xml:space="preserve">
+    <value>Maximum length of a variable's value is 255 characters</value>
+  </data>
+  <data name="qviMaxRows" xml:space="preserve">
+    <value>Max Rows</value>
+  </data>
+  <data name="qviMeasurementErrors" xml:space="preserve">
+    <value>Measurement errors; incorrect measurement results</value>
+  </data>
+  <data name="qviMedium" xml:space="preserve">
+    <value>Medium</value>
+  </data>
+  <data name="qviMediumDescription" xml:space="preserve">
+    <value>Should be fixed; may be of low to medium impact to users. In general, product can still be used for its intended purpose; however, functionality is not optimal. Frequency of the problem occurring is rare or sometimes, but is usually not apparent with general use. The problem may be in a feature rarely used by the majority of customers. A workaround is available.</value>
+  </data>
+  <data name="qviMessage" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="qviMetric" xml:space="preserve">
+    <value>Metric</value>
+  </data>
+  <data name="qviMetricHistory" xml:space="preserve">
+    <value>Metric History</value>
+  </data>
+  <data name="qviMetricHistoryFor" xml:space="preserve">
+    <value>Metric History for</value>
+  </data>
+  <data name="qviMetricReport" xml:space="preserve">
+    <value>Metric Report</value>
+  </data>
+  <data name="qviMetricReportForProblemSCRs" xml:space="preserve">
+    <value>Metric Report For Problem SCRs</value>
+  </data>
+  <data name="qviMetricReportOfAllSCRs" xml:space="preserve">
+    <value>Metric Report of all SCRs</value>
+  </data>
+  <data name="qviMetricReportOfProblemSCRs" xml:space="preserve">
+    <value>Metric Report of Problem SCRs</value>
+  </data>
+  <data name="qviMetricReportSettings" xml:space="preserve">
+    <value>Metric Report Settings</value>
+  </data>
+  <data name="qviMetrics" xml:space="preserve">
+    <value>Metrics</value>
+  </data>
+  <data name="qviMetricsCount" xml:space="preserve">
+    <value>Metrics [Count]</value>
+  </data>
+  <data name="qviMinimal" xml:space="preserve">
+    <value>Minimal</value>
+  </data>
+  <data name="qviMinor" xml:space="preserve">
+    <value>Minor</value>
+  </data>
+  <data name="qviMisc" xml:space="preserve">
+    <value>Misc</value>
+  </data>
+  <data name="qviModule" xml:space="preserve">
+    <value>Module</value>
+  </data>
+  <data name="qviModules" xml:space="preserve">
+    <value>Modules</value>
+  </data>
+  <data name="qviMoveDownDisplayMessage" xml:space="preserve">
+    <value>Move Down Display (Move Column to the Left)</value>
+  </data>
+  <data name="qviMoveDownSortPriority" xml:space="preserve">
+    <value>Move Down Sort Priority</value>
+  </data>
+  <data name="qviMoveUpDisplayMessage" xml:space="preserve">
+    <value>Move Up Display (Move Column to the Right)</value>
+  </data>
+  <data name="qviMoveUpSortPriority" xml:space="preserve">
+    <value>Move Up Sort Priority</value>
+  </data>
+  <data name="qviMyCodeReviewWatchList" xml:space="preserve">
+    <value>My Code Review Watch List</value>
+  </data>
+  <data name="qviMyProfile" xml:space="preserve">
+    <value>My Profile</value>
+  </data>
+  <data name="qviMyReports" xml:space="preserve">
+    <value>My Reports</value>
+  </data>
+  <data name="qviMyTeam" xml:space="preserve">
+    <value>My Team</value>
+  </data>
+  <data name="qviMyTimesheetReports" xml:space="preserve">
+    <value>My Timesheet Reports</value>
+  </data>
+  <data name="qviMyToDoList" xml:space="preserve">
+    <value>My To Do List</value>
+  </data>
+  <data name="qviMyWatchList" xml:space="preserve">
+    <value>My Watch List</value>
+  </data>
+  <data name="qviName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="qviNameOfField" xml:space="preserve">
+    <value>Name of Field</value>
+  </data>
+  <data name="qviNeedsHelpDocumentationChanged" xml:space="preserve">
+    <value>Needs Help Documentation changed</value>
+  </data>
+  <data name="qviNeedsRequirementsChanged" xml:space="preserve">
+    <value>Needs Requirements changed</value>
+  </data>
+  <data name="qviNeedsWork" xml:space="preserve">
+    <value>Needs Work</value>
+  </data>
+  <data name="qviNewDepartment" xml:space="preserve">
+    <value>New Department</value>
+  </data>
+  <data name="qviNewGroupName" xml:space="preserve">
+    <value>New Group Name</value>
+  </data>
+  <data name="qviNewRelease" xml:space="preserve">
+    <value>New Release</value>
+  </data>
+  <data name="qviNewSCR" xml:space="preserve">
+    <value>New SCR</value>
+  </data>
+  <data name="qviNo" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="qviNOCaps" xml:space="preserve">
+    <value>NO</value>
+  </data>
+  <data name="qviNoCommentsMadeYet" xml:space="preserve">
+    <value>No Comments Made Yet</value>
+  </data>
+  <data name="qviNoFileChosen" xml:space="preserve">
+    <value>No file chosen</value>
+  </data>
+  <data name="qviNoFileNameStoredInHistory" xml:space="preserve">
+    <value>No file name stored in history.</value>
+  </data>
+  <data name="qviNoModule" xml:space="preserve">
+    <value>No Module</value>
+  </data>
+  <data name="qviNone" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="qviNoneExists" xml:space="preserve">
+    <value>None Exists</value>
+  </data>
+  <data name="qviNoNumber" xml:space="preserve">
+    <value>No Number</value>
+  </data>
+  <data name="qviNormal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="qviNote" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="qviNoteChangingTheFileMessage" xml:space="preserve">
+    <value>Note, changing the file will change the data, but will be given the name in the File Name Field.</value>
+  </data>
+  <data name="qviNotes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="qviNotesComment" xml:space="preserve">
+    <value>Notes/Comment</value>
+  </data>
+  <data name="qviNotesSubject" xml:space="preserve">
+    <value>Notes/Subject</value>
+  </data>
+  <data name="qviNoteUsingRawSQLMessage" xml:space="preserve">
+    <value>Note using Raw SQL field will void other parameters</value>
+  </data>
+  <data name="qviNotify" xml:space="preserve">
+    <value>Notify</value>
+  </data>
+  <data name="qviNotifyTheFollowingPeople" xml:space="preserve">
+    <value>Notify the following people</value>
+  </data>
+  <data name="qviOFFCaps" xml:space="preserve">
+    <value>OFF</value>
+  </data>
+  <data name="qviONCaps" xml:space="preserve">
+    <value>ON</value>
+  </data>
+  <data name="qviOpen" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="qviOperationNeverCompletes" xml:space="preserve">
+    <value>Operation never completes</value>
+  </data>
+  <data name="qviOptional" xml:space="preserve">
+    <value>Optional</value>
+  </data>
+  <data name="qviOrder" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="qviOtherCompany" xml:space="preserve">
+    <value>Other Company</value>
+  </data>
+  <data name="qviOtherProducts" xml:space="preserve">
+    <value>Other Products</value>
+  </data>
+  <data name="qviOtherReports" xml:space="preserve">
+    <value>Other Reports</value>
+  </data>
+  <data name="qviOTHERROLECaps" xml:space="preserve">
+    <value>OTHER ROLE</value>
+  </data>
+  <data name="qviOutputDataIncorrectly" xml:space="preserve">
+    <value>Output data incorrectly</value>
+  </data>
+  <data name="qviOverall" xml:space="preserve">
+    <value>Overall</value>
+  </data>
+  <data name="qviOwner" xml:space="preserve">
+    <value>Owner</value>
+  </data>
+  <data name="qviParent" xml:space="preserve">
+    <value>Parent</value>
+  </data>
+  <data name="qviPassword" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="qviPeople" xml:space="preserve">
+    <value>People</value>
+  </data>
+  <data name="qviPeopleAccepted" xml:space="preserve">
+    <value>People Accepted</value>
+  </data>
+  <data name="qviPeopleTime" xml:space="preserve">
+    <value>People/Time</value>
+  </data>
+  <data name="qviPermissionManager" xml:space="preserve">
+    <value>Permission Manager</value>
+  </data>
+  <data name="qviPermissionsManager" xml:space="preserve">
+    <value>Permissions Manager</value>
+  </data>
+  <data name="qviPhoto" xml:space="preserve">
+    <value>Photo</value>
+  </data>
+  <data name="qviPlanned" xml:space="preserve">
+    <value>Planned</value>
+  </data>
+  <data name="qviPlannedCAPS" xml:space="preserve">
+    <value>PLANNED</value>
+  </data>
+  <data name="qviPlannedRelease" xml:space="preserve">
+    <value>Planned Release</value>
+  </data>
+  <data name="qviPlannedVersion" xml:space="preserve">
+    <value>Planned Version</value>
+  </data>
+  <data name="qviPlannedWork" xml:space="preserve">
+    <value>Planned Work</value>
+  </data>
+  <data name="qviPlannedWorkDescription" xml:space="preserve">
+    <value>Please enter details for background (optional), the story and the acceptance criteria (optional).</value>
+  </data>
+  <data name="qviPlannedWorkDetails" xml:space="preserve">
+    <value>Planned Work Details</value>
+  </data>
+  <data name="qviPlanningDetails" xml:space="preserve">
+    <value>Planning Details</value>
+  </data>
+  <data name="qviPlanningDetailsDescription" xml:space="preserve">
+    <value>Planning details for the currect SCR.</value>
+  </data>
+  <data name="qviPleaseAddAnEmailMessage" xml:space="preserve">
+    <value>Please add an email to the To field</value>
+  </data>
+  <data name="qviPleaseEnterAName" xml:space="preserve">
+    <value>Please enter a name</value>
+  </data>
+  <data name="qviPleaseEnterANumber" xml:space="preserve">
+    <value>Please enter a number</value>
+  </data>
+  <data name="qviPleaseEnterAPositiveIntegerMessage" xml:space="preserve">
+    <value>Please enter a postive Integer in each of the Version found Fields</value>
+  </data>
+  <data name="qviPleaseEnterAUserNameForThisSite" xml:space="preserve">
+    <value>Please enter a user name for this site below and click the Register button to finish logging in.</value>
+  </data>
+  <data name="qviPleaseEnterDetailsForBackgroundMessage" xml:space="preserve">
+    <value>Please enter details for background (optional), the story and the acceptance criteria (optional).</value>
+  </data>
+  <data name="qviPleaseEnterEnhancementDetailsMessage" xml:space="preserve">
+    <value>Please enter enhancement details for problems, solution, and benefits.</value>
+  </data>
+  <data name="qviPleaseFillAllFieldsWithIntegers" xml:space="preserve">
+    <value>Please fill all fields with integers.</value>
+  </data>
+  <data name="qviPleaseLogIn" xml:space="preserve">
+    <value>Please Log In</value>
+  </data>
+  <data name="qviPleaseLoginMessage" xml:space="preserve">
+    <value>Please login in if you want the complete details of this SCR.</value>
+  </data>
+  <data name="qviPleaseSelectAPriority" xml:space="preserve">
+    <value>Please select a priority.</value>
+  </data>
+  <data name="qviPleaseSelectAUser" xml:space="preserve">
+    <value>Please select a user.</value>
+  </data>
+  <data name="qviPleaseSignInToGetAccess" xml:space="preserve">
+    <value>Please sign in to get access.</value>
+  </data>
+  <data name="qviPossibleStatusesDescription" xml:space="preserve">
+    <value>The following is the complete list of possible statuses for a software release</value>
+  </data>
+  <data name="qviPrint" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="qviPrintSCR" xml:space="preserve">
+    <value>Print SCR</value>
+  </data>
+  <data name="qviPriority" xml:space="preserve">
+    <value>Priority</value>
+  </data>
+  <data name="qviPriorityManager" xml:space="preserve">
+    <value>Priority Manager</value>
+  </data>
+  <data name="qviPrivate" xml:space="preserve">
+    <value>Private</value>
+  </data>
+  <data name="qviProblem" xml:space="preserve">
+    <value>Problem</value>
+  </data>
+  <data name="qviProblemOpportunity" xml:space="preserve">
+    <value>Problem/Opportunity</value>
+  </data>
+  <data name="qviProblemSCRs" xml:space="preserve">
+    <value>Problem SCRs</value>
+  </data>
+  <data name="qviProblemsLoggingIn" xml:space="preserve">
+    <value>Problems logging in?</value>
+  </data>
+  <data name="qviProduct" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="qviProductAccess" xml:space="preserve">
+    <value>Product Access</value>
+  </data>
+  <data name="qviProductAccessSettings" xml:space="preserve">
+    <value>Product Access Settings</value>
+  </data>
+  <data name="qviPRODUCTCaps" xml:space="preserve">
+    <value>PRODUCT</value>
+  </data>
+  <data name="qviProductDashboard" xml:space="preserve">
+    <value>Product Dashboard</value>
+  </data>
+  <data name="qviProductHierarchy" xml:space="preserve">
+    <value>Product Heirarchy</value>
+  </data>
+  <data name="qviProductInfo" xml:space="preserve">
+    <value>Product Info</value>
+  </data>
+  <data name="qviProductManager" xml:space="preserve">
+    <value>Product Manager</value>
+  </data>
+  <data name="qviProductManagerCreateNewProduct" xml:space="preserve">
+    <value>Product Manager Create New Product</value>
+  </data>
+  <data name="qviProductManagerModule" xml:space="preserve">
+    <value>Product Manager Module</value>
+  </data>
+  <data name="qviProductOwner" xml:space="preserve">
+    <value>Product Owner</value>
+  </data>
+  <data name="qviProductRoles" xml:space="preserve">
+    <value>Product Roles</value>
+  </data>
+  <data name="qviProductTeam" xml:space="preserve">
+    <value>Product Team</value>
+  </data>
+  <data name="qviProductUsage" xml:space="preserve">
+    <value>Product Usage</value>
+  </data>
+  <data name="qviProfileSettings" xml:space="preserve">
+    <value>Profile Settings</value>
+  </data>
+  <data name="qviProject" xml:space="preserve">
+    <value>Project</value>
+  </data>
+  <data name="qviProjectCodeMustBeUnique" xml:space="preserve">
+    <value>Project code must be unique</value>
+  </data>
+  <data name="qviProjectCodes" xml:space="preserve">
+    <value>Project Codes (a.k.a SOSO DN4407)</value>
+  </data>
+  <data name="qviProjectCodesManager" xml:space="preserve">
+    <value>Project Codes Manager</value>
+  </data>
+  <data name="qviProjectNameIsRequired" xml:space="preserve">
+    <value>Project name is required</value>
+  </data>
+  <data name="qviProposedSolution" xml:space="preserve">
+    <value>Proposed Solution</value>
+  </data>
+  <data name="qviPublic" xml:space="preserve">
+    <value>Public</value>
+  </data>
+  <data name="qviQualityVisionInternationalInc" xml:space="preserve">
+    <value>Quality Vision International, Inc.</value>
+  </data>
+  <data name="qviQuickSearch" xml:space="preserve">
+    <value>Quick Search</value>
+  </data>
+  <data name="qviQuickSearchResult" xml:space="preserve">
+    <value>Quick Search Result</value>
+  </data>
+  <data name="qviQuickSearchSCR" xml:space="preserve">
+    <value>Quick Search SCR</value>
+  </data>
+  <data name="qviRank" xml:space="preserve">
+    <value>Rank</value>
+  </data>
+  <data name="qviRankOrder" xml:space="preserve">
+    <value>Rank (Order)</value>
+  </data>
+  <data name="qviRankOrderCAPS" xml:space="preserve">
+    <value>RANK (ORDER)</value>
+  </data>
+  <data name="qviRawSQL" xml:space="preserve">
+    <value>Raw SQL</value>
+  </data>
+  <data name="qviReasonClosed" xml:space="preserve">
+    <value>Reason Closed</value>
+  </data>
+  <data name="qviRegister" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="qviRegisteredLogins" xml:space="preserve">
+    <value>Registered Logins</value>
+  </data>
+  <data name="qviRelatedREA" xml:space="preserve">
+    <value>Related REA</value>
+  </data>
+  <data name="qviRelatedREAHasBeenRemoved" xml:space="preserve">
+    <value>Related REA has been removed</value>
+  </data>
+  <data name="qviRelatedREAs" xml:space="preserve">
+    <value>Related REAs</value>
+  </data>
+  <data name="qviRelatedREAsDescription" xml:space="preserve">
+    <value>Related REAs for the newly created REA.</value>
+  </data>
+  <data name="qviRelation" xml:space="preserve">
+    <value>Relation</value>
+  </data>
+  <data name="qviRelationshipTree" xml:space="preserve">
+    <value>Relationship Tree</value>
+  </data>
+  <data name="qviRelease" xml:space="preserve">
+    <value>Release</value>
+  </data>
+  <data name="qviReleaseCoordinator" xml:space="preserve">
+    <value>Release Coordinator</value>
+  </data>
+  <data name="qviReleaseCriticalCount" xml:space="preserve">
+    <value>Release Critical Count</value>
+  </data>
+  <data name="qviReleaseDefect" xml:space="preserve">
+    <value>Release Defect</value>
+  </data>
+  <data name="qviReleaseHighCount" xml:space="preserve">
+    <value>Release High Count</value>
+  </data>
+  <data name="qviReleaseMetric" xml:space="preserve">
+    <value>Release Metric</value>
+  </data>
+  <data name="qviReleasePlanningAndEstimates" xml:space="preserve">
+    <value>Release Planning and Estimates</value>
+  </data>
+  <data name="qviReleaseStatus" xml:space="preserve">
+    <value>Release Status</value>
+  </data>
+  <data name="qviReleaseType" xml:space="preserve">
+    <value>Release Type</value>
+  </data>
+  <data name="qviRemove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="qviRemoveFromMyWatchlist" xml:space="preserve">
+    <value>Remove from my Watchlist</value>
+  </data>
+  <data name="qviRemoveThisLoginFromYourAccount" xml:space="preserve">
+    <value>Remove this %s login from your account</value>
+  </data>
+  <data name="qviReplaceFile" xml:space="preserve">
+    <value>Replace File</value>
+  </data>
+  <data name="qviReply" xml:space="preserve">
+    <value>Reply</value>
+  </data>
+  <data name="qviReport" xml:space="preserve">
+    <value>Report</value>
+  </data>
+  <data name="qviReportedCAPS" xml:space="preserve">
+    <value>REPORTED</value>
+  </data>
+  <data name="qviReportGroup" xml:space="preserve">
+    <value>Report Group</value>
+  </data>
+  <data name="qviReportManager" xml:space="preserve">
+    <value>Report Manager</value>
+  </data>
+  <data name="qviReportNotFound" xml:space="preserve">
+    <value>Report Not Found</value>
+  </data>
+  <data name="qviReports" xml:space="preserve">
+    <value>Reports</value>
+  </data>
+  <data name="qviReportTitle" xml:space="preserve">
+    <value>Report Title</value>
+  </data>
+  <data name="qviReportType" xml:space="preserve">
+    <value>Report Type</value>
+  </data>
+  <data name="qviRequestedBy" xml:space="preserve">
+    <value>Requested By</value>
+  </data>
+  <data name="qviRequestedOn" xml:space="preserve">
+    <value>Requested On</value>
+  </data>
+  <data name="qviRequired" xml:space="preserve">
+    <value>Required</value>
+  </data>
+  <data name="qviRequiredFieldsForANewSCR" xml:space="preserve">
+    <value>Required fields for a new SCR</value>
+  </data>
+  <data name="qviRequirementsChange" xml:space="preserve">
+    <value>Requirements Change</value>
+  </data>
+  <data name="qviRequirementsChanged" xml:space="preserve">
+    <value>Requirements Changed</value>
+  </data>
+  <data name="qviRequiresPowerCycleHasWorkaround" xml:space="preserve">
+    <value>Requires a power cycle or a service call and does have a workaround</value>
+  </data>
+  <data name="qviRequiresPowerCycleNoWorkaround" xml:space="preserve">
+    <value>Requires a power cycle or a service call and does not have a workaround</value>
+  </data>
+  <data name="qviRequiresRerun" xml:space="preserve">
+    <value>Requires the user to rerun the operation or to use an alternative means to complete the operation</value>
+  </data>
+  <data name="qviResendCodeReviewRequestToAll" xml:space="preserve">
+    <value>Resend Code Review Request to All</value>
+  </data>
+  <data name="qviReset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="qviResolution" xml:space="preserve">
+    <value>Resolution</value>
+  </data>
+  <data name="qviResolved" xml:space="preserve">
+    <value>Resolved</value>
+  </data>
+  <data name="qviResolvedBy" xml:space="preserve">
+    <value>Resolved By</value>
+  </data>
+  <data name="qviResolvedByCAPS" xml:space="preserve">
+    <value>RESOLVED BY</value>
+  </data>
+  <data name="qviResolvedCAPS" xml:space="preserve">
+    <value>RESOLVED</value>
+  </data>
+  <data name="qviResolvedOn" xml:space="preserve">
+    <value>Resolved On</value>
+  </data>
+  <data name="qviResolvedPerDay" xml:space="preserve">
+    <value>Resolved Per Day</value>
+  </data>
+  <data name="qviResults" xml:space="preserve">
+    <value>Results</value>
+  </data>
+  <data name="qviRetired" xml:space="preserve">
+    <value>Retired</value>
+  </data>
+  <data name="qviReturn" xml:space="preserve">
+    <value>Return</value>
+  </data>
+  <data name="qviReview" xml:space="preserve">
+    <value>Review</value>
+  </data>
+  <data name="qviReviewers" xml:space="preserve">
+    <value>Reviewers</value>
+  </data>
+  <data name="qviReviewLink" xml:space="preserve">
+    <value>Review Link</value>
+  </data>
+  <data name="qviRole" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="qviSafetyIssue" xml:space="preserve">
+    <value>Safety Issue</value>
+  </data>
+  <data name="qviSave" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="qviSaveAsNew" xml:space="preserve">
+    <value>Save As New</value>
+  </data>
+  <data name="qviSaveChanges" xml:space="preserve">
+    <value>Save Changes</value>
+  </data>
+  <data name="qviSCCB" xml:space="preserve">
+    <value>SCCB</value>
+  </data>
+  <data name="qviSCR" xml:space="preserve">
+    <value>SCR</value>
+  </data>
+  <data name="qviSCRHashtagCodeReviewResolution" xml:space="preserve">
+    <value>SCR # Code Review Resolution</value>
+  </data>
+  <data name="qviSCRList" xml:space="preserve">
+    <value>SCR List</value>
+  </data>
+  <data name="qviSCRNumberCAPS" xml:space="preserve">
+    <value>SCR NUMBER</value>
+  </data>
+  <data name="qviSCRsCanOnlyReferenceAKeywordOnce" xml:space="preserve">
+    <value>REAs can only reference a keyword once</value>
+  </data>
+  <data name="qviSCRsDayClosed" xml:space="preserve">
+    <value>SCRs/day Closed</value>
+  </data>
+  <data name="qviSCRsDayResolved" xml:space="preserve">
+    <value>SCRs/day Resolved</value>
+  </data>
+  <data name="qviSCRsDaySubmitted" xml:space="preserve">
+    <value>SCRs/day Submitted</value>
+  </data>
+  <data name="qviSCRsFixed" xml:space="preserve">
+    <value>SCRs Fixed</value>
+  </data>
+  <data name="qviSCRsReferenced" xml:space="preserve">
+    <value>SCRs Referenced</value>
+  </data>
+  <data name="qviSCRTitle" xml:space="preserve">
+    <value>SCR Title</value>
+  </data>
+  <data name="qviSCRTITLECaps" xml:space="preserve">
+    <value>SCR TITLE</value>
+  </data>
+  <data name="qviSCRTracker" xml:space="preserve">
+    <value>SCR Tracker</value>
+  </data>
+  <data name="qviSearch" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="qviSearchCriteria" xml:space="preserve">
+    <value>Search Criteria</value>
+  </data>
+  <data name="qviSelect" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="qviSelectClosed" xml:space="preserve">
+    <value>Select Closed</value>
+  </data>
+  <data name="qviSelectFile" xml:space="preserve">
+    <value>Select File</value>
+  </data>
+  <data name="qviSelectUsersToAddToWatchList" xml:space="preserve">
+    <value>Select users to add %s to their Watch List</value>
+  </data>
+  <data name="qviSend" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="qviSendAnEmail" xml:space="preserve">
+    <value>Send an Email</value>
+  </data>
+  <data name="qviSendNotification" xml:space="preserve">
+    <value>Send Notification</value>
+  </data>
+  <data name="qviSendWatchList" xml:space="preserve">
+    <value>Send Watch List</value>
+  </data>
+  <data name="qviSessionManager" xml:space="preserve">
+    <value>Session Manager</value>
+  </data>
+  <data name="qviSevereProblems" xml:space="preserve">
+    <value>Severe Problems</value>
+  </data>
+  <data name="qviShowDetailedHomePage" xml:space="preserve">
+    <value>Show detailed home page</value>
+  </data>
+  <data name="qviShowPrivate" xml:space="preserve">
+    <value>Show Private</value>
+  </data>
+  <data name="qviShowRetiredProducts" xml:space="preserve">
+    <value>Show retired products</value>
+  </data>
+  <data name="qviShowSystemEntriesInHistory" xml:space="preserve">
+    <value>Show system entries in history</value>
+  </data>
+  <data name="qviSignificant" xml:space="preserve">
+    <value>Significant</value>
+  </data>
+  <data name="qviSignificantProblems" xml:space="preserve">
+    <value>Significant Problems</value>
+  </data>
+  <data name="qviSignIn" xml:space="preserve">
+    <value>Sign In</value>
+  </data>
+  <data name="qviSimple" xml:space="preserve">
+    <value>Simple</value>
+  </data>
+  <data name="qviSinglePageView" xml:space="preserve">
+    <value>Single Page View</value>
+  </data>
+  <data name="qviSiteLocked" xml:space="preserve">
+    <value>Site Locked</value>
+  </data>
+  <data name="qviSize" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="qviSkipToContent" xml:space="preserve">
+    <value>Skip to Content</value>
+  </data>
+  <data name="qviSoftwareChangeCommitteeBoard" xml:space="preserve">
+    <value>Software Change Committee Board</value>
+  </data>
+  <data name="qviSortBy" xml:space="preserve">
+    <value>Sort By</value>
+  </data>
+  <data name="qviSortCAPS" xml:space="preserve">
+    <value>SORT</value>
+  </data>
+  <data name="qviSortOrder" xml:space="preserve">
+    <value>Sort Order</value>
+  </data>
+  <data name="qviSPDReports" xml:space="preserve">
+    <value>SPD Reports</value>
+  </data>
+  <data name="qviSpecialNotes" xml:space="preserve">
+    <value>Special Notes</value>
+  </data>
+  <data name="qviSpecificationHours" xml:space="preserve">
+    <value>Specification Hours</value>
+  </data>
+  <data name="qviSpecifiedHours" xml:space="preserve">
+    <value>Specified Hours</value>
+  </data>
+  <data name="qviSQLCommand" xml:space="preserve">
+    <value>SQL Command</value>
+  </data>
+  <data name="qviSQLLogDate" xml:space="preserve">
+    <value>SQL Log Date</value>
+  </data>
+  <data name="qviStackTrace" xml:space="preserve">
+    <value>Stack Trace</value>
+  </data>
+  <data name="qviStartDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="qviStarting" xml:space="preserve">
+    <value>Starting</value>
+  </data>
+  <data name="qviStartingDate" xml:space="preserve">
+    <value>Starting Date</value>
+  </data>
+  <data name="qviStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="qviStatusManager" xml:space="preserve">
+    <value>Status Manager</value>
+  </data>
+  <data name="qviStatusTable" xml:space="preserve">
+    <value>Status Table</value>
+  </data>
+  <data name="qviStory" xml:space="preserve">
+    <value>Story</value>
+  </data>
+  <data name="qviSubject" xml:space="preserve">
+    <value>Subject</value>
+  </data>
+  <data name="qviSubmit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="qviSubmitMessage" xml:space="preserve">
+    <value>Submit Message</value>
+  </data>
+  <data name="qviSubmitted" xml:space="preserve">
+    <value>Submitted</value>
+  </data>
+  <data name="qviSubmittedBy" xml:space="preserve">
+    <value>Submitted By</value>
+  </data>
+  <data name="qviSubmittedByCAPS" xml:space="preserve">
+    <value>SUBMITTED BY</value>
+  </data>
+  <data name="qviSUBMITTEDCaps" xml:space="preserve">
+    <value>SUBMITTED</value>
+  </data>
+  <data name="qviSubmittedOn" xml:space="preserve">
+    <value>Submitted On</value>
+  </data>
+  <data name="qviSubmittedPerDay" xml:space="preserve">
+    <value>Submitted Per Day</value>
+  </data>
+  <data name="qviSubstantial" xml:space="preserve">
+    <value>Substantial</value>
+  </data>
+  <data name="qviSuccess" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="qviSumOfSquares" xml:space="preserve">
+    <value>Sum of Squares</value>
+  </data>
+  <data name="qviSupport" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="qviSwitchAscDesc" xml:space="preserve">
+    <value>Switch Asc/Desc</value>
+  </data>
+  <data name="qviSyteline" xml:space="preserve">
+    <value>Syteline</value>
+  </data>
+  <data name="qviSytelineCAPS" xml:space="preserve">
+    <value>SYTELINE</value>
+  </data>
+  <data name="qviTabbedView" xml:space="preserve">
+    <value>Tabbed View</value>
+  </data>
+  <data name="qviTabNavigation" xml:space="preserve">
+    <value>Tab Navigation</value>
+  </data>
+  <data name="qviTargetedVersion" xml:space="preserve">
+    <value>Targeted Version</value>
+  </data>
+  <data name="qviTBD" xml:space="preserve">
+    <value>TBD</value>
+  </data>
+  <data name="qviTeammates" xml:space="preserve">
+    <value>Teammates</value>
+  </data>
+  <data name="qviTESTERCaps" xml:space="preserve">
+    <value>TESTER</value>
+  </data>
+  <data name="qviTESTINGCaps" xml:space="preserve">
+    <value>TESTING</value>
+  </data>
+  <data name="qviTestingHours" xml:space="preserve">
+    <value>Testing Hours</value>
+  </data>
+  <data name="qviTestServerCaps" xml:space="preserve">
+    <value>** TEST SERVER **</value>
+  </data>
+  <data name="qviThatStatusChangeMessage" xml:space="preserve">
+    <value>That status change already exists</value>
+  </data>
+  <data name="qviTheAdministrator" xml:space="preserve">
+    <value>the administrator</value>
+  </data>
+  <data name="qviTheCodeFieldCannotBeEmpty" xml:space="preserve">
+    <value>-The Code field cannot be empty.\n</value>
+  </data>
+  <data name="qviTheCodeFieldCanOnlyBeIntegers" xml:space="preserve">
+    <value>-The Code field can only be integers.\n</value>
+  </data>
+  <data name="qviTheCodeReviewDeleteMessage" xml:space="preserve">
+    <value>The code review and all associated comments will be deleted.</value>
+  </data>
+  <data name="qviTheCodeReviewIdIsMissingOrDoesNotExist" xml:space="preserve">
+    <value>The code review ID is missing or does not exist</value>
+  </data>
+  <data name="qviTheEmailHasBeenSuccessfullySubmitted" xml:space="preserve">
+    <value>The email has been successfully submitted</value>
+  </data>
+  <data name="qviTheExternalLoginWasRemoved" xml:space="preserve">
+    <value>The external login was removed.</value>
+  </data>
+  <data name="qviTheFileAPIIsntSupportedMessage" xml:space="preserve">
+    <value>-The file API isn't supported on this browser.\n</value>
+  </data>
+  <data name="qviTheFileIsTooLargeMessage" xml:space="preserve">
+    <value>-The File is too large. Max size is ~100 MB.\n</value>
+  </data>
+  <data name="qviTheFollowingErrorsWereFound" xml:space="preserve">
+    <value>The Following Errors Were found: \n</value>
+  </data>
+  <data name="qviTheFollowingIconsMessage" xml:space="preserve">
+    <value>The following icons are used throughout the SCR Tracker application.</value>
+  </data>
+  <data name="qviTheFollowingIsAListOfProductsMessage" xml:space="preserve">
+    <value>The following is a list of products that you have access to, along with the role for each product.
+        If you would like access to another product or change your role within a product, please</value>
+  </data>
+  <data name="qviTheFollowingRestrictionsMessage" xml:space="preserve">
+    <value>The following restrictions are automatically enforced</value>
+  </data>
+  <data name="qviTheKeywordFieldCannotBeEmptyOrSpaces" xml:space="preserve">
+    <value>The keyword field cannot be empty or spaces.\n</value>
+  </data>
+  <data name="qviTheLockIsCurrentlyActiveMessage" xml:space="preserve">
+    <value>The Lock is currently active. Only the admin has access.</value>
+  </data>
+  <data name="qviTheLockIsCurrentlyInactiveMessage" xml:space="preserve">
+    <value>The Lock is currently inactive. Valid users are currently locked out.</value>
+  </data>
+  <data name="qviTheNameFieldCannotBeEmpty" xml:space="preserve">
+    <value>-The Name field cannot be empty.\n</value>
+  </data>
+  <data name="qviThereAreNoExternalMessage1" xml:space="preserve">
+    <value>There are no external authentication services configured. See</value>
+  </data>
+  <data name="qviThereAreNoExternalMessage2" xml:space="preserve">
+    <value>for details on setting up this ASP.NET application to support logging in via external services.</value>
+  </data>
+  <data name="qviTheReleaseHasBeenUpdated" xml:space="preserve">
+    <value>The release has been updated</value>
+  </data>
+  <data name="qviTheReportHasBeenSuccessfullyDeleted" xml:space="preserve">
+    <value>The report has been successfully deleted.</value>
+  </data>
+  <data name="qviTheSCRHasNotBeenResolved" xml:space="preserve">
+    <value>The SCR has not been resolved.</value>
+  </data>
+  <data name="qviTheStatusChangeAlreadyExists" xml:space="preserve">
+    <value>The status change already exists</value>
+  </data>
+  <data name="qviTheTitleFieldIsRequired" xml:space="preserve">
+    <value>The Title Field is required.</value>
+  </data>
+  <data name="qviThisArticle" xml:space="preserve">
+    <value>this article</value>
+  </data>
+  <data name="qviThisBrowserDoesntSupportMessage" xml:space="preserve">
+    <value>-This browser doesn't support the `files` property of file inputs.\n</value>
+  </data>
+  <data name="qviThisSCRDoesNotExist" xml:space="preserve">
+    <value>This SCR %s does not exist.</value>
+  </data>
+  <data name="qviTimesheetReports" xml:space="preserve">
+    <value>Timesheet Reports</value>
+  </data>
+  <data name="qviTimestamp" xml:space="preserve">
+    <value>Timestamp</value>
+  </data>
+  <data name="qviTimesUsed" xml:space="preserve">
+    <value>Times Used</value>
+  </data>
+  <data name="qviTitle" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="qviTitleActivity" xml:space="preserve">
+    <value>Title \ Activity</value>
+  </data>
+  <data name="qviTo" xml:space="preserve">
+    <value>to</value>
+  </data>
+  <data name="qviToDoList" xml:space="preserve">
+    <value>To Do List</value>
+  </data>
+  <data name="qviToDoListRowsDisplayed" xml:space="preserve">
+    <value>To Do List Rows Displayed</value>
+  </data>
+  <data name="qviToState" xml:space="preserve">
+    <value>To State</value>
+  </data>
+  <data name="qviTotal" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="qviTotalOpen" xml:space="preserve">
+    <value>Total Open</value>
+  </data>
+  <data name="qviTotalRecordsFound" xml:space="preserve">
+    <value>Total Records Found:</value>
+  </data>
+  <data name="qviType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="qviTypographicalErrors" xml:space="preserve">
+    <value>Typographical errors</value>
+  </data>
+  <data name="qviUnacceptable" xml:space="preserve">
+    <value>Unacceptable</value>
+  </data>
+  <data name="qviUnsuccessfulLoginWithService" xml:space="preserve">
+    <value>Unsuccessful login with service.</value>
+  </data>
+  <data name="qviUpdate" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="qviUpdateAllUsers" xml:space="preserve">
+    <value>Update All Users</value>
+  </data>
+  <data name="qviUpdateDepartment" xml:space="preserve">
+    <value>Update Department</value>
+  </data>
+  <data name="qviUpdateInformation" xml:space="preserve">
+    <value>Update Information</value>
+  </data>
+  <data name="qviUpdateMetrics" xml:space="preserve">
+    <value>Update Metrics</value>
+  </data>
+  <data name="qviUpdateModule" xml:space="preserve">
+    <value>Update Module</value>
+  </data>
+  <data name="qviUpdateProject" xml:space="preserve">
+    <value>Update Project</value>
+  </data>
+  <data name="qviUpdateRowCount" xml:space="preserve">
+    <value>Update Row Count</value>
+  </data>
+  <data name="qviUpdateTeam" xml:space="preserve">
+    <value>Update Team</value>
+  </data>
+  <data name="qviUpload" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="qviUrlDownloadLink" xml:space="preserve">
+    <value>URL Download Link</value>
+  </data>
+  <data name="qviUsage" xml:space="preserve">
+    <value>Usage</value>
+  </data>
+  <data name="qviUseAnotherServiceToLogIn" xml:space="preserve">
+    <value>Use another service to log in.</value>
+  </data>
+  <data name="qviUseMetrics" xml:space="preserve">
+    <value>Use Metrics</value>
+  </data>
+  <data name="qviUserId" xml:space="preserve">
+    <value>User ID</value>
+  </data>
+  <data name="qviUserLoginName" xml:space="preserve">
+    <value>User Login Name</value>
+  </data>
+  <data name="qviUserManager" xml:space="preserve">
+    <value>User Manager</value>
+  </data>
+  <data name="qviUsername" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="qviUserReferences" xml:space="preserve">
+    <value>User References</value>
+  </data>
+  <data name="qviUsersAlreadyWatchingMessage" xml:space="preserve">
+    <value>Users that are already watching this SCR will not show up.</value>
+  </data>
+  <data name="qviValidator" xml:space="preserve">
+    <value>Validator</value>
+  </data>
+  <data name="qviValue" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="qviVariable" xml:space="preserve">
+    <value>Variable</value>
+  </data>
+  <data name="qviVariableManager" xml:space="preserve">
+    <value>Variable Manager</value>
+  </data>
+  <data name="qviVariables" xml:space="preserve">
+    <value>Variable</value>
+  </data>
+  <data name="qviVersion" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="qviVersionClosed" xml:space="preserve">
+    <value>Version Closed</value>
+  </data>
+  <data name="qviVersionFound" xml:space="preserve">
+    <value>Version Found</value>
+  </data>
+  <data name="qviVersionPlanned" xml:space="preserve">
+    <value>Version Planned</value>
+  </data>
+  <data name="qviVersionResolved" xml:space="preserve">
+    <value>Version Resolved</value>
+  </data>
+  <data name="qviView" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="qviViewAllMetrics" xml:space="preserve">
+    <value>View All Metrics</value>
+  </data>
+  <data name="qviViewAllReleaseMetrics" xml:space="preserve">
+    <value>View All Release Metrics</value>
+  </data>
+  <data name="qviWarningThisActionCannotBeUndone" xml:space="preserve">
+    <value>WARNING: This action cannot be undone!</value>
+  </data>
+  <data name="qviWasNotUpdated" xml:space="preserve">
+    <value>was not updated.</value>
+  </data>
+  <data name="qviWasSuccessfullyUpdated" xml:space="preserve">
+    <value>was successfully updated.</value>
+  </data>
+  <data name="qviWatchedBy" xml:space="preserve">
+    <value>Watched By</value>
+  </data>
+  <data name="qviWatchersCAPS" xml:space="preserve">
+    <value>WATCHERS</value>
+  </data>
+  <data name="qviWatchList" xml:space="preserve">
+    <value>Watch List</value>
+  </data>
+  <data name="qviWatchListEmail" xml:space="preserve">
+    <value>Watch List Email</value>
+  </data>
+  <data name="qviWatchListRowsDisplayed" xml:space="preserve">
+    <value>Watch List Rows Displayed</value>
+  </data>
+  <data name="qviWeCanMailYouYourPasswordMessage" xml:space="preserve">
+    <value>We can mail you your password. Please enter the user ID you use to sign in to SCR Tracker.</value>
+  </data>
+  <data name="qviWeCanMailYouYourUserIDMessage" xml:space="preserve">
+    <value>We can mail you your User ID. Please enter your email that is associated with your SCR Tracker account.</value>
+  </data>
+  <data name="qviWelcomeBackToThe" xml:space="preserve">
+    <value>Welcome back to the</value>
+  </data>
+  <data name="qviWelcomeEmail" xml:space="preserve">
+    <value>Welcome Email</value>
+  </data>
+  <data name="qviWeWillSendOutAnEmailMessage" xml:space="preserve">
+    <value>We will send out an email to the administrators.</value>
+  </data>
+  <data name="qviWhat" xml:space="preserve">
+    <value>What</value>
+  </data>
+  <data name="qviWhen" xml:space="preserve">
+    <value>When</value>
+  </data>
+  <data name="qviWhere" xml:space="preserve">
+    <value>Where</value>
+  </data>
+  <data name="qviWhereClause" xml:space="preserve">
+    <value>Where Clause</value>
+  </data>
+  <data name="qviWhereClauseCAPS" xml:space="preserve">
+    <value>WHERE CLAUSE</value>
+  </data>
+  <data name="qviWho" xml:space="preserve">
+    <value>Who</value>
+  </data>
+  <data name="qviWorkaround" xml:space="preserve">
+    <value>Workaround</value>
+  </data>
+  <data name="qviWorkaroundDescription" xml:space="preserve">
+    <value>Difficulty of the workaround indicates the level of difficulty involved in the workaround’s execution. The ranking is based on the workaround’s simplicity, transparency, efficiency, and completeness, along with its impact on user and system productivity. If a workaround exists, the submitter should note the steps in the problem description.</value>
+  </data>
+  <data name="qviWorkingDays" xml:space="preserve">
+    <value>Working Days</value>
+  </data>
+  <data name="qviYes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="qviYESCaps" xml:space="preserve">
+    <value>YES</value>
+  </data>
+  <data name="qviYouAreAboutToRemoveTheCurrently" xml:space="preserve">
+    <value>You are about to remove the currently selected group.\n Would you like to continue?</value>
+  </data>
+  <data name="qviYouAreNotLoggedInMessage" xml:space="preserve">
+    <value>You are not logged in, should of went back to the login page.</value>
+  </data>
+  <data name="qviYouCanNotBuildAReleaseMessage" xml:space="preserve">
+    <value>You can not build a release without delivered SCRs assigned to the primary release coordinator.</value>
+  </data>
+  <data name="qviYouDoNotHaveAccessMessage" xml:space="preserve">
+    <value>You do not have access to the complete details of this SCR.</value>
+  </data>
+  <data name="qviYouDoNotHaveALocalUsernameMessage" xml:space="preserve">
+    <value>You do not have a local username/password for this site. Add a local
+ account so you can log in without an external login.</value>
+  </data>
+  <data name="qviYouHaveSuccessfullyCreatedAnAccount" xml:space="preserve">
+    <value>You have successfully created an account</value>
+  </data>
+  <data name="qviYourChangesHaveBeenSaved" xml:space="preserve">
+    <value>Your changes have been saved.</value>
+  </data>
+  <data name="qviYourDisplaySettingsHaveBeenUpdated" xml:space="preserve">
+    <value>Your display settings have been updated.</value>
+  </data>
+  <data name="qviYourPasswordHadBeenSet" xml:space="preserve">
+    <value>Your password has been set.</value>
+  </data>
+  <data name="qviYourPasswordHasBeenChanged" xml:space="preserve">
+    <value>Your password has been changed.</value>
+  </data>
+  <data name="qviYourProfileHasBeenUpdated" xml:space="preserve">
+    <value>Your profile has been updated.</value>
+  </data>
+  <data name="qviYourStartingHomePage" xml:space="preserve">
+    <value>Your starting home page</value>
+  </data>
+  <data name="qviYouveSuccessfullyAuthenticatedWith" xml:space="preserve">
+    <value>You've successfully authenticated with %s</value>
+  </data>
+</root>

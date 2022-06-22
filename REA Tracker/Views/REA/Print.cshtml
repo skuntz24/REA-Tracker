@@ -1,0 +1,187 @@
+﻿@model REA_Tracker.Models.DisplayREA
+@using HelperMethods.Infrastructure;
+
+@{
+    Layout = "~/Views/Shared/_BlankLayout.cshtml";
+}
+@Styles.Render("~/Content/css")
+<title>@ViewBag.Title</title>
+<script>
+    window.print();
+</script>
+@{
+    if (!Request.IsAuthenticated)
+    {
+    <div class="alert alert-danger"> Please Log In <a href="/Account/Login?ReturnUrl=@Request.Path">REA Tracker</a> to view all information.</div>
+    }
+}
+
+@if(@ViewBag.Valid == false)
+{
+    <h2> @QVIHtmlHelper.GetTranslation("qviThisSCRDoesNotExist", ViewBag.SCRNum)</h2>
+}
+else if(@ViewBag.NoId== true)
+{
+    <h2> Invalid REA </h2>
+}
+else
+{
+<div class="hidden-print">
+    <br />
+</div>
+    if (Model.HasAccess)
+    {
+        ViewBag.Title = "Print REA # " + Model.TrackingId + " - " + Model.Title;
+        <div class="layout layout-main-left layout-stack-sm">
+            <div class="col-md-12 col-sm-12">
+                <div class="portlet">
+                    <div class="portlet-body">
+                        <div class="bs-docs-section-sub" id="layout-responsive" data-title="Responsive Stacking">
+                            <div class="">
+                                <h4>@Html.PriorityIcon(Model.Priority, "") @Html.IssueIcon(Model.Issue, "") <b>REA# @Model.TrackingId - @Model.Title</b><b class="pull-right text-primary">@Model.Status.ToUpper()</b></h4>
+                            </div>
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td align="left" colspan="2"><b style="font-size:xx-small">Product</b><br /><b style="font-size:large">@Model.Product</b></td>
+                                        <td align="center" width="50"><b style="font-size:xx-small">Help</b><br />
+                                        </td>
+                                    </tr>
+                                    <tr><td align="right" width="150">Submitted By:</td><td colspan="3"><b>@Model.SubmittedBy</b> on @Model.SubmittedOn</td></tr>
+                                    @if (!Model.AssignedTo.IsEmpty())
+                                    {
+                                        <tr><td align="right" width="150">Assigned To:</td><td colspan="3"><b>@Model.AssignedTo</b> on @Model.AssignedOn</td></tr>
+                                    }
+                                    @if (!Model.ResolvedBy.IsEmpty())
+                                    {
+                                        <tr><td align="right" width="150">@Resources.strings.qviResolvedBy:</td><td colspan="3"><b>@Model.ResolvedBy</b> on @Model.ResolvedOn</td><td colspan="4">Resolved: <b>@Model.VersionReleased</b></td></tr>
+                                    }
+                                    @if (!Model.ClosedBy.IsEmpty())
+                                    {
+                                        <tr><td align="right" width="150">@Resources.strings.qviClosedBy:</td><td colspan="3"><b>@Model.ClosedBy</b></td><td colspan="4">@Model.ClosedReasonTitle: <b>@Model.VersionClosed</b></td></tr>
+                                    }                                    
+                                </tbody>
+                            </table>
+
+                            @if (Model.Related != null && Model.Related.Count != 0)
+                            {
+                                <h4 class="text-primary">Related REAs</h4>
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        @foreach (var item in Model.Related)
+                                        {
+                                            <tr>
+                                                <td>@Html.PriorityIcon((string)item.Priority) @Html.IssueIcon((string)item.Issue) REA # @item.TrackingID - @item.Title</td>
+                                                <td align="center">@item.Status</td>
+                                                <td align="center">@item.AssignedTo</td>
+                                                <td align="center">@item.VersionPlanned</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+
+                            @if (Model.Attached.Count > 0)
+                            {
+                                <!-- ToDo: Attachment -->
+                                <h4 class="text-primary">Attachments</h4>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th width="150px">Timestamp</th>
+                                            <th>File Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Attached)
+                                        {
+                                            <tr>
+                                                <td align="center">
+                                                    <div>
+                                                        @(item.FileDate != null ? item.FileDate.ToString("MM/dd/yyyy HH:mm:ss") : "" )
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    @item.FileName
+                                                    <br />@item.Description
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+
+
+                            <h4 class="text-primary">History</h4>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th width="150px">Timestamp</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                @if (Request.IsAuthenticated && Model.HasAccess)
+                                {
+                                    <tbody>
+                                        @foreach (var item in Model.History)
+                                        {
+                                            if ((Convert.ToInt32(item.Type) == 1) ||
+                                                (Convert.ToInt32(item.Type) == 2) ||
+                                                (Convert.ToInt32(item.Type) == 3)
+                                                )
+                                            {
+                                                <tr>
+                                                    <td align="center">
+                                                        <div>@item.MadeOn<br />@item.MadeBy</div>
+                                                    </td>
+                                                    <td>
+                                                        <p>
+                                                            @Html.ViewHistory((string)item.Description, (int)item.Type, (bool)item.DisplayHtml)
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                        }
+                                    </tbody>
+                                }
+                                else
+                                {
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div>
+                                                    @Model.History.ElementAt(Model.History.Count - 1).MadeOn
+                                                </div>
+                                            </td>
+                                            <td>
+                                                @Model.History.ElementAt(Model.History.Count - 1).MadeBy
+                                            </td>
+                                            @if (@Model.History.ElementAt(Model.History.Count - 1).fileID != "" && @Model.History.ElementAt(Model.History.Count - 1).fileID != null && @Model.History.ElementAt(Model.History.Count - 1).Description == "")
+                                            {
+                                                <td>
+                                                    File @Html.ActionLink((string)Model.History.ElementAt(Model.History.Count - 1).FileName, "Download", new { @file_id = Convert.ToInt32(Model.History.ElementAt(Model.History.Count - 1).fileID) }) was attached.
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td>
+                                                    @Html.ViewHistory((string)Model.History.ElementAt(Model.History.Count - 1).Description, (int)Model.History.ElementAt(Model.History.Count - 1).Type, (bool)Model.History.ElementAt(Model.History.Count - 1).DisplayHtml)
+                                                </td>
+                                            }
+                                        </tr>
+                                    </tbody>
+                                }
+                            </table>
+                        </div> <!--docs-section-->
+                    </div> <!--portlet-body-->
+                </div> <!--portlet-->
+            </div> <!--col-md-12-->
+        </div> <!--layout-->
+    } @*end has access*@
+    else 
+    {
+        <p>You do not have access</p>
+    } @*end no access*@
+}
+<!--End else  -->

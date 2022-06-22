@@ -1,0 +1,104 @@
+﻿@model REA_Tracker.Models.ApplicationSettingsViewModel
+@{
+    ViewBag.Title = Resources.strings.qviApplicationSettings;
+}
+
+<section class="demo-section">
+    <h4 class="content-title"><u>@ViewBag.Title</u> </h4>
+
+    
+    <table class="table table-bordered" style="margin: auto;">
+        <thead>
+            <tr class="header">
+                <th style="text-align: center;">
+                </th>
+                <th style="text-align: center;">
+                    @Resources.strings.qviID
+                </th>
+                <th style="text-align: center;">
+                    @Resources.strings.qviVariable
+                </th>
+                <th style="text-align: center;">
+                    @Resources.strings.qviValue
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (System.Data.DataRow data in Model.Variables)
+            {
+                <tr>
+                    <td style="text-align: center;">
+                        <a href="/Admin/ApplicationSettingsEdit/@Convert.ToString(data["ID"])"><i style="cursor:pointer;" onclick="" class="glyphicon fa-1x glyphicon-edit" title="Edit Variable"></i></a>                        
+                    </td>
+                    <td style="text-align: center;">
+                        @Convert.ToString(data["ID"])
+                    </td>
+                    <td style="text-align: center;">
+                        @Convert.ToString(data["Variable"])
+                    </td>
+                    <td style="text-align: center;">
+                        @Convert.ToString(data["Value"])
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @*
+    <h5 class="text-primary">Title</h5>
+    <div class="form form-horizontal">
+        <div class="form-group">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <input type="text" id="NewTitle" name="NewTitle" value="@Model.Title" class="form-control" maxlength="255" width="150" />
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                <input type="submit" value="Update" name="btnUpdateTitle" class="btn btn-primary form-control" />
+            </div>
+        </div>
+    </div>
+
+    <h5 class="text-primary">Admin Email Address</h5>
+    <div class="form form-horizontal">
+        <div class="form-group">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <input type="text" id="NewAdminEmail" name="NewAdminEmail" value="@Model.AdminEmail" class="form-control" maxlength="255" width="150" />
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                <input type="submit" value="Update" name="btnUpdateAdminEmail" class="btn btn-primary form-control" />
+            </div>
+        </div>
+    </div>
+
+    <h5 class="text-primary">Enable Email</h5>
+    <div class="form form-horizontal">
+        <div class="form-group">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-secondary @if (Model.EnableEmail) { <text> active </text> } ">
+                        <input type="radio" name="options" id="EnableEmail" autocomplete="off" @if (Model.EnableEmail) { <text> checked </text> } > Yes
+                    </label>
+                    <label class="btn btn-secondary @if (!Model.EnableEmail) { <text> active </text> } ">
+                        <input type="radio" name="options" id="DisableEmail" autocomplete="off" @if (!Model.EnableEmail) { <text> checked </text> }> No
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h5 class="text-primary">Enable Logging</h5>
+    <div class="form form-horizontal">
+        <div class="form-group">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-secondary active">
+                        <input type="radio" name="options" id="option1" autocomplete="off" checked> Yes
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="radio" name="options" id="option2" autocomplete="off"> No
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    *@
+</section>

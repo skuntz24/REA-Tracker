@@ -1,0 +1,61 @@
+﻿@model REA_Tracker.Models.AttachmentManagerViewModel
+          
+@{
+    ViewBag.Title = "AttachmentManagerEdit";
+}
+
+<script>
+    function ValidateAttachment()
+    {
+        var ReturnText = "";
+        var Valid = true;
+        var MAX_SIZE_BYTES = (100 * 1000000); //100 MB maximum size
+        var FileNumber = document.getElementById("FileSCRID");
+        var input, file;
+        if (!window.FileReader) {
+            alert += @Resources.strings.qviTheFileAPIIsntSupportedMessage;
+            Valid = false;
+        }
+        input = document.getElementById('File');
+        if (!input.files) {
+            alert += @Resources.strings.qviThisBrowserDoesntSupportMessage;
+            Valid = false;
+        }
+        else {
+            file = input.files[0];
+            if (file.size > MAX_SIZE_BYTES)
+            {
+                Valid = false;
+                alert += @Resources.strings.qviTheFileIsTooLargeMessage;
+            }
+        }
+        if (ReturnText.length != 0 && Valid == false)
+        {
+            alert(@Resources.strings.qviTheFollowingErrorsWereFound + ReturnText);
+        }
+        return Valid;
+    }
+</script>
+<h2>@Resources.strings.qviEditAttachment</h2>
+@if (Model.FileID != 0)
+{
+    using (Html.BeginForm("AttachmentManagerEdit", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="col-lg-3">
+            <input type="hidden" name="FileID" value="@Model.FileID" />
+            <!---input type="file" class="form-control col-md-3" name="File" id="File" /-->
+            <div class="form-inline"><label> Replace File: </label>@Html.TextBoxFor(model => model.File, new { @class = "form-control", @type = "file" })</div>
+            @Resources.strings.qviNoteChangingTheFileMessage
+            <br />
+            <!-- File Name -->
+            <div class="form-inline"><label> @Resources.strings.qviFileName </label><input type="text" maxlength="200" value="@Model.FileName" class="form-control col-md-3" name="FileName" id="FileName" /></div>
+            <br />
+            <!-- SCR ID -->
+            <div class="form-inline"><label> @Resources.strings.qviFileNumber </label> <input type="number" value="@Model.FileSCRID" class="form-control col-md-3" name="FileSCRID" id="FileSCRID" /></div>
+            <br />
+            <!-- Description -->
+            <div class="form-inline"><label> @Resources.strings.qviDescription </label><input type="text" maxlength="500" value="@Model.EditAttachmentDescription" class="form-control col-md-3" name="EditAttachmentDescription" id="EditAttachmentDescription" /></div>
+            <button type="submit" onsubmit="return ValidateAttachment()"> @Resources.strings.qviSubmit </button>
+        </div>
+    }
+}

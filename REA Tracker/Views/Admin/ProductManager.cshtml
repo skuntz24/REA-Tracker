@@ -1,0 +1,230 @@
+﻿@model SCR_Tracker.Models.ProductManagerViewModel
+@using HelperMethods.Infrastructure
+@{
+    ViewBag.Title = Resources.strings.qviProductManager;
+}
+<script type="text/javascript" src="~/Scripts/TableSort/jquery.tablesorter.js"></script>
+<script type="text/javascript" src="~/Scripts/PopUp.js">   
+</script> 
+<script>
+    $(document).ready(function () {
+        $('#ModuleTable').tablesorter();
+        $('#TeamTable').tablesorter();
+    });
+</script>
+
+@using (Html.BeginForm("ProductManager", "Admin", FormMethod.Post))
+{
+    
+
+    <div class="layout layout-main-left layout-stack-sm">
+        <div class="col-md-3 col-sm-4 layout-main">
+            <h4 class="portlet-title">
+                <u>@Resources.strings.qviProductManager</u>
+                @*
+                <button class="btn btn-default pull-right" onclick="javascript: window.location.href='@Url.Action("ProductManagerCreate", "Admin")'">
+                    <i class="fa fa-plus"> </i>
+                </button>
+                *@
+                <a href="/Admin/ProductManagerCreate" class="btn btn-default pull-right"> <i class="fa fa-plus"> </i> </a>
+            </h4>
+            @Html.DisplaySelectList("productID", Model.ProductName, "class='form-control fixed-width' onchange='this.form.submit()' data-val='true'")
+                <br/>
+                <div class="list-group">
+                    <a style="cursor:pointer;" onmouseup="javascript:location.href = '/Admin/ProductManager/@Model.productID';" class="list-group-item">@Resources.strings.qviDetails</a>
+                    <a style="cursor:pointer;" onmouseup="javascript:location.href = '/Admin/ProductManagerEditInformation/@Model.productID';" class="list-group-item">@Resources.strings.qviUpdateInformation</a>
+                    <a style="cursor:pointer;" onmouseup="javascript:location.href = '/Admin/ProductManagerEditModule/@Model.productID';" class="list-group-item">@Resources.strings.qviUpdateModule</a>
+                    <a style="cursor:pointer;" onmouseup="javascript:location.href = '/Admin/ProductManagerEditTeam/@Model.productID';" class=" list-group-item">@Resources.strings.qviUpdateTeam</a>
+                    <a style="cursor:pointer;" onmouseup="javascript:location.href = '/Admin/ProductManagerMetrics/@Model.productID';" class=" list-group-item">@Resources.strings.qviUpdateMetrics</a>
+                </div>
+
+            </div>
+
+            <div class="col-md-9 col-sm-8 layout-sidebar">
+
+                <h3> @Resources.strings.qviBasic</h3>
+                <table id="" class="table table-bordered col-lg-3 portlet-body">
+                    <thead>
+                        <tr>
+                            <th>
+                            </th>
+                            <th>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@Resources.strings.qviName:</td>
+                            <td align="center">
+                                @Model.CurrentProductName
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Resources.strings.qviDescription:</td>
+                            <td align="center">
+                                @Model.Description
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Resources.strings.qviProductOwner:</td>
+                            <td align="center">
+                                <a style="cursor:pointer;" onclick="javascript: popUp('/Account/ViewUser/@Model.Owner')">@Model.getFullName(Model.Owner)</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Resources.strings.qviValidator:</td>
+                            <td align="center">
+                                <a style="cursor:pointer;" onclick="javascript: popUp('/Account/ViewUser/@Model.Vaildator')">@Model.getFullName(Model.Vaildator)</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Resources.strings.qviDefaultTester:</td>
+                            <td align="center">
+                                <a style="cursor:pointer;" onclick="javascript: popUp('/Account/ViewUser/@Model.DefaultTester')">@Model.getFullName(Model.DefaultTester)</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Resources.strings.qviReleaseCoordinator:</td>
+                            <td align="center">
+                                <a style="cursor:pointer;" onclick="javascript: popUp('/Account/ViewUser/@Model.ReleaseCoordinator')">@Model.getFullName(Model.ReleaseCoordinator)</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Resources.strings.qviReleaseCoordinator 2:</td>
+                            <td align="center">
+                                <a style="cursor:pointer;" onclick="javascript: popUp('/Account/ViewUser/@Model.ReleaseCoordinator2')">@Model.getFullName(Model.ReleaseCoordinator2)</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Resources.strings.qviSCCB:</td>
+                            <td align="center">
+                                <a style="cursor:pointer;" onclick="javascript: popUp('/Account/ViewUser/@Model.SCCB')">@Model.getFullName(Model.SCCB)</a>
+                            </td>
+                        <tr>
+                            <td>@Resources.strings.qviRetired:</td>
+                            <td align="center">
+                                @if (Model.Retired)
+                                {<text>Yes</text>}
+                                else
+                                {<text>No</text>}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Resources.strings.qviIsInternal</td>
+                            <td align="center">
+                                @if (Model.isInternal)
+                                {<text>Yes</text>}
+                                else
+                                {<text>No</text>}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Resources.strings.qviBillingCode</td>
+                            <td align="center">
+                                @Model.BillingCode
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Resources.strings.qviDistributionList:</td>
+                            <td align="center">
+                                    @Model.DistributionList
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Resources.strings.qviUseMetrics:</td>
+                            <td align="center">
+                                   @if(Model.UseMetrics)
+                                   {
+                                       <text>@Resources.strings.qviYes</text>
+                                   }
+                                   else
+                                   {
+                                       <text>@Resources.strings.qviNo</text>
+                                   }
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+
+                <div class="portlet">
+                    <div class="portlet-body col-lg-12">
+                        <h3>@Resources.strings.qviModules</h3>
+                        <table id="ModuleTable" class="table table-bordered tablesorter">
+                            <thead>
+                                <tr>
+                                    <th class="col-lg-1">
+                                        @Resources.strings.qviID
+                                    </th>
+                                    <th class="col-lg-3">
+                                        @Resources.strings.qviName
+                                    </th>
+                                    <th class="col-lg-6">
+                                        @Resources.strings.qviDescription
+                                    </th>
+                                    <th class="col-lg-2">
+                                        @Resources.strings.qviRetired
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.ProductModules)
+                            {
+                                    <tr>
+                                        <td align="center">
+                                            @item.ID
+                                        </td>
+                                        <td align="center">
+                                            @item.Name
+                                        </td>
+                                        <td>
+                                            @item.Description
+                                        </td>
+                                        <td align="center">
+                                            @if (item.isRetired)
+                                        {<text>@Resources.strings.qviYes</text>}
+                                        else
+                                        {<text>@Resources.strings.qviNo</text>}
+                                        </td>
+                                    </tr>
+                            }
+                            </tbody>
+                        </table>
+                        <h3> @Resources.strings.qviProductTeam </h3>
+                        <table id="TeamTable" class="table table-bordered tablesorter">
+                            <thead>
+                                <tr>
+                                    <th class="col-lg-1">
+                                        @Resources.strings.qviID
+                                    </th>
+                                    <th class="col-lg-3">
+                                        @Resources.strings.qviName
+                                    </th>
+                                    <th class="col-lg-4">
+                                        @Resources.strings.qviLogOn
+                                    </th>
+                                    <th class="col-lg-4">
+                                        @Resources.strings.qviRole
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var TeamMemmber in Model.ProductTeam)
+                            {
+                                    <tr>
+                                        <td align="center"> @TeamMemmber.ID    </td>
+                                        <td align="center">
+                                            <a style="cursor:pointer;" onclick="javascript: popUp('/Account/ViewUser/@TeamMemmber.ID')">@TeamMemmber.Name</a>
+                                        </td>
+                                        <td align="center"> @TeamMemmber.Logon </td>
+                                        <td align="center"> @TeamMemmber.Role  </td>
+                                    </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                </div>
+            </div>
+    }

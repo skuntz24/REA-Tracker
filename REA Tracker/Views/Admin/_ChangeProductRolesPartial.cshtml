@@ -1,0 +1,74 @@
+﻿@using Microsoft.AspNet.Identity
+@model SCR_Tracker.Models.EditUserManagerViewModel
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    <div class="tab-pane fade in" id="roles-tab">
+        <h3 class="content-title">
+            <u>@Resources.strings.qviProductRoles</u>
+        </h3>
+        <p class="text-success">@ViewBag.StatusMessage[2]</p>
+        <p>@Html.ValidationSummary()</p>
+        <p>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </p><br>
+        <br>
+    <!-- add to new role-->
+        <table class="table table-borderless">
+            <tbody>
+            <tr>
+                <td>
+                    <select id="AddProductID" name="AddProductID" class="form-control">
+                        @foreach (var item in Model.getNewAccessProducts())
+                        {
+                            <option value="@item.ID" @item.IsDefault>@item.Name</option>
+                        }
+                    </select>
+                </td>
+                <td class="qvi-medium-width">
+                    @Html.DropDownListFor(m => m.newRole, Model.GetRoleSelectList(0), new { @class = "form-control qvi-medium-width" })
+                </td>
+                <td class="qvi-small-width" width="14.5%">
+                    <button name="button" value="AddtoTeam" style="width:100%"  class="button form-control">
+                        <i class="fa fa-plus-circle"></i>
+                    </button>
+                </td>
+            </tr>
+                </tbody>
+        </table>
+    <!-- modify current role-->
+        <table class="table table-bordered">
+            <thead>
+                <tr class="header">
+                    <th style="text-align: center;">@Resources.strings.qviProduct</th>
+                    <th class="qvi-medium-width" style="text-align: center;">@Resources.strings.qviRole</th>
+                    <th class="qvi-small-width" width="14.5%" style="text-align: center;">@Resources.strings.qviRemove</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.UserRoles.Count(); i++)
+                {
+                    <tr>
+                        <td>
+                            @Model.UserRoles[i].ProductName
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(m => m.UserRoles[i].RoleID, Model.GetRoleSelectList(Model.UserRoles[i].RoleID), new { @class = "form-control qvi-medium-width" })
+                            @Html.HiddenFor(m => m.UserRoles[i].ProductID, Model.UserRoles[i].ProductID)
+                        </td>
+                        <td class="qvi-small-width" width="14.5%" style="text-align: center;">
+                            @Html.CheckBoxFor(m => m.UserRoles[i].Delete)
+                        </td>
+                </tr>
+
+                }
+            </tbody>
+        </table>
+        <div class="form-group">
+            <div class="col-md-7 col-md-push-3">
+                <button type="submit" class="btn btn-primary" name="button" value="Roles">@Resources.strings.qviSaveChanges</button>
+                <button type="reset" class="btn btn-default">@Resources.strings.qviReset</button>
+            </div><!-- /.col -->
+        </div><!-- /.form-group -->
+    </div><!-- /.tab-pane -->
+}

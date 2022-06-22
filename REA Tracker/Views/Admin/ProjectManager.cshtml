@@ -1,0 +1,326 @@
+﻿@model SCR_Tracker.Models.ProjectManagerViewModel
+@using HelperMethods.Infrastructure
+@using QVICommonIntranet.Database
+@using System.ComponentModel.DataAnnotations;
+@{
+    ViewBag.Title = "Project Codes - DN4407";
+}
+<script type="text/javascript" src="~/Scripts/TableSort/jquery.tablesorter.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#table1').tablesorter({
+            headers: {
+                0: { sorter: false }
+            }
+        });
+        $("#Support").val('@Model.Support')
+    });
+</script>
+
+<script>
+    function ValidateNewProject() {
+        var valid = true;
+        var ErrorString = "";
+        var code = document.getElementById("Code").value;
+        code = code.trim();
+        if (code.length == 0) {
+            valid = false;
+            ErrorString += @Resources.strings.qviTheCodeFieldCannotBeEmpty
+        }
+
+        var name = document.getElementById("Name").value;
+        name = name.trim();
+        if (name.length == 0) {
+            valid = false;
+            ErrorString += @Resources.strings.qviTheNameFieldCannotBeEmpty
+        }
+        
+        if (valid == false) {
+            alert(ErrorString);
+        }
+        return valid;
+    }
+</script>
+
+<section class="demo-section">
+    @if (Model.ProjectID == -1)
+    {
+        if (!Model.IsValidID)
+        {
+            <div class="alert alert-danger">
+                <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+                <strong>@Resources.strings.qviErrorExclamation</strong> @Resources.strings.qviInvalidProjectIdNumber
+            </div>
+        }
+        <h4 class="content-title"><u>@ViewBag.Title</u></h4>
+        <p>
+            @Resources.strings.qviListOfProjectsCreatedDescription
+        </p>
+    }
+    <br />
+   @using (Html.BeginForm())
+   {
+        @Html.AntiForgeryToken()
+        <input type="hidden" value="@Model.ProjectID" name="ProjectID" />
+        if (Model.ProjectID == -1)
+        { //Create New Project
+            <h4 class="content-title"><u>Add New Project</u></h4>
+            <p>
+                @Resources.strings.qviTheFollowingRestrictionsMessage
+                <ul>
+                    <li>@Resources.strings.qviProjectCodeMustBeUnique</li>
+                    <li>@Resources.strings.qviProjectNameIsRequired</li>
+                    <li>@Resources.strings.qviMaximumLengthOfAProjectName</li>
+                </ul>
+            </p>
+            <form class="form-inline">
+                <div class="form-group col-lg-3">
+                    <label class="" for="Code">Code</label>
+                    <input type="text" class="form-control" id="Code" name="Code" placeholder="Code">
+                </div>
+                <div class="form-group col-lg-9">
+                    <label class="" for="Name">Name</label>
+                    <input type="text" class="form-control" id="Name" name="Name" placeholder="Name">
+                </div>
+                <div class="form-group col-lg-12">
+                    <label class="" for="Description">Description</label>
+                    <textarea name="Description" maxlength="1000" cols="30" rows="6" class="english-text form-control form-inline" placeholder="(optional)"></textarea>
+                </div>
+                <div class="form-group col-lg-12">
+                    <button type="submit" class="btn btn-success" value="Add" name="button" onclick="return ValidateNewProject();"><i class="fa fa-plus fa-lg"></i> Add</button>
+                </div>
+            </form>
+
+
+            <table id="table1" class="table table-bordered tablesorter">
+                <thead>
+                    <tr>
+                        <th width="50px"> </th>
+                        <th>@Resources.strings.qviCode</th>
+                        <th>@Resources.strings.qviName</th>
+                        <th>@Resources.strings.qviActive</th>
+                        <th>@Resources.strings.qviSupport</th>
+                        <th width="125px">@Resources.strings.qviCreationDate</th>
+                        <th width="125px">@Resources.strings.qviStartDate</th>
+                        <th width="125px">@Resources.strings.qviEndDate</th>
+                        <th>@Resources.strings.qviDetails</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.AllProjects)
+                    {
+                        <tr>
+                            <td id="edit"><a href="/Admin/ProjectManager/@item.ID">@Resources.strings.qviEdit</a></td>
+                            <td>@item.Code</td>
+                            <td>@item.Name</td>
+                            <td align="center">@item.Active</td>
+                            <td align="center">@item.SupportName</td>
+                            <td align="center">@item.CreateDate</td>
+                            <td align="center">@item.StartDate</td>
+                            <td align="center">@item.EndDate</td>
+                            <td align="center"><i style="cursor:pointer;" onclick="javascript: $('#@item.ID').modal('show');" class="fa fa-2x fa-file-text"></i></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            foreach (var item in Model.AllProjects)
+            {
+                <div class="modal modal-styled fade" id="@item.ID" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel">
+                                    @Resources.strings.qviProject @item.Code - @item.Name
+                                </h4>
+                            </div>
+                            <div class="modal-body" style="max-height:500px; overflow-y: auto;">
+                                <div class="row">
+                                    <div class="col-lg-12"><h6>@Resources.strings.qviDescription</h6></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        @if (string.IsNullOrWhiteSpace(item.Description))
+                                        {
+                                            @Html.Nl2Br("None")
+                                        }
+                                        else
+                                        {
+                                            @Html.Nl2Br((string)item.Description)
+                                        }
+                                    </div>
+                                </div>
+                                <!-- spacer --><div class="row"><div class="col-lg-12"><br /></div></div>
+                                <div class="row">
+                                    <div class="col-lg-4"><h6>@Resources.strings.qviOwner</h6></div>
+                                    <div class="col-lg-4"><h6>@Resources.strings.qviActive</h6></div>
+                                    <div class="col-lg-4"><h6>@Resources.strings.qviSupport</h6></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        @if (string.IsNullOrWhiteSpace(item.OwnerName))
+                                        {
+                                            @Html.Nl2Br("None")
+                                        }
+                                        else
+                                        {
+                                            @Html.Nl2Br((string)item.OwnerName)
+                                        }
+                                    </div>
+                                    <div class="col-lg-4">@item.Active</div>
+                                    <div class="col-lg-4">@item.SupportName</div>
+                                </div>
+                                <!-- spacer --><div class="row"><div class="col-lg-12"><br /></div></div>
+                                <div class="row">
+                                    <div class="col-lg-4"><h6>@Resources.strings.qviCreationDate</h6></div>
+                                    <div class="col-lg-4"><h6>@Resources.strings.qviStartDate</h6></div>
+                                    <div class="col-lg-4"><h6>@Resources.strings.qviEndDate</h6></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4">@item.CreateDate</div>
+                                    <div class="col-lg-4">
+                                        @if (string.IsNullOrWhiteSpace(item.StartDate))
+                                        {
+                                            @Html.Nl2Br("None")
+                                        }
+                                        else
+                                        {
+                                            @Html.Nl2Br((string)item.StartDate)
+                                        }
+                                    </div>
+                                    <div class="col-lg-4">
+                                        @if (string.IsNullOrWhiteSpace(item.EndDate))
+                                        {
+                                            @Html.Nl2Br("None")
+                                        }
+                                        else
+                                        {
+                                            @Html.Nl2Br((string)item.EndDate)
+                                        }
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top:10px">
+                                    <div class="col-lg-8"><h6>@Resources.strings.qviProductUsage</h6></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <ul>
+                                            @foreach (var build in Model.ProductUsage)
+                                            {
+                                                if (build.BillingCode == item.Code)
+                                                {
+
+                                                    <li><a href="/Home/Dashboard/@build.ProductID" target="blank"><span> @build.ProductName</span><br></a></li>
+
+                                                }
+                                            }
+                                        </ul>                                
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.strings.qviClose</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <h4 class="content-title"><u>@Resources.strings.qviUpdateProject</u></h4>
+            <p>
+                @Resources.strings.qviTheFollowingRestrictionsMessage
+                <ul>
+                    <li>@Resources.strings.qviProjectCodeMustBeUnique</li>
+                    <li>@Resources.strings.qviProjectNameIsRequired</li>
+                    <li>@Resources.strings.qviMaximumLengthOfAProjectName</li>
+                </ul>
+            </p>
+            <form class="form-inline">
+                <div class="form-group col-lg-3">
+                    <label class="" for="Code">Code</label>
+                    <input type="text" class="form-control" id="Code" name="Code" placeholder="Code" value="@Model.Code">
+                </div>
+                <div class="form-group col-lg-6">
+                    <label class="" for="Name">Name</label>
+                    <input type="text" class="form-control" id="Name" name="Name" placeholder="Name" value="@Model.Name">
+                </div>
+                <div class="form-group col-lg-1">
+                    <label class="" for="Active">Active</label>
+                    @if (Model.Active)
+                    {
+                    <input type="checkbox" class="form-control" id="Active" name="Active" value="true" checked>
+                    }
+                    else
+                    {
+                    <input type="checkbox" class="form-control" id="Active" name="Active"  value="true">
+                    }
+                </div>
+                <div class="form-group col-lg-2">
+                    <label class="" for="Support">Type</label>
+                        @Html.EnumDropDownListFor(m => m.SupportType, htmlAttributes: new { @class = "form-control",Name= "Support", @id="Support"})
+                </div>
+                <div class="form-group col-lg-12">
+                    <label class="" for="Description">Description</label>
+                    <textarea name="Description" maxlength="1000" cols="30" rows="6" class="english-text form-control form-inline" placeholder="(optional)">@Model.Description</textarea>
+                </div>
+                <div class="form-group col-lg-6">
+                    <label class="" for="Owner">Owner</label>
+                    <input type="text" class="form-control" id="Owner" name="Owner" value="@Model.OwnerName" readonly>
+                @*
+                    <select name="Owner" class="form-control">
+                        <option value="-1"></option>
+                        <option value="1">Someone</option>
+                    </select>
+                *@
+                </div>
+                <div class="form-group col-lg-2">
+                    <label class="" for="CreationDate">Creation Date</label>
+                    <input type="date" class="form-control" id="CreateDate" name="CreateDate" value="@Model.CreateDate" readonly>
+                </div>
+                <div class="form-group col-lg-2">
+                    <label class="" for="StartDate">Start Date</label>
+                    <input type="date" class="form-control" id="StartDate" name="StartDate" value="@Model.StartDate">
+                </div>
+                <div class="form-group col-lg-2">
+                    <label class="" for="EndDate">End Date</label>
+                    <input type="date" class="form-control" id="EndDate" name="EndDate" value="@Model.EndDate">
+                </div>
+
+                <div class="form-group col-lg-12">
+                    <button type="submit" class="btn btn-success" value="Update" name="button" onclick="return ValidateNewProject();"><i class="fa fa-arrow-circle-o-up fa-lg"></i> Update</button>
+                    <button type="button" class="btn btn-danger" value="Cancel" name="button" onclick="window.history.back()" style="margin-left:20px;"><i class="fa fa-close fa-lg"></i> Cancel</button>
+                </div>
+            </form>
+            @*
+                <table class="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th class="qvi-col-datetime">Timestamp</th>
+                            <th class="qvi-col-name">Changed By</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            @foreach (var item in Model.ProjectHistory)
+                            {
+                                <tr>
+                                    <td align="center"><div>@item.MadeOn</div></td>
+                                    <td align="center">
+                                        <a style="cursor:pointer;" onclick="javascript: popUp('/Account/ViewUser/@item.MadeById')">@item.MadeBy</a>
+                                    </td>
+                                    <td>@item.Description</td>
+                                </tr>
+                            }
+                </tbody>
+            </table>
+            *@
+        } //end of project IF
+    }
+    <br />
+   
+</section>
+

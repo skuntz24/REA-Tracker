@@ -1,0 +1,283 @@
+﻿@{
+    ViewBag.Title = Resources.strings.qviDetailedReports;
+}
+
+@model REA_Tracker.Models.DisplayReportsViewModel
+@using HelperMethods.Infrastructure;
+@{
+    ViewBag.Title = Resources.strings.qviReports;
+}
+@if(!String.IsNullOrEmpty(ViewBag.Message))
+{
+    <script>
+        alert("@Resources.strings.qviTheReportHasBeenSuccessfullyDeleted");
+    </script>
+}
+<script type="text/javascript" src="~/Scripts/TableSort/jquery.tablesorter.js"></script> 
+<script type="text/javascript" src="~/Scripts/PopUp.js">
+</script>
+<script>
+    $('a').tooltip();
+    jQuery(document).ready(function () {
+        jQuery('#myreports').tablesorter(
+            {
+                headers: {
+                    0: { sorter: false },
+                    3: { sorter: false },
+                    4: { sorter: false }
+                }
+            });
+    });
+    jQuery(document).ready(function () {
+        jQuery('#otherReports').tablesorter(
+            {
+                headers: {
+                    0: { sorter: false },
+                    4: { sorter: false }
+                }
+            });
+    });
+
+    $(document).ready(function () {
+        $(".toggler").click(function (e) {
+            e.preventDefault();
+            $('.' + $(this).attr('data-prod-cat')).toggle();
+            if (document.getElementById("toggler").innerHTML == "@Resources.strings.qviHidePrivate") {
+                document.getElementById("toggler").innerHTML = "@Resources.strings.qviShowPrivate";
+            }
+            else {
+                document.getElementById("toggler").innerHTML = "@Resources.strings.qviHidePrivate";
+            }
+        });
+
+    });
+</script>
+
+<div class="layout layout-main-left layout-stack-sm">
+    <div class="col-md-3 col-sm-4 layout-main">
+        <h4 class="portlet-title">
+            <u>@Resources.strings.qviReports</u>
+        </h4>
+        <div class="portlet-body">
+            @using (Html.BeginForm())
+            {
+                @Html.DisplaySelectList("product", Model.productList, "class= 'form-control fixed-width' onchange='this.form.submit();'");
+            }
+        </div>
+        </br>
+        <div class="portlet">
+            <h4> @Resources.strings.qviGeneralReports </h4>
+            <div class="list-group">
+                <a style="cursor:hand; cursor:pointer;"
+                   onclick="javascript: window.open('/DetailedReports/MetricReport/')"
+                   class="list-group-item">
+                    <div>
+                        Metric Report for Problem REAs
+                    </div>
+                </a>
+                <a style="cursor:hand; cursor:pointer;"
+                   onclick="javascript: window.open('/DetailedReports/MetricReport/?type=All')"
+                   class="list-group-item">
+                    <div>
+                        Metric Report of All REAs
+                    </div>
+                </a>
+                <a style="cursor:hand; cursor:pointer;"
+                   onclick="javascript: window.open('/DetailedReports/Display/380')"
+                   class="list-group-item">
+                    <div>
+                        All REAs Submitted in the Last 8 Days
+                    </div>
+                </a>
+                <a style="cursor:hand; cursor:pointer;"
+                   onclick="javascript: window.open('/DetailedReports/MetricHistory')"
+                   class="list-group-item">
+                    <div>
+                        @Resources.strings.qviMetricHistory
+                    </div>
+                </a>
+                @if (Model.isAdmin || ViewBag.Users.Contains(Model.USER_ID)
+                    )
+                {
+                    <a style="cursor:hand; cursor:pointer;"
+                       onclick="javascript: window.open('/ViewAllMetrics/Index') "
+                       class="list-group-item">
+                        <div>
+                            @Resources.strings.qviViewAllMetrics
+                        </div>
+                    </a>
+                }
+            </div>
+
+            @foreach( var group in Model.ReportGroups )
+            {
+                <h4>
+                    @group.Name
+                </h4>
+                <div class="list-group">
+                    @for (int i = 0; i < Model.AllReports.Count(); i++)
+                    {
+                        if (Model.AllReports.Where(
+                                x => x.GroupID == Convert.ToString(group.GroupID) &&
+                                    x.Order == Convert.ToString(i + 1)
+                            ).Count() == 0)
+                        {
+                            @Html.Raw(" </div> <div class='list-group'>");
+                        }
+                        else
+                        {
+                            var TEMP = Model.AllReports.Where(
+                                x => x.GroupID == Convert.ToString(group.GroupID) &&
+                                    x.Order == Convert.ToString(i + 1)
+                            ).ElementAt(0);
+
+                            <a class="list-group-item" style="cursor:hand; cursor:pointer; height:60px;"
+                               onclick="javascript: window.open('/DetailedReports/Display/'+@TEMP.ReportID)">
+                                <div>
+                                    @*white-space: nowrap; overflow:hidden; text-overflow:ellipsis;"*@
+                                    <div style="padding-left:0px; padding-right:0px; width:80%;
+overflow:visible;
+                                         float:left;"
+                                         width="80%"
+                                         class="col-md-9">
+                                        @TEMP.Title
+                                    </div>
+                                    <span class="badge text-left">@TEMP.Count</span>
+                                </div>
+                            </a>
+                        }
+                    }
+
+                </div>
+            }
+        </div>
+    </div>
+        <div class="col-md-9 col-sm-8 layout-sidebar">
+            <h4 class="portlet-title">
+                <u>@Resources.strings.qviMyReports </u>
+                <l class="pull-right">
+                    <a id="toggler" href="#" target="_blank" data-prod-cat="Private" class="toggler btn btn-default">Show Private</a>
+                </l>
+            </h4>
+            
+            @*<font class="text-primary"*ViewBag.Message</font>*@
+            <!-- Main Body -->
+            @using (Html.BeginForm())
+            {
+                <table id="myreports" name="myreports" class="table table-bordered table-striped table-hover tablesorter">
+                    <thead class="header">
+                        <tr>
+                            <th width="50px">
+                                @Resources.strings.qviEdit
+                            </th>
+                            <th>
+                                @Resources.strings.qviTitle
+                            </th>
+                            <th width="60px">
+                                @Resources.strings.qviView
+                            </th>
+                            <th width="140">
+                                @Resources.strings.qviOwner
+                            </th>
+                            <th width="50px">
+                                @Resources.strings.qviDelete
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var row in Model.MyReports)
+                        {
+                            <tr class="@row.PublicReport" style="display:@row.Style">
+                                <td align="center">
+                                    <a href="~/REA/Search/@row.ReportID"> @Resources.strings.qviEdit </a>
+                                </td>
+                                <td>
+                                    <a href="~/DetailedReports/Display/@row.ReportID" target="_blank">@row.Name</a>
+                                </td>
+                                <td align="center">@row.PublicReport</td>
+                                <td align="center">
+                                    <a onclick="javascript: popUp('/Account/ViewUser/@row.OwnerID')"> @row.OwnerName </a>
+                                </td>
+                                <td align="center">
+                                    <button class=" btn-danger" name="button"
+                                            onclick="return confirm('@Resources.strings.qviAreYouSureYouWantToDeleteThisReport');"
+                                            value="@row.ReportID">
+                                        <i class="fa fa-remove"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr><td colspan="7">@Resources.strings.qviTotalRecordsFound <strong>@Model.MyReports.Count()</strong></td></tr>
+                    </tfoot>
+                </table>
+
+            <h4 class="portlet-title">
+                <u>@Resources.strings.qviOtherReports</u>
+            </h4>
+    <table id="otherReports" name="otherReports" class="table table-bordered table-striped table-hover tablesorter">
+        <thead class="header">
+            <tr>
+                @if (@User.IsInRole("Administrator"))
+                {
+                <th width="50px">
+                    @Resources.strings.qviEdit
+                </th>
+                }
+                <th>
+                    @Resources.strings.qviTitle
+                </th>
+                <th width="60px">
+                    @Resources.strings.qviView
+                </th>
+                <th width="140">
+                    @Resources.strings.qviOwner
+                </th>
+                @if (User.IsInRole("Administrator"))
+                {
+                    <th width="50px">
+                        @Resources.strings.qviDelete
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in Model.OtherReports)
+            {
+                <tr class="@row.PublicReport" style="display:@row.Style">
+                    @if (@User.IsInRole("Administrator"))
+                    {
+                        <td align="center">
+                            <a href="~/REA/Search/@row.ReportID"> @Resources.strings.qviEdit </a>
+                        </td>
+                    }
+                    <td>
+                        <a href="~/DetailedReports/Display/@row.ReportID" target="_blank">@row.Name</a>
+                    </td>
+                    <td align="center">@row.PublicReport</td>
+                    <td align="center">
+                        <a onclick="javascript: popUp('/Account/ViewUser/@row.OwnerID')"> @row.OwnerName </a>
+                    </td>
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <td align="center">
+                            <button class=" btn-danger" name="button"
+                                    onclick="return confirm('@Resources.strings.qviAreYouSureYouWantToDeleteThisReport');"
+                                    value="@row.ReportID">
+                                <i class="fa fa-remove"></i>
+                            </button>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr><td colspan="7">@Resources.strings.qviTotalRecordsFound <strong>@Model.OtherReports.Count()</strong></td></tr>
+        </tfoot>
+    </table>
+            }
+        </div>
+
+</div><!-- Layout layout-main-left -->
+

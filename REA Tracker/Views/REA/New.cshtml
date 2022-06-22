@@ -1,0 +1,167 @@
+﻿@model REA_Tracker.Models.NewREA
+@{
+    ViewBag.Title = "New REA";
+}
+<h2>
+    @ViewBag.Title
+</h2>
+@Scripts.Render("~/bundles/NewREA")
+<script>
+    function openDeterminePriority() {
+        $('#determinePriority').modal('show');
+    }
+
+    function doPriority() {
+        var totalPoints = 0;
+        var x = 0;
+        if (document.getElementById('impact5').checked) {
+            x = document.getElementById('impact5').value;
+        }
+        if (document.getElementById('impact4').checked) {
+            x = document.getElementById('impact4').value;
+        }
+        if (document.getElementById('impact3').checked) {
+            x = document.getElementById('impact3').value;
+        }
+        if (document.getElementById('impact2').checked) {
+            x = document.getElementById('impact2').value;
+        }
+        if (document.getElementById('impact1').checked) {
+            x = document.getElementById('impact1').value;
+        }
+        totalPoints += parseInt(x, 10);
+
+        if (document.getElementById('frequency5').checked) {
+            totalPoints++;
+        }
+        if (document.getElementById('frequency4').checked) {
+            totalPoints++;
+        }
+        if (document.getElementById('frequency3').checked) {
+            totalPoints++;
+        }
+        if (document.getElementById('frequency2').checked) {
+            totalPoints++;
+        }
+        if (document.getElementById('frequency1').checked) {
+            totalPoints++;
+        }
+
+        x = 0;
+        if (document.getElementById('difficulty5').checked) {
+            x = document.getElementById('difficulty5').value;
+        }
+        if (document.getElementById('difficulty4').checked) {
+            x = document.getElementById('difficulty4').value;
+        }
+        if (document.getElementById('difficulty3').checked) {
+            x = document.getElementById('difficulty3').value;
+        }
+        if (document.getElementById('difficulty2').checked) {
+            x = document.getElementById('difficulty2').value;
+        }
+        if (document.getElementById('difficulty1').checked) {
+            x = document.getElementById('difficulty1').value;
+        }
+        totalPoints += parseInt(x, 10);
+        
+        if (totalPoints >= 15) {
+            document.getElementById("PriorityID").selectedIndex = "4";
+        }
+        else if (totalPoints >= 12) {
+            document.getElementById("PriorityID").selectedIndex = "3";
+        }
+        else if (totalPoints >= 8) {
+            document.getElementById("PriorityID").selectedIndex = "2";
+        }
+        else if (totalPoints >= 3) {
+            document.getElementById("PriorityID").selectedIndex = "1";
+        }
+        else
+        {
+            document.getElementById("PriorityID").selectedIndex = "0";
+        }
+    }
+</script>
+@if (!String.IsNullOrWhiteSpace(Model.UploadErrorMessage))
+{
+    <script>
+        alert('@Model.UploadErrorMessage');
+    </script>
+}
+@if (Request.IsAuthenticated)
+{<!-- never give up -->
+    using (Html.BeginForm("New", "REA", FormMethod.Post, new {  @id = "newREA", @class = "form-horizontal", @role = "form", @enctype = "multipart/form-data" }))
+    {
+        @Html.HiddenFor(m=>m.HiddenHashCode)
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m=>m.UserID, new { @value= Model.UserID} )
+        <div class="content">
+            <div class="container">
+                <div class="layout layout-main-right layout-stack-sm">
+                    <div class="col-md-3 col-sm-4 layout-sidebar">
+                        <div class="nav-layout-sidebar-skip">
+                            <strong>Tab Navigation</strong> / <a href="#settings-content">Skip to Content</a>
+                        </div>
+                        <ul id="myTab" class="nav nav-layout-sidebar nav-stacked">
+                            <li @if(ViewBag.tab == null ||ViewBag.tab == 0){ @Html.Raw("class='active'")}>
+                                <a href="#tab-general" data-toggle="tab"><i class="fa fa-edit"></i>&nbsp;&nbsp;@Resources.strings.qviGeneralSettings</a>
+                            </li>
+                            <li @if(ViewBag.tab == 2) { @Html.Raw("class='active'") }>
+                                <a href="#tab-enhancement" data-toggle="tab"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;@Resources.strings.qviAddEnhancementDetails</a>
+                            </li>
+                            <li @if (ViewBag.tab == 6) { @Html.Raw("class='active'")  }>
+                                <a href="#tab-plannedwork" data-toggle="tab"><i class="fa fa-tasks"></i>&nbsp;&nbsp;@Resources.strings.qviAddPlannedWorkDetails</a>
+                            </li>
+                            <li @if(ViewBag.tab == 4) { @Html.Raw("class='active'") }>
+                                <a href="#tab-related" data-toggle="tab"><i class="fa fa-bug"></i>&nbsp;&nbsp;@Resources.strings.qviAddRelatedREA</a>
+                            </li>
+                            <li @if(ViewBag.tab == 5) { @Html.Raw("class='active'") }>
+                                <a href="#tab-attachments" data-toggle="tab"><i class="fa fa-file-text"></i>&nbsp;&nbsp;@Resources.strings.qviAddAttachments</a>
+                            </li>
+                        </ul>
+                        <button class="btn btn-success" id="savebutton" name="button" value="Save"><i class="fa fa-save"></i>&nbsp;@Resources.strings.qviSave</button>
+                    </div><!-- /.col -->
+                    <div class="col-md-9 col-sm-8 layout-main">
+                        <div id="settings-content" class="tab-content stacked-content">
+                            <div class="tab-pane fade @if (ViewBag.tab == null|| ViewBag.tab == 0){ @Html.Raw("in active") }" id="tab-general">
+                                @Html.Partial("NewPartials/_NewGeneral")
+                            </div><!-- /.tab-pane -->
+                            <div class="tab-pane fade @if(ViewBag.tab == 1) { @Html.Raw("in active") }" id="tab-customer">
+                                @Html.Partial("NewPartials/_NewCustomer")
+                            </div><!-- /.tab-pane -->
+
+                            <div class="tab-pane fade @if(ViewBag.tab == 2) { @Html.Raw("in active") }" id="tab-enhancement">
+                               @Html.Partial("NewPartials/_NewEnhancement")
+                            </div><!-- /.tab-pane -->
+                            <div class="tab-pane fade @if(ViewBag.tab == 6) { @Html.Raw("in active") }" id="tab-plannedwork">
+                                @Html.Partial("NewPartials/_NewPlannedWork")
+                            </div><!-- /.tab-pane -->
+
+                            <div class="tab-pane fade @if(ViewBag.tab == 3) { @Html.Raw("in active") }" id="tab-planning">
+                               @Html.Partial("NewPartials/_NewPlanning")
+                            </div><!-- /.tab-pane -->
+                            <div class="tab-pane fade @if(ViewBag.tab == 4) { @Html.Raw("in active") }" id="tab-related">
+                                @Html.Partial("NewPartials/_NewRelated")
+                            </div><!-- /.tab-pane -->
+                            <div class="tab-pane fade @if(ViewBag.tab == 5) { @Html.Raw("in active") }" id="tab-attachments">
+                                @Html.Partial("NewPartials/_NewAttachment")
+                            </div><!-- /.tab-pane -->
+                        </div><!-- /.tab-content -->
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container -->
+        </div><!-- .content -->
+    }
+}
+else
+{
+    <p>@Resources.strings.qviPleaseLoginMessage</p>
+}
+@*<script>
+    window.onload(new Function(enhancement()));
+</script>*@
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @*@Scripts.Render("~/bundles/mvpready")*@
+}

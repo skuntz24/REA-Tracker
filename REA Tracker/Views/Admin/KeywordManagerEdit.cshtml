@@ -1,0 +1,76 @@
+﻿@model REA_Tracker.Models.KeywordManagerEditViewModel
+@using HelperMethods.Infrastructure
+
+<script>
+    function ValidateUpdateKeyword() {
+        var valid = true;
+        var ErrorString = "";
+        var keyword = document.getElementById("labelKeyword").value;
+        keyword = keyword.trim();
+        if (keyword.length == 0) {
+            valid = false;
+            ErrorString += @Resources.strings.qviTheKeywordFieldCannotBeEmptyOrSpaces
+        }
+
+        if (valid == false) {
+            alert(ErrorString);
+        }
+        return valid;
+    }
+</script>
+
+<section class="demo-section">
+    <h4 class="content-title"><u>@ViewBag.Title</u></h4>
+    <p>
+        @Resources.strings.qviEditApplicationDescription
+        <ul>
+            <li>@Resources.strings.qviKeywordsMustBeUnique</li>
+            <li>@Resources.strings.qviKeywordsMustBeUpperCase</li>
+            <li>@Resources.strings.qviMaximumLengthOfAKeyword</li>
+            <li>@Resources.strings.qviSCRsCanOnlyReferenceAKeywordOnce</li>
+        </ul>
+    </p>
+    <br />
+@using (Html.BeginForm("KeywordManagerEdit", "Admin", FormMethod.Post, new { @onsubmit = "return ValidateUpdateKeyword();" }))
+{
+    @Html.AntiForgeryToken()
+
+    <form class="form">
+        <div class="row">
+            <div class="form-group col-md-1">
+                <label for="labelID">@Resources.strings.qviID</label>
+                <input type="text" readonly class="form-control" id="ID" name="ID" placeholder="ID" value="@ViewBag.ID">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="labelKeyword">@Resources.strings.qviKeyword</label>
+                <input type="text" class="form-control" id="labelKeyword" name="Keyword" placeholder="Keyword" value="@ViewBag.Keyword">
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label for="labelDescription">@Resources.strings.qviDescription</label>
+                <input type="text" class="form-control" id="Description" name="Description" placeholder="Description (optional)" size="50" value="@ViewBag.Description">
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-1">
+                <label for="labelUsage">@Resources.strings.qviUsage</label>
+                <input type="text" readonly class="form-control" id="Usage" name="Usage" placeholder="0" value="@ViewBag.Usage" width="2">
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label for="labelDeleteWarning" style="color: red" ><i><B>@Resources.strings.qviNote:</B> @Resources.strings.qviDeletingAKeywordMessage</i></label><br />
+                <button type="submit" class="btn btn-success" title="Save" value="Update" name="button"><i class="fa fa-save fa-lg"></i> @Resources.strings.qviSave</button>
+                <button type="submit" class="btn btn-danger" title="Delete" value="Delete" name="button" onclick="return confirm('@Resources.strings.qviAreYouSureYouWantToDeleteThisKeyword');"><i class="fa fa-trash fa-lg"></i> @Resources.strings.qviDelete</button>
+            </div>
+        </div>
+        <div class="row">
+            @if (ViewBag.Result != null)
+            {
+                @Html.DisplayMessage((bool)ViewBag.Result, (string)ViewBag.Message)
+            }
+        </div>
+</form>
+}
+</section>

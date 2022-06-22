@@ -1,0 +1,73 @@
+﻿@model REA_Tracker.Models.LoginViewModel
+@using HelperMethods.Infrastructure
+@{
+    ViewBag.Title = "REA Tracker";
+}
+
+@Scripts.Render("~/bundles/BroswerLogging")
+
+<div class="account-wrapper">
+    <div class="account-body">
+        @Html.Image("~/Img/QVILogo.png", "")<p />
+        <h3>Welcome back to the REA Tracker</h3>
+        @if (!(bool)System.Web.HttpContext.Current.Application["ReleaseMode"])
+        {
+            <h4><b>TEST SERVER</b></h4>
+        }
+        <h5>Please sign in to get access</h5>
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form account-form", role = "form" }))
+        {
+            <input name="BrowserType" id="BrowserType" type="hidden" value="" />
+            <input name="BrowserVersion" id="BrowserVersion" type="hidden" value="" />
+    <input name="UserAgent" id="UserAgent" type="hidden" value="@Server.HtmlEncode(Request.ServerVariables.GetValues(Request.ServerVariables.AllKeys[0])[0])" />
+            <input name="IPAddress" id="IPAddress" type="hidden" value="@Request.UserHostAddress">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            <div class="form-group">
+                @Html.LabelFor(m => m.UserName, new { @class = "placeholder-hidden" })
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.UserName)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Password, new { @class = "placeholder-hidden" })
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Password)
+            </div>
+            <div class="form-group clearfix">
+                <div class="pull-left">
+                    <div class="checkbox-inline">
+                        @*
+                            Html.CheckBoxFor(m => m.RememberMe)
+                        Html.LabelFor(m => m.RememberMe)
+                            *@
+                    </div>
+                </div>
+                <div class="text-center">
+                    <large><b>@Html.ActionLink( "Problems Logging In", "Forgot","Account")</b></large>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" value="Log in" class="btn btn-primary btn-block btn-lg">
+                    Sign In &nbsp; <i class="fa fa-play-circle"></i>
+                </button>
+            </div>  <!-- /.form-group -->          
+        }
+    </div> <!--account-body-->
+
+    
+
+    <div class="account-footer hidden">
+        <p>
+            Don't have an account?' &nbsp;
+            <a href="./account-signup.html" class="">Create an Account</a>
+        </p>
+    </div> <!-- /.account-footer -->
+</div> <!--account-wrapper-->
+<script>
+    $(document).ready(
+        LoggingScreen()
+    );
+</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

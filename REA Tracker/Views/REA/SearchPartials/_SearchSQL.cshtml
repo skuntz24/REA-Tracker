@@ -1,0 +1,12 @@
+﻿@model REA_Tracker.Models.SearchViewModel
+@using HelperMethods.Infrastructure;
+
+<div class="row">
+    <div class="col-sm-6 col-md-12">
+        <div class="row-stat">
+            <p class="row-stat-label">Raw SQL</p>
+            <textarea class="form form-control" rows="10" id="RawSQL" name="RawSQL">@Model.RawSQL</textarea>
+            <p class="row-stat-label text-secondary"> Note: using Raw SQL field will void other parameters </p>
+        </div> <!-- /.row-stat -->
+    </div> <!-- /.col -->
+</div> <!-- /.row -->

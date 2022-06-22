@@ -1,0 +1,383 @@
+﻿@model REA_Tracker.Models.NewREA
+@using HelperMethods.Infrastructure
+@{
+    ViewBag.Title = @Resources.strings.qviNewSCR;
+}
+<h2>@ViewBag.Title</h2>
+@Scripts.Render("~/Scripts/NewSCR.js")
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("New2", "SCR", FormMethod.Post, new { @class = "form-horizontal", role = "form", @enctype = "multipart/form-data" }))
+    {
+        @Html.HiddenFor(m=>m.HiddenHashCode)
+        @Html.AntiForgeryToken()
+        <section class="demo-section">
+            <h4 class="content-title"><u>@Resources.strings.qviGeneralInformation</u><button name="button" value="Save" class="btn btn-success pull-right"><i class="fa fa-save"></i>&nbsp;@Resources.strings.qviSave</button></h4>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="portlet">
+                        <div class="portlet-body">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td class="h5 qvi-medium-width">@Resources.strings.qviTitle</td>
+                                        <td><input style="width: 100%;" class="form-control input-sm" data-val="true" data-val-required=@Resources.strings.qviTheTitleFieldIsRequired value="@Model.Title" id="Title" name="Title" type="text" />
+                                            @Html.ValidationMessageFor(m => m.Title)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div> <!-- /.portlet-body -->
+                    </div> <!-- /.portlet -->
+                </div> <!-- /.col -->
+                <div class="col-md-5" style="margin-top: -50px">
+                    <div class="portlet">
+                        <div class="portlet-body">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td class="h5 qvi-medium-width">@Resources.strings.qviProduct</td>
+                                        <td>
+                                            <select id="ProductID" name="ProductID" class="form-control input-sm" onchange="this.form.submit();">
+                                                @foreach (var item in Model.ProductList)
+                                                {
+                                                    <option value=@item.ID @item.IsDefault> @item.Name </option>
+                                                }
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="h5">@Resources.strings.qviVersion</td>
+                                        <td>
+                                            <div class="col-md-12 form-group form-inline" data-val="true" data-val-required=@Resources.strings.qviPleaseEnterAPositiveIntegerMessage>
+                                                @Html.TextBoxFor(m => m.VersionFoundMajor, new { @class = "form-control", @maxlength = "2", @style = "width: 50px;" })
+                                                .
+                                                @Html.TextBoxFor(m => m.VersionFoundMinor, new { @class = "form-control", @maxlength = "2", @style = "width: 50px;" })
+                                                .
+                                                @Html.TextBoxFor(m => m.VersionFoundBuild, new { @class = "form-control", @maxlength = "2", @style = "width: 50px;" })
+                                                @Html.TextBoxFor(m => m.VersionFoundMisc, new { @size = "3", @maxlength = "50", @class = "form-control" })
+                                            </div><!-- /.col -->
+                                            <p>@Html.ValidationMessageFor(m=>m.VersionFoundMajor)</p>
+                                            <p>@Html.ValidationMessageFor(m => m.VersionFoundMinor)</p>
+                                            <p>@Html.ValidationMessageFor(m => m.VersionFoundBuild)</p>
+</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="h5">@Resources.strings.qviIssue</td>
+                                        <td>
+                                            <select id="IssueID" name="IssueID" onchange="toggleEnhancementAccordian()" class="form-control fixed-width input-sm">
+                                                @foreach (var item in Model.IssueList)
+                                                {
+                                                    <option value=@item.ID @item.IsDefault> @item.Name </option>
+                                                }
+                                            </select>                                                
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="h5">@Resources.strings.qviPriority</td>
+                                        <td>
+                                            <select id="PriorityID" name="PriorityID" class="form-control fixed-width input-sm" data-val="true" data-val-required=@Resources.strings.qviPleaseSelectAPriority>
+                                                @foreach (var item in Model.PriorityList)
+                                                {
+                                                    <option value=@item.ID @item.IsDefault> @item.Name </option>
+                                                }
+                                            </select>
+                                            @Html.ValidationMessageFor(m => m.PriorityID)
+                                        </td>
+                                    </tr>
+                                    <tr><td class="h5">@Resources.strings.qviStatus</td><td>@Resources.strings.qviCreating</td></tr>
+                                    <tr>
+                                        <td class="h5">@Resources.strings.qviModule</td>
+                                        <td>
+                                            <select id="ModuleID" name="ModuleID" class="form-control fixed-width input-sm">
+                                                @foreach (var item in Model.ModuleList)
+                                                {
+                                                    <option value=@item.ID @item.IsDefault> @item.Name </option>
+                                                }
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr><td class="h5">@Resources.strings.qviAssignedTo</td><td>[Validator]</td></tr>
+                                </tbody>
+                            </table>
+                        </div> <!-- /.portlet-body -->
+                    </div> <!-- /.portlet -->
+                </div> <!-- /.col -->
+                <div class="col-md-3" style="margin-top: -50px">
+                    <div class="portlet">
+                        <div class="portlet-body">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td class="h5">@Resources.strings.qviDocumentationChanged</td>
+                                        <td>
+                                            <select name="IsDocumentChange" id="IsDocumentChange" class="form-control input-sm">
+                                                <option value="0" @if (Model.IsDocumentChange == 0) { @Html.Raw("selected") ; }>@Resources.strings.qviNo</option>
+                                                <option value="1" @if (Model.IsDocumentChange == 1) { @Html.Raw("selected") ; }>@Resources.strings.qviYes</option>
+                                                <option value="2" @if (Model.IsDocumentChange == 2) { @Html.Raw("selected") ; }>@Resources.strings.qviDone</option>
+                                                <option value="3" @if (Model.IsDocumentChange == 3) { @Html.Raw("selected") ; }>@Resources.strings.qviTBD</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="h5">@Resources.strings.qviRequirementsChanged</td>
+                                        <td>
+                                            <select name="IsRequirementChange" id="IsRequirementChange" class="form-control input-sm">
+                                                <option value="false" @if (Model.IsRequirementChange == false) { @Html.Raw("selected") ; }>@Resources.strings.qviNo</option>
+                                                <option value="true" @if (Model.IsRequirementChange == true) { @Html.Raw("selected") ; }>@Resources.strings.qviYes</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    @*<tr><td class="h5">Database Changed</td><td><input type="checkbox" name="newDB" /></td></tr>*@
+                                </tbody>
+                            </table>
+                        </div> <!-- /.portlet-body -->
+                    </div> <!-- /.portlet -->
+                </div> <!-- /.col -->
+                <div class="col-md-4" style="margin-top: -50px">
+                    <div class="portlet">
+                        <div class="portlet-body">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td class="h5">@Resources.strings.qviCustomerReported</td>
+                                        <td>
+                                            <select name="CustomerReported" id="CustomerReported" onclick="customer()" class="form-control input-sm">
+                                                <option value="false" @if (Model.CustomerReported == false) { @Html.Raw("selected") ; }>@Resources.strings.qviNo</option>
+                                                <option value="true" @if (Model.CustomerReported == true) { @Html.Raw("selected") ; }>@Resources.strings.qviYes</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr><td class="h5">@Resources.strings.qviCustomerCompany</td><td><input id="CompanyName" name="CompanyName" @if(@Model.CustomerReported == false) { @Html.Raw("readonly='readonly' style='background:#C8C8C8;'") ; } value='@Model.CompanyName' style="width: 100%;" class="form-control input-sm" type="text" /></td></tr>
+                                    <tr><td class="h5">@Resources.strings.qviCustomerLocation</td><td><input id="Location" name="Location" @if(@Model.CustomerReported == false) { @Html.Raw("readonly='readonly' style='background:#C8C8C8;'") ; } value='@Model.Location' style="width: 100%;" class="form-control input-sm" type="text" /></td></tr>
+                                    <tr><td class="h5">@Resources.strings.qviCustomerContactPerson </td><td><input id="ContactPerson" name="ContactPerson" @if(@Model.CustomerReported == false) { @Html.Raw("readonly='readonly' style='background:#C8C8C8;'") ; } value='@Model.ContactPerson' style="width: 100%;" class="form-control input-sm" type="text" /><font color="#b94a48">@ViewBag.ContactPersonMessage</font></td></tr>
+                                    <tr><td class="h5">@Resources.strings.qviSyteline #</td><td><input id="Syteline" value='@Model.Syteline' name="Syteline" style="width: 100%;" class="form-control input-sm" type="text" /></td></tr>
+                                </tbody>
+                            </table>
+                        </div> <!-- /.portlet-body -->
+                    </div> <!-- /.portlet -->
+                </div> <!-- /.col -->
+            </div> <!-- /.row -->
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="portlet">
+                        <div class="portlet-body">
+                            @*<div class="panel-group accordion-panel" id="accordion-enhancement">*@
+                            <div class="panel panel-default open">
+                                <div class="panel-heading" style="background: #b94a48">
+                                    <h4 class="panel-title"><a style="color: white">@Resources.strings.qviAddNotes</a></h4>
+                                </div> <!-- /.panel-heading -->
+                                <div id="collapseOne" class="panel-collapse collapse in">
+                                    <div class="panel-body">
+                                        @Html.TextAreaFor(m => m.Details, new { @class = "form-control", @rows = "5", @style = "resize: vertical;" })
+                                        @Html.ValidationMessageFor(m => m.Details)
+                                    </div> <!-- /.panel-body -->
+                                </div> <!-- /.panel-collapse -->
+                            </div> <!-- /.panel -->
+
+
+                            <div id="Enhancements" style=@if (Model.IssueID == 2){@Html.Raw("''")}else{@Html.Raw("'display: none'")}>
+                                <font color="#b94a48">@ViewBag.Enhancement</font>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" style="background: #b94a48">
+                                        <h4 class="panel-title"><a style="color: white">@Resources.strings.qviEnhancementDetails</a></h4>
+                                    </div> <!-- /.panel-heading -->
+
+                                    <div class="panel-body">
+                                        <label class="h5">@Resources.strings.qviProblemOpportunity</label>
+
+                                        <textarea class="form-control" id="Problem" style='resize: vertical;' name='Problem' rows="5">@Model.Problem</textarea>
+                                        <br />
+                                        <label class="h5">@Resources.strings.qviProposedSolution</label>
+                                        <textarea class="form-control" id="Solution" style='resize: vertical;' name='Solution' rows="5">@Model.Solution</textarea>
+                                        <br />
+                                        <label class="h5">@Resources.strings.qviBenefit</label>
+                                        <textarea class="form-control" id="Benefit" style='resize: vertical;' name='Benefit' rows="5">@Model.Benefit</textarea>
+                                    </div> <!-- /.panel-body -->
+
+                                </div> <!-- /.panel -->
+
+                            </div><!-- Enhancements -->
+                            @*</div> <!-- /.panel-group-->*@
+                        </div> <!-- /.portlet-body -->
+                    </div> <!-- /.portlet -->
+                </div> <!-- /.col -->
+            </div> <!-- /.row -->
+
+
+            <h4 class="content-title"><u>@Resources.strings.qviPlanningDetails</u></h4>
+            <br />
+            <div class="form-group form-inline">
+                <label class="col-md-3">@Resources.strings.qviSpecificationHours</label><div class="col-md-9"><input type="text" id="EstimateSpecifiedHours" name="EstimateSpecifiedHours" placeholder="hours" value='@Model.EstimateSpecifiedHours' class="form-control qvi-small-width" /> @Html.ValidationMessageFor(m => m.EstimateSpecifiedHours)</div><!-- /.col -->
+
+            </div><!-- /.form-group -->
+            <div class="form-group form-inline">
+                <label class="col-md-3">@Resources.strings.qviImplementationHours</label><div class="col-md-9"><input type="text" id="EstiamteFixHours" name="EstimateFixHours" placeholder="hours" value='@Model.EstimateFixHours' class="form-control qvi-small-width" />@Html.ValidationMessageFor(m => m.EstimateFixHours)</div><!-- /.col -->
+
+            </div><!-- /.form-group -->
+            <div class="form-group form-inline">
+                <label class="col-md-3">@Resources.strings.qviTestingHours</label><div class="col-md-9"><input data-val="true" data-val-doublenonegativenullableattribute="" type="text" placeholder="hours" value='@Model.EstimateTestHours' id="EstimateTestHours" name="EstimateTestHours" class="form-control qvi-small-width" />@Html.ValidationMessageFor(m => m.EstimateTestHours)</div><!-- /.col -->
+
+            </div><!-- /.form-group -->
+            <div class="form-group form-inline">
+                <label class="col-md-3">@Resources.strings.qviTargetedVersion</label><div class="col-md-9">
+                    @Html.TextBoxFor(m => m.VersionPlannedMajor, new { @class = "form-control", @style = "width: 50px;" })
+                    .
+                    @Html.TextBoxFor(m => m.VersionPlannedMinor, new { @class = "form-control", @style = "width: 50px;" })
+                    .
+                    @Html.TextBoxFor(m => m.VersionPlannedBuild, new { @class = "form-control", @style = "width: 50px;" })
+                    &nbsp;
+                    @Html.TextBoxFor(m => m.VersionPlannedMisc, new { @size = "10", @maxlength = "50", @class = "form-control" })
+                </div><!-- /.col -->
+                <p>@Html.ValidationMessageFor(m => m.VersionPlannedMajor)</p>
+                <p>@Html.ValidationMessageFor(m => m.VersionPlannedMinor)</p>
+                <p>@Html.ValidationMessageFor(m => m.VersionPlannedBuild)</p>
+                <div class="col-md-3"></div>
+                <div class="col-md-9">
+                    <font color="#b94a48">@ViewBag.VersionPlannedErrorMessage</font>
+                </div>
+            </div><!-- /.form-group -->
+
+            <h4 class="content-title"><u>@Resources.strings.qviRelatedREAs</u></h4>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="portlet">
+                        <div class="portlet-body">
+                            <table class="table table-borderless">
+                                <tr><td class="h5 qvi-medium-width">@Resources.strings.qviAttachAnSCR</td>
+                                <td class="form-group form-inline">
+                                    <input class="form-control" type="text" id="RelatedInputID" name="RelatedInputID" />
+                                    <button class="btn btn-default btn-sm" name="button" value="Add" type="submit"><i class="fa fa-plus-circle fa-lg"></i>&nbsp;&nbsp;@Resources.strings.qviAdd</button>
+                                    &nbsp;
+                                    <button class="btn btn-default btn-sm" name="button" value="Correlate" type="submit"><i class="fa fa-arrows-h fa-lg"></i>&nbsp;&nbsp;@Resources.strings.qviCorrelate</button>
+                                </td>
+                                </tr>
+                            </table>
+                    @if(Model.RelatedREAIDs.Count()>0){
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>@Resources.strings.qviSCR #</th>
+                                        <th>@Resources.strings.qviProduct</th>
+                                        <th>@Resources.strings.qviTitle</th>
+                                        <th>@Resources.strings.qviStatus</th>
+                                        <th>@Resources.strings.qviCorrelate</th>
+                                        <th>@Resources.strings.qviRemove</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.RelatedREAIDs.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Model.RelatedREAIDs[i].otherTrackingId
+                                            </td>
+                                            <td>
+                                                @Model.RelatedREAIDs[i].product
+                                            </td>
+                                            <td>
+                                                @Model.RelatedREAIDs[i].title
+                                                <br />
+                                                <div style="font-size: 10pt;">
+                                                    <div class="pull-left">
+                                                        <b>@Resources.strings.qviAssignedTo</b>&nbsp;@Model.RelatedREAIDs[i].AssignTo
+                                                        @Html.IssueIcon(Model.RelatedREAIDs[i].issue, "", false)
+                                                        @Html.PriorityIcon(Model.RelatedREAIDs[i].Priority, "", false)
+                                                    </div>
+                                                    <div class="pull-right">
+                                                        <b>Planned Release:</b>&nbsp;@Model.RelatedREAIDs[i].PlannedRelease
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>@Model.RelatedREAIDs[i].Status</td>
+                                            <td align="center">@Model.RelatedREAIDs[i].correlated</td>
+                                            <td align="center">
+                                                <button class="btn btn-danger" type="submit" style="vertical-align:middle" name="button" value=@Model.RelatedREAIDs[i].getRemoveValue(i)>
+                                                    <span class=" glyphicon glyphicon-remove-circle">
+                                                    </span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        </div> <!-- /.portlet-body -->
+                    </div> <!-- /.portlet -->
+                </div> <!-- /.col -->
+            </div> <!-- /.row -->
+
+            <h4 class="content-title"><u>@Resources.strings.qviAttachments</u></h4>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="portlet">
+                        <div class="portlet-body">
+
+                            <div class="form-group">
+                                <label class="col-md-2">File</label>
+                                <div class="col-md-10">
+                                    @Html.TextBoxFor(model => model.File[0], new { @class = "form-control", @type = "file" })
+                                </div><!-- /.col -->
+                            </div><!-- /.form-group -->
+                            <div class="form-group">
+                                <label class="col-md-2">@Resources.strings.qviDescription</label><div class="col-md-10">
+                                    <input type="text" id="FileDescription" name="FileDescription" class="form-control">
+                                </div><!-- /.col -->
+                            </div><!-- /.form-group -->
+                            <div class="form-group">
+                                <label class="col-md-2"></label><div class="col-md-10"><button type="submit" name="button" value="Upload" class="btn btn-info"><i class="fa fa-upload"></i>&nbsp;&nbsp;@Resources.strings.qviUpload</button></div><!-- /.col -->
+                            </div><!-- /.form-group -->
+                            @if(@Model.Files.Count()>0)
+                            {
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>File Name</th>
+                                            <th class="col-md-8">Description</th>
+                                            <th>Size</th>
+                                            <th class="col-md-1"><button class="btn btn-danger" type="submit" name="button" value="RemoveFiles">@Resources.strings.qviRemove</button></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (int i = 0; i < Model.Files.Count(); i++)
+                                        {
+                                            <tr>
+                                                <td>@Model.Files[i].file.FileName</td>
+                                                <td>@Model.Files[i].Description</td>
+                                                <td>@Model.Files[i].getSize()</td>
+                                                <td align="center">@Html.CheckBoxFor(m => m.Files[i].remove)</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                            @for (int i = 0; i < Model.RelatedREAIDs.Count; i++)
+                            {
+                                @Html.HiddenFor(m => m.RelatedREAIDs[i].otherTrackingId, Model.RelatedREAIDs[i].otherTrackingId)
+                                @Html.HiddenFor(m => m.RelatedREAIDs[i].product, Model.RelatedREAIDs[i].product)
+                                @Html.HiddenFor(m => m.RelatedREAIDs[i].title, Model.RelatedREAIDs[i].title)
+                                @Html.HiddenFor(m => m.RelatedREAIDs[i].issue, Model.RelatedREAIDs[i].issue)
+                                @Html.HiddenFor(m => m.RelatedREAIDs[i].Priority, Model.RelatedREAIDs[i].Priority)
+                                @Html.HiddenFor(m => m.RelatedREAIDs[i].Status, Model.RelatedREAIDs[i].Status)
+                                @Html.HiddenFor(m => m.RelatedREAIDs[i].AssignTo, Model.RelatedREAIDs[i].AssignTo)
+                                @Html.HiddenFor(m => m.RelatedREAIDs[i].PlannedRelease, Model.RelatedREAIDs[i].PlannedRelease)
+                                @Html.HiddenFor(m => m.RelatedREAIDs[i].correlated, Model.RelatedREAIDs[i].correlated)
+                            }
+                            @for (int i = 0; i < Model.Files.Count; i++)
+                            {
+                                @Html.HiddenFor(m => m.Files[i].file, Model.Files[i].file)
+                                @Html.HiddenFor(m => m.Files[i].Description, Model.Files[i].Description)
+                            }
+                        </div> <!-- /.portlet-body -->
+                    </div> <!-- /.portlet -->
+                </div> <!-- /.col -->
+            </div> <!-- /.row -->
+        </section>
+        
+    }
+}
+else
+{
+    <p>Please login in if you want the complete details of this SCR.</p>
+}

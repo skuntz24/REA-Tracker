@@ -1,0 +1,155 @@
+﻿@model SCR_Tracker.Models.ProductManagerViewModel
+@using HelperMethods.Infrastructure
+@{
+    ViewBag.Title = "ProductManagerEditInformation";
+}
+@Scripts.Render("~/Scripts/Products.js")
+<div class="layout layout-main-left layout-stack-sm">
+    <div class="col-md-3 col-sm-4 layout-main">
+        <h4 class="portlet-title">
+            <u>@Resources.strings.qviProductManager</u>
+            <a href="/Admin/ProductManagerCreate" class="btn btn-default pull-right"> <i class="fa fa-plus"> </i> </a>
+        </h4>
+        @using (Html.BeginForm("ProductManagerEditInformation", "Admin", FormMethod.Get))
+        {
+            @Html.DisplaySelectList("productID", Model.ProductName, "class='form-control fixed-width' onchange='this.form.submit()' data-val='true'")
+        }
+        <br />
+        <div class="list-group">
+            <a style="cursor:pointer;" onmouseup="javascript:location.href = '/Admin/ProductManager/@Model.productID';" class="list-group-item">Details</a>
+            <a style="cursor:pointer;" onmouseup="javascript:location.href = '/Admin/ProductManagerEditInformation/@Model.productID';" class="list-group-item">Update Information</a>
+            <a style="cursor:pointer;" onmouseup="javascript:location.href = '/Admin/ProductManagerEditModule/@Model.productID';" class="list-group-item">Update Module</a>
+            <a style="cursor:pointer;" onmouseup="javascript:location.href = '/Admin/ProductManagerEditTeam/@Model.productID';" class="list-group-item">Update Team</a>
+            <a style="cursor:pointer;" onmouseup="javascript:location.href = '/Admin/ProductManagerMetrics/@Model.productID';" class="list-group-item">Update Metrics</a>
+        </div>
+    </div>
+
+    <div class="col-md-9 col-sm-8 layout-sidebar">
+        <font color="#33CC66" id="Message" name="Message">
+            @ViewBag.Message
+        </font>
+        @using (Html.BeginForm("ProductManagerEditInformation", "Admin", FormMethod.Post, new { @onsubmit = "return validateInformationForm();" }))
+        {
+            @Html.HiddenFor(m => m.productID)
+    <div class="portlet-body col-lg-8">
+        <h4> Basic Product Information </h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Resources.strings.qviName</td>
+                    <td align="center">
+                        <input type="text" id="CurrentProductName" name="CurrentProductName" maxlength="100" value="@Model.CurrentProductName" class='form-control'>
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Resources.strings.qviDescription</td>
+                    <td align="center">
+                        <input type="text" id="Description" name="Description" maxlength="500" value="@Model.Description" class='form-control'>
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Resources.strings.qviOwner:</td>
+                    <td align="center">
+                        @Html.DisplaySelectListNullable("Owner", Model.GetProductTeamDefaulted(Model.Owner), "class='form-control'")
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Resources.strings.qviValidator:</td>
+                    <td align="center">
+                        @Html.DisplaySelectListNullable("Vaildator", Model.GetProductTeamDefaulted(Model.Vaildator), "class='form-control'")
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Resources.strings.qviDefaultTester:</td>
+                    <td align="center">
+                        @Html.DisplaySelectListNullable("DefaultTester", Model.GetProductTeamDefaulted(Model.DefaultTester), "class='form-control'")
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Resources.strings.qviReleaseCoordinator:</td>
+                    <td align="center">
+                        @Html.DisplaySelectListNullable("ReleaseCoordinator", Model.GetProductTeamDefaulted(Model.ReleaseCoordinator), "class='form-control'")
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Resources.strings.qviReleaseCoordinator 2:</td>
+                    <td align="center">
+                        @Html.DisplaySelectListNullable("ReleaseCoordinator2", Model.GetProductTeamDefaulted(Model.ReleaseCoordinator2), "class='form-control'")
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Resources.strings.qviSCCB:</td>
+                    <td align="center">
+                        @Html.DisplaySelectListNullable("SCCB", Model.GetProductTeamDefaulted(Model.SCCB), "class='form-control'")
+                    </td>
+                <tr>
+                    <td>@Resources.strings.qviRetired</td>
+                    <td align="center">
+                        <select id="Retired" name="Retired" class="form-control">
+                            @if (Model.Retired)
+                            {
+                                <option value="true" selected> @Resources.strings.qviYes </option>
+                                <option value="false"> @Resources.strings.qviNo  </option>
+                            }
+                            else
+                            {
+                                <option value="true"> @Resources.strings.qviYes </option>
+                                <option value="false" selected> @Resources.strings.qviNo  </option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Resources.strings.qviIsInternal</td>
+                    <td align="center">
+                        <select id="isInternal" name="isInternal" class="form-control">
+                            @if (Model.isInternal)
+                            {
+                                <option value="true" selected> @Resources.strings.qviYes </option>
+                                <option value="false"> @Resources.strings.qviNo  </option>
+                            }
+                            else
+                            {
+                                <option value="true"> @Resources.strings.qviYes </option>
+                                <option value="false" selected> @Resources.strings.qviNo  </option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Resources.strings.qviBillingCode</td>
+                    <td align="center">
+                        <input type="text" id="BillingCode" name="BillingCode" value="@Model.BillingCode" class='form-control'>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Resources.strings.qviDistributionList
+                    </td>
+                    <td>
+                        <textarea id="DistributionList" name="DistributionList" style="resize: none;" maxlength="500" rows="4" cols="50">@Model.DistributionList</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Resources.strings.qviUseMetrics
+                    </td>
+                    <td>
+                        <input type="checkbox" id="UseMetrics" name="UseMetrics" value="true" @if(Model.UseMetrics){<text> checked </text>}> 
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="submit" class="btn btn-primary" value=@Resources.strings.qviSaveChanges />
+    </div>
+        }
+        </div>
+    </div>

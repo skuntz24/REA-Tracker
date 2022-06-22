@@ -1,0 +1,737 @@
+﻿@using QVICommonIntranet.Database
+@model REA_Tracker.Models.EditREA
+@{
+    ViewBag.Title = "Edit REA # " + @Model.TrackingId;
+}
+<h2>@ViewBag.Title</h2>
+@using HelperMethods.Infrastructure
+@section Scripts{
+    @Scripts.Render("~/bundles/NewREA")
+}
+
+@if (!String.IsNullOrEmpty(Model.UploadErrorMessage))
+{
+<script>
+    alert('@Model.UploadErrorMessage')
+</script>
+}
+
+@if (ViewBag.href != null && @ViewBag.href != "")
+{
+<script>
+
+    $(document).ready(function () {
+        var anchor = document.getElementById('@ViewBag.href');
+        anchor.scrollIntoView(true);
+    });
+    //$(document).ready(function () {
+    //    window.scrollTo(0, 0);
+    //});
+</script>
+}
+
+<script>
+    function popUpWatchList(URL) {
+        day = new Date();
+        id = day.getTime();
+        var strWindowFeatures = 'toolbar=no,scrollbars=yes,statusbar=no,location=no,menubar=no,resizable=yes,width=640,height=480,left = 600,top = 480'
+        if (navigator.userAgent.indexOf("Mozilla") != -1) {
+            window.open(URL, id, strWindowFeatures).moveTo(0, 0);
+        }
+        else {
+            dom.disable_window_open_feature.location;
+            dom.disable_window_open_feature.status;
+            var popup = window.open(URL, "Name", "_blank");
+            popup.focus();
+        }
+    }
+</script>
+
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        //This is the ajax auto fill for company
+        $("#customerCompany").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/SCR/GetCompanyNames",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item, value: item };
+                        }))
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>
+@*
+    ToDo: matain scroll position.
+*@
+
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("Edit", "SCR", FormMethod.Post, new { @class = "form-horizontal", role = "form", @enctype = "multipart/form-data"}))
+    {
+<!-- , onsubmit = "return ValidateEditForm();"  -->
+        @Html.HiddenFor(m=>m.AccountType, Model.AccountType)
+        @Html.HiddenFor(m=>m.AccessType, Model.AccessType)
+        @Html.HiddenFor(m => m.IsAdmin, Model.IsAdmin)
+        @Html.HiddenFor(m=>m.hasAccess, Model.hasAccess)
+        @Html.HiddenFor(m=>m.TrackingId, Model.TrackingId)
+        @Html.HiddenFor(m=>m.User_id, Model.User_id)
+        @Html.HiddenFor(m => m.canEditversionReleased, Model.canEditversionReleased)
+        @Html.HiddenFor(m => m.canEditversionPlanned, Model.canEditversionPlanned)
+        @Html.AntiForgeryToken()
+<input type="hidden" id="OldStatus" value=@Model.statusId>
+<input type="hidden" id="OldIssueType" value=@Model.issueType>
+<input type="hidden" id="OldResolved_By" value=@Model.resolvedByID>
+<input type="hidden" id="OldAssigned_To" value=@Model.assignedToId>
+<input type="hidden" id="OldClosed_by" value=@Model.closedByID>
+<input type="hidden" id="Validator" value=@Model.Validator>
+<input type="hidden" id="SCCB" value=@Model.SCCB>
+<input type="hidden" id="DefaultTester" value=@Model.DefaultTester>
+<input type="hidden" id="Rel_Coord" value=@Model.Rel_Coord>
+<input type="hidden" id="FullName" value=@ViewBag.FullName>
+<input type="hidden" name="__SCROLLPOSITIONX" id="__SCROLLPOSITIONX" value="0" />
+<input type="hidden" name="__SCROLLPOSITIONY" id="__SCROLLPOSITIONY" value="0" />
+
+<section class="demo-section">
+    <h4 class="content-title">
+        <u>@Resources.strings.qviGeneralInformation</u>
+        <button id="SaveButton" name="button" value="Save" class="btn btn-success pull-right" onclick="return ValidateEditForm();"><i class="fa fa-save"></i>&nbsp;@Resources.strings.qviSave</button>
+        &nbsp;
+        &nbsp;
+        <a href="~/SCR/Display/@Model.TrackingId" class="btn btn-danger pull-right"><i class="fa fa-remove"></i>&nbsp;@Resources.strings.qviCancel</a>
+    </h4>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet">
+                <div class="portlet-body">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="h5 qvi-medium-width">@Resources.strings.qviTitle</td>
+                                <td>
+
+                                    @*<input style="width: 100%;" class="form-control input-sm" data-val="true" data-val-required="The title field is required." value="@Model.Title" id="Title" name="Title" type="text" />*@
+                                    @Html.AccessForTextBox("Title", @Model.Title, Model.canEditTitle, "style='width: 100%;' class='form-control input-sm' data-val='true' data-val-required='The title field is required.'")
+                                    @Html.ValidationMessageFor(m => m.Title)
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div> <!-- /.portlet-body -->
+            </div> <!-- /.portlet -->
+        </div> <!-- /.col -->
+        <div class="col-md-5" style="margin-top: -50px">
+            <div class="portlet">
+                <div class="portlet-body">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="h5 qvi-medium-width">@Resources.strings.qviProduct</td>
+                                <td>
+                                    @*<select id="ProductID" name="ProductID" class="form-control input-sm" onchange="this.form.submit();">
+                                        @foreach (var item in Model.Products)
+                                        {
+                                        <option value=@item.ID @item.IsDefault> @item.Name </option>
+                                        }
+                                    </select>*@
+                                    @Html.AccessForSelectList("productId", Model.Products, Model.canEditproductId, "class='form-control input-sm' onchange='this.form.submit();'")
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="h5">@Resources.strings.qviVersion</td>
+                                <td>
+                                    <div class='form-inline'>
+                                    @if (Model.canEditversionFound)
+                                    {
+                                        @Html.AccessForTextBox(m => m.versionFoundMajor, Model.canEditversionFound, new { @class = "form-control", @maxlength = "4", @style = "width: 50px;", @data_val_number = "The Major Must be a number" })<text>.</text>
+                                        @Html.AccessForTextBox(m => m.versionFoundMinor, Model.canEditversionFound, new { @class = "form-control", @maxlength = "4", @style = "width: 50px;", @data_val_number = "The Minor Must be a number" })<text >.</text>
+                                        @Html.AccessForTextBox(m => m.versionFoundBuild, Model.canEditversionFound, new { @class = "form-control", @maxlength = "4", @style = "width: 50px;", @data_val_number = "The Build Must be a number" })<text>&nbsp;</text>
+                                        @Html.AccessForTextBox(m => m.versionFoundMisc, Model.canEditversionFound, new { @size = "10", @maxlength = "50", @class = "form-control", @style = "width: 100px;", })
+                                    }
+                                    else
+                                    {
+                                        @Model.VersionFound
+                                    }
+                                    </div><!-- /.col -->
+                                    <p>@Html.ValidationMessageFor(m => m.versionFoundMajor)</p>
+                                    <p>@Html.ValidationMessageFor(m => m.versionFoundMinor)</p>
+                                    <p>@Html.ValidationMessageFor(m => m.versionFoundBuild)</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="h5">@Resources.strings.qviIssue</td>
+                                <td>
+                                    @*<select id="issueType" name="issueType" onchange="toggleEnhancement(form.issueType.options[issueType.selectedIndex].value)" class="form-control fixed-width input-sm">
+                                        @foreach (var item in Model.Issues)
+                                        {
+                                        <option value=@item.ID @item.IsDefault> @item.Name </option>
+                                        }
+                                    </select>*@
+                                    @Html.AccessForSelectList("issueType",Model.Issues,Model.canEditissueType, "onchange='toggleEnhancement(form.issueType.options[issueType.selectedIndex].value)' class='form-control fixed-width input-sm'")
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="h5">@Resources.strings.qviPriority</td>
+                                <td>
+                                    @*<select id="priority" name="priority" class="form-control fixed-width input-sm" data-val="true" data-val-required="Please select a priority.">
+                                        @foreach (var item in Model.Priorities)
+                                        {
+                                        <option value=@item.ID @item.IsDefault> @item.Name </option>
+                                        }
+                                    </select>*@
+                                    @Html.AccessForSelectList("priority", Model.Priorities, Model.canEditpriority, "class='form-control fixed-width input-sm' data-val='true' data-val-required='Please select a priority.'")
+                                    @Html.ValidationMessageFor(m => m.priority)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="h5">@Resources.strings.qviStatus</td>
+                                <td>
+
+                                    <div id="Status" style='clear:both'>
+                                        @*<select id="statusId" onchange="toggleStatus(form.statusId.options[statusId.selectedIndex].value)" name="statusId" class="form-control fixed-width input-sm" @if (Model.statusId= =9) { @Html.Raw(" style='max-width:50%; float:left' ");} else{ @Html.Raw(" style='float:left' ");}>
+                                            @foreach (var item in Model.Statuses)
+                                            {
+                                            <option value=@item.ID @item.IsDefault> @item.Name </option>
+                                            }
+                                        </select>*@
+                                        <div id="statusBar" style="float: left; @if(Model.statusId!= (int)REATrackerDB.StatusChangeID.status_closed){@Html.Raw(" width:274px;")}else{@Html.Raw("width:137px;")}">
+                                            @Html.AccessForSelectList("statusId", Model.Statuses, Model.canEditstatusId, "onchange='toggleStatus(form.statusId.options[statusId.selectedIndex].value)' class='form-control fixed-width input-sm' style='width:100%;'")
+                                        </div>
+                                        <div id="ClosedStatus" @if (Model.statusId== (int)REATrackerDB.StatusChangeID.status_closed && Model.AccessType==5) { @Html.Raw("style='float:right; display:block' ") ; } else { @Html.Raw(" Style='display:none' ") } >
+                                            @*<select id="closedReasonId" name="closedReasonId" class="form-control fixed-width input-sm" style="max-width:100%" data-val="true" data-val-required="Please select a Reason.">
+                                                @foreach (var item in Model.ClosedReasons)
+                                                {
+                                                <option value=@item.ID @item.IsDefault> @item.Name </option>
+                                                }
+                                            </select>*@
+                                            @Html.AccessForSelectList("closedReasonId", Model.ClosedReasons, Model.canEditclosedReasonId, "class='form-control fixed-width input-sm' style='max-width:100%' data-val='true' data-val-required='Please select a Reason.'")
+                                            @Html.ValidationMessageFor(m => m.closedReasonId)
+                                        </div>
+
+                                        <div id="ClosedStatus2" class="form-inline"
+                                             @if (Model.statusId== (int)REATrackerDB.StatusChangeID.status_closed && Model.AccessType==5) { @Html.Raw("style='display:block; clear:both' ")  ; }
+                                                      else { @Html.Raw(" Style='display:none' ")  ; }>
+                                            <br />
+                                            <br />
+                                            @*
+                                            <input type="hidden" id="lastReleaseMajor" name="lastReleaseMajor" value="@Model.lastReleaseMajor" />
+                                            <input type="hidden" id="lastReleaseMinor" name="lastReleaseMinor" value="@Model.lastReleaseMinor" />
+                                            <input type="hidden" id="lastReleaseBuild" name="lastReleaseBuild" value="@Model.lastReleaseBuild" />
+                                            *@
+                                            @Html.AccessForTextBox(m => m.versionClosedMajor,Model.canEditclosedReasonId,
+                                            new { @size = "1", @maxlength = "4",@placeholder = "", @class = "form-control", @onchange= "OnChangeVersionClosed()" })
+                                            .
+                                            @Html.AccessForTextBox(m => m.versionClosedMinor, Model.canEditclosedReasonId,
+                                            new { @size = "1", @maxlength = "4",@placeholder = "", @class = "form-control", @onchange = "OnChangeVersionClosed()" })
+                                            .
+                                            @Html.AccessForTextBox(m => m.versionClosedBuild, Model.canEditclosedReasonId,
+                                            new { @size = "2", @maxlength = "4",@placeholder = "", @class = "form-control", @onchange = "OnChangeVersionClosed()" })
+                                            &nbsp;
+                                            @Html.AccessForTextBox(m => m.versionClosedMisc, Model.canEditclosedReasonId,
+                                            new { @size = "10", @maxlength = "50", @style = "width: 100px;", @placeholder = "", @class = "form-control", @onchange = "OnChangeVersionClosed()" })
+                                            @*Html.ValidationMessageFor(m => m.versionClosed)*@
+                                            <font id="VersionClosedError" color="#b94a48"></font>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="h5">@Resources.strings.qviAssignedTo</td>
+                                <td>@Html.AccessForSelectList("assignedToId", Model.Team, Model.canEditassignedToId, "class='form-control'")</td>
+                            </tr>
+                            <tr>
+                                <td class="h5">@Resources.strings.qviKeywords</td>
+                                <td>
+                                    @foreach (var item in Model.Keywords)
+                                    {
+                                    <span class="label label-default">@item.Name</span>
+                                    }
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div> <!-- /.portlet-body -->
+            </div> <!-- /.portlet -->
+        </div> <!-- /.col -->
+    </div> <!-- /.row General-->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet">
+                <div class="portlet-body">
+                    @Html.HiddenFor(m => m.canEditManagersNote, new { @value = Model.canEditManagersNote})
+                    @if (Model.canEditManagersNote)
+                    {
+
+                        <div class="panel panel-default open">
+                            <div class="panel-heading" style="background: #b94a48">
+                                <h4 class="panel-title"><a style="color: white">@Resources.strings.qviManagersNotes</a></h4>
+                            </div> <!-- /.panel-heading -->
+                            <div id="collapseOne" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    @Html.TextAreaFor(m => m.ManagersNote, new { @class = "form-control", @rows = "1", @style = "resize: vertical;" })
+                                </div> <!-- /.panel-body -->
+                            </div> <!-- /.panel-collapse -->
+                        </div> <!-- /.panel -->
+                    }
+                    else
+                    {
+                        <div class="alert alert-success">
+                            <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+                            <strong>@Resources.strings.qviManagersNote:</strong> @Html.Nl2Br(Model.ManagersNote)
+                        </div> <!-- /.alert -->
+                    }
+                </div><!-- /.portlet-body -->
+            </div><!-- /.portlet -->
+        </div><!-- /.col -->
+    </div>
+
+    <div class="modal fade" id="createCodeReview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form class="form-horizontal" role="form" method="post" action="" enctype="multipart/form-data">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            Create Code Review For SCR @Model.TrackingId
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="portlet">
+                            <div class="portlet-body">
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <td class="h5 qvi-medium-width">@Resources.strings.qviTitleActivity</td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.CodeReviewTitle, new { @class = "form-control input-sm", @style = "data-val='true' data-val-required='The title \\ activity field is required.'" })
+                                                @Html.ValidationMessageFor(m => m.CodeReviewTitle)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="h5 qvi-medium-width">@Resources.strings.qviProduct</td>
+                                            <td>
+                                                @Html.AccessForSelectList("productId", Model.Products, Model.canEditproductId, "class='form-control input-sm' onchange='this.form.submit();'")
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="h5 qvi-medium-width">@Resources.strings.qviReviewers</td>
+                                            <td>
+                                                @*@Html.AccessForTextBox("Reviewers", @Model.Reviewers )*@
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="h5 qvi-medium-width">@Resources.strings.qviCodeLocationStreams</td>
+                                            <td>@Html.TextBoxFor(m => m.CodeLocation, new { @class = "form-control", @style = "" }) </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="h5 qvi-medium-width">@Resources.strings.qviNotesSubject</td>
+                                            <td>
+                                                @Html.TextAreaFor(m => m.Notes, 5, 200, new { @class = "form-control", @style = "" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="h5 qvi-medium-width">@Resources.strings.qviFileList</td>
+                                            <td>
+                                                @Html.TextAreaFor(x => x.FileList, 5, 200, new { @class = "form-control", @style = "", @id = "fileNames" })
+                                                @Html.ValidationMessageFor(m => m.FileList)
+                                                <div>
+                                                    <div class="col-md-5 btn btn-info pull-right" onclick="javascript: cleanFileNames();" style="margin-top:20px; margin-left:20px;"><i class="fa fa-plus-circle"></i> @Resources.strings.qviCleanFilepaths</div>
+                                                    <div class="col-md-5 btn btn-danger pull-right" onclick="$('#fileNames').val('').empty();" style="margin-top:20px;"><i class="fa fa-times-circle"></i> @Resources.strings.qviClearTextarea</div>
+                                                    <div class="col-md-2"></div>
+                                                </div>
+                                                <ul class="col-md-12" id="cleanedFileNames" style="margin-top:20px; font-size: 12px; font-weight:bold"></ul>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.strings.qviClose</button>
+                        <button type="submit" name="button" class="btn btn-primary" id="CreateCR" value="CreateCodeReview" @*onclick="javascript: checkCleanFiles();"*@>@Resources.strings.qviSubmit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet">
+                <div class="portlet-body">
+
+                    <div class="panel panel-default open">
+                        <div class="panel-heading" style="background: #b94a48">
+                            <h4 class="panel-title" ><a style="color: white">@Resources.strings.qviAddNotes</a></h4>
+                        </div> <!-- /.panel-heading -->
+                        <div id="collapseOne" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                @if(Model.canEditNotesandResolution)
+                                {
+                                    @Html.TextAreaFor(m => m.Details, new { @class = "form-control", @rows = "5", @style = "resize: vertical;" })
+                                    <font id="DetailsErrorMessage" color="#b94a48"></font>
+                                }
+                            </div> <!-- /.panel-body -->
+                        </div> <!-- /.panel-collapse -->
+                    </div> <!-- /.panel -->
+
+
+                    @*<div id="PlannedWork" @if (Model.issueType != (int)REATrackerDB.IssueChangeType.PlannedWork) { @Html.Raw("style = 'display: none'") ; }>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" style="background: #b94a48">
+                                <h4 class="panel-title"><a style="color: white">Planned Work Details</a></h4>
+                            </div> <!-- /.panel-heading -->
+
+                            <div class="panel-body">
+                                <label class="h5">Background / Rational</label>
+                                @if (Model.canEditproblem)
+                                {
+                                    @Html.TextAreaFor(m => m.problem, new { @class = "form-control", @rows = "5", @style = "resize: vertical;" })
+                                }
+                                @Html.ValidationMessageFor(m => m.problem)
+                                <br />
+                                <label class="h5">Story</label>
+                                @if (Model.canEditsolution)
+                                {
+                                    @Html.TextAreaFor(m => m.solution, new { @class = "form-control", @rows = "5", @style = "resize: vertical;" })
+                                }
+                                @Html.ValidationMessageFor(m => m.solution)
+                                <br />
+                                <label class="h5">Acceptance Criteria</label>
+                                @if (Model.canEditbenifits)
+                                {
+                                    @Html.TextAreaFor(m => m.benifits, new { @class = "form-control", @rows = "5", @style = "resize: vertical;" })
+                                }
+                                @Html.ValidationMessageFor(m => m.benifits)
+                            </div> <!-- /.panel-body -->
+                        </div> <!-- /.panel -->
+                    </div>*@<!-- PlannedWork -->
+
+                </div> <!-- /.portlet-body -->
+            </div> <!-- /.portlet -->
+        </div> <!-- /.col -->
+    </div> <!-- /.row Notes-->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet">
+                <div class="portlet-body">
+                    <h4 class="content-title"><u>@Resources.strings.qviPeople</u></h4>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="col-md-2">@Resources.strings.qviWhat</th>
+                                <th class="col-md-4">@Resources.strings.qviWho</th>
+                                <th>@Resources.strings.qviWhen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@Resources.strings.qviSubmittedBy</td>
+                                <td>
+
+                                    @Html.AccessForSelectList("submitedById", Model.selectListUser(Model.submitedById), Model.canEditsubmitedById, "class='form-control'")
+                                </td>
+                                <td>@Model.submittedOn</td>
+                            </tr>
+                            <tr>
+                                <td>@Resources.strings.qviApprovedBy</td>
+                                <td>@Html.AccessForSelectList("ApprovedByID", Model.selectListUser(Model.ApprovedByID), Model.canEditApprovedById, "class='form-control'")</td>
+                                <td>@Model.ApprovedOn</td>
+                            </tr>
+                            <tr>
+                                <td>@Resources.strings.qviResolvedBy</td>
+                                <td>
+                                    @if (Model.resolvedByID == null)
+                                    {
+                                        <text> The SCR has not been resolved.</text>
+                                        @Html.HiddenFor(m => m.resolvedByID);
+                                    }
+                                    else
+                                    {
+                                        @Html.AccessForSelectList("resolvedByID", Model.selectListUser(Convert.ToInt32(Model.resolvedByID)), (Model.canEditresolvedByID), "class='form-control'")
+                                    }
+                                </td>
+                                <td>@Model.ResolvedOn</td>
+                            </tr>
+                            <tr>
+                                <td>@Resources.strings.qviClosedBy</td>
+                                <td>
+                                    @if (Model.closedByID == null)
+                                    {
+                                        <text> The SCR has not been closed.</text>
+                                        @Html.HiddenFor(m => m.closedByID);
+                                    }
+                                    else
+                                    {
+                                        @Html.AccessForSelectList("closedByID", Model.selectListUser(Convert.ToInt32(Model.closedByID)), (Model.canEditclosedByID), "class='form-control'")
+                                    }
+                                </td>
+                                <td> @Model.ClosedOn </td>
+                            </tr>
+                            @if (Model.WatchingString.Length != 0)
+                                {
+                            <tr><td>@Resources.strings.qviWatchedBy</td><td colspan="2">@Model.WatchingString</td></tr>
+                            }
+                        </tbody>
+                    </table>
+                </div> <!-- /.portlet-body -->
+            </div> <!-- /.portlet -->
+        </div> <!-- /.col -->
+    </div><!-- /.row People-->
+    <h4 class="content-title"><u>@Resources.strings.qviRelatedREAs</u></h4>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet">
+                <div class="portlet-body">
+                    <table class="table table-borderless">
+                        <tr>
+                            <td class="h5 qvi-medium-width">@Resources.strings.qviAttachAnSCR</td>
+                            <td class="form-group form-inline">
+
+                                @Html.TextBoxFor(m => m.RelatedInputID, new { @data_val_number = @Resources.strings.qviPleaseEnterANumber, @class = "form-control", @onkeyup = "javascript: ValidateRelated()", @oninput = "javascript: ValidateRelated()" })
+                                <button id="AddButton" class="btn btn-default btn-sm cancel" name="button" value="Add" type="submit" disabled><i class="fa fa-plus-circle fa-lg"></i>&nbsp;&nbsp;@Resources.strings.qviAdd</button>
+                                &nbsp;
+                                <button id="CorrolateButton" class="btn btn-default btn-sm cancel" name="button" value="Correlate" type="submit" disabled><i class="fa fa-arrows-h fa-lg"></i>&nbsp;&nbsp;@Resources.strings.qviCorrelate</button>
+                                @Html.ValidationMessageFor(m => m.RelatedInputID)
+                                <p><font color="#b94a48">@ViewBag.RelatedInputIDError</font></p>
+
+                            </td>
+                        </tr>
+                    </table>
+                    @if (Model.RelatedREAIDs.Count() > 0)
+                    {
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>@Resources.strings.qviSCR #</th>
+                                <th>@Resources.strings.qviProduct</th>
+                                <th>@Resources.strings.qviTitle</th>
+                                <th>@Resources.strings.qviStatus</th>
+                                <th>@Resources.strings.qviRemove</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.RelatedREAIDs.Count; i++)
+                            {
+                            <tr>
+                                <td align="center">
+                                    <a href="/SCR/Display/@Model.RelatedREAIDs[i].otherTrackingId" target="_blank">@Model.RelatedREAIDs[i].otherTrackingId</a>
+                                </td>
+                                <td align="center">
+                                    @Model.RelatedREAIDs[i].product
+                                </td>
+                                <td>
+                                    @Model.RelatedREAIDs[i].title
+                                    <br />
+                                    <div style="font-size: 10pt;">
+                                        <div class="pull-left">
+                                            @Html.IssueIcon(Model.RelatedREAIDs[i].issue, "", false)
+                                            @Html.PriorityIcon(Model.RelatedREAIDs[i].Priority, "", false)
+                                            @if (@Model.RelatedREAIDs[i].Status == "Closed")
+                                            {
+                                            <b>@Resources.strings.qviClosedBy: </b>@Model.RelatedREAIDs[i].ClosedBy
+                                            }
+                                            else
+                                            {
+                                        <b>@Resources.strings.qviAssignedTo </b>@Model.RelatedREAIDs[i].AssignTo
+                                            }
+                                        </div>
+                                        <div class="pull-right">
+                                            @if ((@Model.RelatedREAIDs[i].Status == "Closed") || (@Model.RelatedREAIDs[i].Status == "Fixed") || (@Model.RelatedREAIDs[i].Status == "Delivered") || (@Model.RelatedREAIDs[i].Status == "Built") || (@Model.RelatedREAIDs[i].Status == "Testing") || (@Model.RelatedREAIDs[i].Status == "On Hold"))
+                                            {
+                                            <b>@Resources.strings.qviRelease: </b>@Model.RelatedREAIDs[i].VersionReleased
+                                            }
+                                            else
+                                            {
+                                        <b>@Resources.strings.qviPlannedRelease: </b>@Model.RelatedREAIDs[i].PlannedRelease
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                                <td align="center">
+                                    @Model.RelatedREAIDs[i].Status
+                                    @if (@Model.RelatedREAIDs[i].Status == "Closed")
+                                    {
+                                    <br /> @Model.RelatedREAIDs[i].ClosedReason
+                                    }
+                                </td>
+
+                                <td align="center">
+                                    <button class="cancel btn btn-danger" type="submit" style="vertical-align:middle" name="button" value=@Model.RelatedREAIDs[i].getRemoveValue(i)>
+                                        <span class="glyphicon glyphicon-remove-circle">
+                                        </span>
+                                    </button>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                    }
+                    <div id="Attachments"></div>
+                </div> <!-- /.portlet-body -->
+            </div> <!-- /.portlet -->
+        </div> <!-- /.col -->
+    </div> <!-- /.row -->
+
+    <h4 class="content-title"><u>@Resources.strings.qviAttachments</u></h4>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet">
+                <div class="portlet-body">
+                    @if (Model.canEditAttachements)
+                    {
+                        <div>
+                            <font id="UploadErrorMessage" color="#b94a48">@Model.UploadErrorMessage</font>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2">@Resources.strings.qviFile</label>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => model.File[0], new { @class = "form-control", @type = "file", @onchange = "javascript: ValidateEditUpload()" })
+                            </div><!-- /.col -->
+                        </div><!-- /.form-group -->
+                        <div class="form-group">
+                            <label class="col-md-2">@Resources.strings.qviDescription</label><div class="col-md-10">
+                                <input type="text" id="FileDescription" name="FileDescription" class="form-control" onchange="javascript: ValidateEditUpload()" onkeyup="javascript: ValidateEditUpload()">
+                            </div><!-- /.col -->
+                        </div><!-- /.form-group -->
+                        <div class="form-group">
+                            <label class="col-md-2"></label><div class="col-md-10"><button id="UploadBtn" type="submit" disabled name="button" value="Upload" class="btn btn-info cancel"><i class="fa fa-upload"></i>&nbsp;&nbsp;@Resources.strings.qviUpload</button></div><!-- /.col -->
+                        </div><!-- /.form-group -->
+                    }
+                    <div id="DisplayFilesUploaded">
+                        @if (Model.Files != null && @Model.Files.Count() > 0)
+                        {
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>@Resources.strings.qviFileName</th>
+                                        <th class="col-md-8">@Resources.strings.qviDescription</th>
+                                        <th>@Resources.strings.qviSize</th>
+                                        <th class="col-md-1"><button class="btn btn-danger cancel" type="submit" name="button" value="RemoveFiles">@Resources.strings.qviRemove</button></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.Files.Count(); i++)
+                                    {
+                                        <tr>
+                                            <td>@Model.Files[i].FileName</td>
+                                            <td>
+                                                @Model.Files[i].Description
+                                            </td>
+                                            <td>@Model.Files[i].getSize()</td>
+                                            <td align="center">@Html.CheckBoxFor(m => m.Files[i].remove, new { @checked = "" })</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+
+                    @for (int i = 0; i < Model.RelatedREAIDs.Count; i++)
+                    {
+                        @Html.HiddenFor(m => m.RelatedREAIDs[i].otherTrackingId, Model.RelatedREAIDs[i].otherTrackingId)
+                        @Html.HiddenFor(m => m.RelatedREAIDs[i].product, Model.RelatedREAIDs[i].product)
+                        @Html.HiddenFor(m => m.RelatedREAIDs[i].title, Model.RelatedREAIDs[i].title)
+                        @Html.HiddenFor(m => m.RelatedREAIDs[i].issue, Model.RelatedREAIDs[i].issue)
+                        @Html.HiddenFor(m => m.RelatedREAIDs[i].Priority, Model.RelatedREAIDs[i].Priority)
+                        @Html.HiddenFor(m => m.RelatedREAIDs[i].Status, Model.RelatedREAIDs[i].Status)
+                        @Html.HiddenFor(m => m.RelatedREAIDs[i].AssignTo, Model.RelatedREAIDs[i].AssignTo)
+                        @Html.HiddenFor(m => m.RelatedREAIDs[i].PlannedRelease, Model.RelatedREAIDs[i].PlannedRelease)
+                        @Html.HiddenFor(m => m.RelatedREAIDs[i].correlated, Model.RelatedREAIDs[i].correlated)
+                        @Html.HiddenFor(m => m.RelatedREAIDs[i].RelatedID, Model.RelatedREAIDs[i].RelatedID)
+                        @Html.HiddenFor(m => m.RelatedREAIDs[i].VersionReleased, Model.RelatedREAIDs[i].VersionReleased)
+                        @Html.HiddenFor(m => m.RelatedREAIDs[i].ClosedBy, Model.RelatedREAIDs[i].ClosedBy)
+                        @Html.HiddenFor(m => m.RelatedREAIDs[i].ClosedReason, Model.RelatedREAIDs[i].ClosedReason)
+                    }
+
+                    @for (int i = 0; i < Model.RemoveFileID.Count; i++)
+                    {
+                        @Html.HiddenFor(m => m.RemoveFileID[i], Model.RemoveFileID[i])
+                    }
+                    @for (int i = 0; i < Model.RemoveRelatedID.Count; i++)
+                    {
+                        @Html.HiddenFor(m => m.RemoveRelatedID[i], Model.RemoveRelatedID[i])
+                    }
+
+                </div> <!-- /.portlet-body -->
+            </div> <!-- /.portlet -->
+        </div> <!-- /.col -->
+    </div> <!-- /.row -->
+
+    <h4 class="content-title"><u>@Resources.strings.qviHistory</u></h4>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet">
+                <div class="portlet-body">
+                    <table class="table table-bordered table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th width="165px">@Resources.strings.qviTimestamp</th>
+                                <th width="150px">@Resources.strings.qviChangedBy</th>
+                                <th>@Resources.strings.qviDescription</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in Model.History)
+                            {
+                            <tr>
+                                <td>
+                                    <div>
+                                        @item.MadeOn
+                                    </div>
+                                </td>
+                                <td>
+                                    <a onclick="javascript: popUp('/Account/ViewUser/@item.MadeById')">@item.MadeBy</a>
+                                </td>
+                               @if ((@item.fileID == null) && ((@item.Type == 26) || (@item.Type == 4)))
+                               {
+                                <td>File @item.FileName was attached</td>
+                               }
+                               else if ((@item.fileID != "") && (@item.fileID != null) && ((@item.Type == 26) || (@item.Type == 4)))
+                               {
+                                <td>
+
+                                    File @Html.ActionLink((string)(String.IsNullOrEmpty(Convert.ToString(item.FileName)) ? "no file" : Convert.ToString(item.FileName)), "Download", new { @file_id = Convert.ToInt32(item.fileID) }) was attached.
+                                </td>
+                                }
+                                else if (item.Type == 8)
+                                {
+                                <td>
+                                    Related SCR#<a href='/SCR/Display/@item.LinkSCR' target='_blank'>@item.LinkSCR</a> - @item.Title
+                                </td>
+                                }
+                                else
+                                {
+                                <td>
+                                    @Html.ViewHistory((string)item.Description, (int)item.Type)
+                                </td>
+                                }
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div> <!-- /.portlet-body -->
+            </div> <!-- /.portlet -->
+        </div> <!-- /.col -->
+    </div> <!-- /.row -->
+</section>
+    }
+}
+else
+{
+<p>@Resources.strings.qviPleaseLoginMessage</p>
+}

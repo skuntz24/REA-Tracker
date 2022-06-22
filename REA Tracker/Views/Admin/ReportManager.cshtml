@@ -1,0 +1,206 @@
+﻿@model REA_Tracker.Models.ReportManagerViewModel
+@{
+    ViewBag.Title = Resources.strings.qviReportManager;
+}
+<script type="text/javascript" src="~/Scripts/ReportManager.js"></script>
+<script type="text/javascript" src="~/Scripts/PopUp.js">
+
+</script>
+<script>
+    $(document).ready(function() {
+      $(window).keydown(function(event){
+        if(event.keyCode == 13) {
+          event.preventDefault();
+          return false;
+        }
+      });
+    });
+    function Vaildate()
+    {
+        var Name = document.getElementById("NewGroupName").value;
+        var Result = true;
+        if( Name == null || Name == "")
+        {
+            Result = false;
+            alert(@Resources.strings.qviPleaseEnterAName);
+        }
+        return Result;
+    }
+</script>
+@using (Html.BeginForm())
+{
+<div class="layout layout-main-right layout-stack-sm">
+    <div class="col-md-3 col-sm-4 layout-sidebar">
+
+        <div class="portlet">
+            <h4 class="portlet-title">
+                <u>@Resources.strings.qviReportGroup</u>
+                <button class="btn btn-danger pull-right" name="button" onclick="return confirm('@Resources.strings.qviYouAreAboutToRemoveTheCurrently')" type="submit" value="Remove">
+                    <span class="glyphicon glyphicon-minus"></span>
+                </button>
+                <button class="btn btn-default pull-right" data-toggle="tab" href="#create-tab">
+                    <i class="fa fa-plus"> </i>
+                </button>
+            </h4>
+            <select id="CurrentGroup" name="CurrentGroup" onchange="this.form.submit()" class="form-control fixed-width input-sm">
+                @for (int i = 0; i < Model.ReportGroups.Count; i++)
+                {
+                    <option value="@Model.ReportGroups[i].GroupID" @if (Model.ReportGroups[i].GroupID == Model.CurrentGroup) { <text> selected </text>      }>
+                        @Model.ReportGroups[i].Name
+                    </option>
+                }
+            </select>
+        </div>
+        
+        <div class="portlet">
+            <ul class="nav nav-layout-sidebar nav-stacked">
+                <li class="active">
+                    <a href="#details-tab" data-toggle="tab"> @Resources.strings.qviDetails </a>
+                </li>
+                <li>
+                    <a href="#update-tab" data-toggle="tab"> @Resources.strings.qviUpdate </a>
+                </li>
+            </ul>
+        </div>
+    </div><!-- Sidebar-->
+    <div class="col-md-9 col-sm-8 layout-main">
+        <div id="settings-content" class="tab-content stacked-content">
+            <div class="tab-pane fade in active" id="details-tab">
+                <h3>@Resources.strings.qviReports</h3>
+                <table class="table table-bordered table-striped col-md-12">
+                    <thead>
+                        <tr>
+                            <th class="col-md-2" align="center">
+                                @Resources.strings.qviGroup
+                            </th>
+                            <th class="col-md-1" align="center">
+                                @Resources.strings.qviOrder
+                            </th>
+                            <th class="col-md-2" align="center">
+                                @Resources.strings.qviOwner
+                            </th>
+                            <th>
+                                @Resources.strings.qviTitle
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var Report in Model.CurrentReports)
+                        {
+                            <tr>
+                                <td align="center"> @Model.getGroupName(Convert.ToInt32(Report.GroupID)) </td>
+                                <td align="center"> @Report.Order </td>
+                                <td align="center">
+                                    <a onclick="javascript: popUp('/Account/ViewUser/@Report.OwnerID')"> @Report.OwnerName </a>
+                                </td>
+                                <td> <a href="~/DetailedReports/Display/@Report.ReportID"> @Report.Title </a></td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4">
+                                <font class="text-danger">
+                                    <b>
+                                        @Resources.strings.qviCount: @Model.CurrentReports.Count()
+                                    </b>
+                                </font>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div><!-- details tab -->
+
+            <div class="tab-pane fade in" id="update-tab">
+                <table class="table table-borderless">
+                    <tr>
+                        <td>
+                            <select class="form-control" id="LeftSelectTagProducts" multiple="multiple" name="LeftSelectTagProducts" size="14" style="width:300px">
+                                <!-- fill from hidden -->
+                                <option value="-1">
+                                    --------------------------------------------
+                                </option>
+                                @for (int i = 0; i < Model.nonGroupedReports.Count(); i++)
+                                {
+                                    if (Model.nonGroupedReports[i].GroupID != Convert.ToString(Model.CurrentGroup))
+                                    {
+                                        <option value="@Model.nonGroupedReports[i].ReportID">
+                                            @Model.nonGroupedReports[i].Title
+                                        </option>
+                                    }
+                                }
+                            </select>
+                            <!-- Hidden Field to auto fill into Model -->
+                            <input id="NewReportOrder" name="NewReportOrder" class="form-group" type="hidden" value="" />
+                        </td>
+
+
+                        <td class="form-inline">
+                            <!-- Move to Hidden-->
+                            <button class="form-control" type="button" onmouseup="javascript: ReportSelectMoveRows(form.RightSelectTagProducts, form.LeftSelectTagProducts)">
+                                <span class="glyphicon glyphicon-arrow-left"></span>
+                            </button>
+                            <!-- Move to Display -->
+                            <button class="form-control" type="button" onmouseup="javascript: ReportSelectMoveRows(form.LeftSelectTagProducts, form.RightSelectTagProducts)">
+                                <span class="glyphicon glyphicon-arrow-right"></span>
+                            </button>
+                            &nbsp;
+
+                        </td>
+                        <td>
+                            <select class="form-control" id="RightSelectTagProducts" multiple="multiple" name="RightSelectTagProducts" size="14" style="width:300px">
+                                <!-- fill from display -->
+                                @for (int i = 0; i < Model.MaxCurrentGroupRows; i++)
+                                {
+
+                                    if (Model.GroupedReports.Where(
+                                            x => x.GroupID == Convert.ToString(Model.CurrentGroup) &&
+                                                x.Order == Convert.ToString(i + 1)
+                                        ).Count() == 0)
+                                    {
+                                        <option value="-1">
+                                            --------------------------------------------
+                                        </option>
+                                    }
+                                    else
+                                    {
+                                        var TEMP = Model.GroupedReports.Where(
+                                            x => x.GroupID == Convert.ToString(Model.CurrentGroup) &&
+                                                x.Order == Convert.ToString(i + 1)
+                                        ).ElementAt(0);
+                                        <option value="@TEMP.ReportID">
+                                            @TEMP.Title
+                                        </option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                        <td class="col-md-1">
+                            <div>
+                                <div class="row">
+                                    <button class="form-control" type="button" onmouseup="javascript: MoveUpDisplay()"> <span class="glyphicon glyphicon-arrow-up" /></button>
+                                </div>
+                                <div class="row">
+                                    <button class="form-control" type="button" onmouseup="javascript: MoveDownDisplay()"> <span class="glyphicon glyphicon-arrow-down" /></button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div>
+                    <button name="button" type="submit" class="btn btn-success" onmouseup="javascript: autoFillHiddenString(form.NewReportOrder,form.RightSelectTagProducts)" value="Save">@Resources.strings.qviSave </button>
+                </div>
+            </div><!-- update tab -->
+
+            <div class="tab-pane fade in" id="create-tab">
+                <div class="col-lg-6 form-inline">
+                    <label>@Resources.strings.qviNewGroupName:</label>&nbsp;<input type="text" class="form-control" id="NewGroupName" name="NewGroupName" />
+                                                        <button type="submit" class="btn btn-success" value="New" onclick="return Vaildate();" name="button" id="NewGroupButton"> @Resources.strings.qviSave </button>
+                </div>
+            </div><!-- Create Tab -->
+        </div><!-- Setting content -->
+    </div><!-- Sidebar -->
+       
+</div><!-- Layout main -->
+
+}

@@ -1,0 +1,25 @@
+﻿@model REA_Tracker.Models.HomeIndexViewModel
+@using HelperMethods.Infrastructure;
+
+@{ 
+    int totalCRcount = Model.CRCreatedWatchlist.Count + Model.CRCommentedWatchlist.Count;
+}
+<ul id="myTab1" class="nav nav-tabs">
+    <li @if (ViewBag.tab == null || ViewBag.tab == 0) {@Html.Raw("class='active'")} ><a href="#MyTodoList" data-toggle="tab"><b>To Do List</b>&nbsp;&nbsp;&nbsp;<span class="badge">@Model.toDoListDisplay.Count</span></a></li>
+    <li @if (ViewBag.tab == 1) {@Html.Raw("class='active'")}><a href="#MyWatchList" data-toggle="tab"><b>Watch List</b>&nbsp;&nbsp;&nbsp;<span class="badge">@Model.watchListDisplay.Count</span></a></li>
+    @if (@totalCRcount > 0)
+    {
+    <li><a href="#MyCodeReviews" data-toggle="tab"><b>Code Reviews</b>&nbsp;&nbsp;&nbsp;<span class="badge">@totalCRcount</span></a></li>
+    }
+</ul>
+<div id="myTab1Content" class="tab-content">
+    <div id="MyTodoList" class="tab-pane fade @if(ViewBag.tab==null||ViewBag.tab==0){@Html.Raw("in active");}">
+        @Html.Partial("Partials/_IndexToDoList")
+    </div>
+    <div id="MyWatchList" class="tab-pane fade @if(ViewBag.tab==1){@Html.Raw("in active");}">
+        @Html.Partial("Partials/_IndexWatchList")
+    </div>
+    <div id="MyCodeReviews" class="tab-pane fade @if(ViewBag.tab==2){@Html.Raw("in active");}">
+        @Html.Partial("Partials/_IndexCodeReviewList")
+    </div>
+</div>

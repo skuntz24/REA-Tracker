@@ -1,0 +1,230 @@
+﻿@model REA_Tracker.Models.SearchViewModel
+@using HelperMethods.Infrastructure;
+
+<div class="row">
+    <div class="col-sm-6 col-md-4">
+        <div class="row-stat">
+            <p class="row-stat-label">@Resources.strings.qviSubmittedBy</p>
+            <div class="form-group">
+                @Html.DisplaySelectListNullableDefault("SubmittedByID", Model.SubmittedByID, Model.Employees, "class='form-control' ")
+                <br>
+                <div class="form-inline">
+                    <label>@Resources.strings.qviStarting</label>
+                    <div class="pull-right">
+                        <select class="form form-control input-sm pull-left" id="SubmittedStartComparator" name="SubmittedStartComparator" style="width:100px">
+                            <option @if (Model.SubmittedStartComparator == 0) { <text> selected </text>    } value=0>  </option>
+                            <option @if (Model.SubmittedStartComparator == 1) { <text> selected </text>    } value=1>< </option>
+                            <option @if (Model.SubmittedStartComparator == 2) { <text> selected </text>    } value=2><=</option>
+                            <option @if (Model.SubmittedStartComparator == 3) { <text> selected </text>    } value=3>=</option>
+                            <option @if (Model.SubmittedStartComparator == 4) { <text> selected </text>    } value=4>>=</option>
+                            <option @if (Model.SubmittedStartComparator == 5) { <text> selected </text>    } value=5>> </option>
+                        </select>
+                        <input class="form form-control input-sm pull-left" id="SubmittedStartDate.Month" name="SubmittedStartDate.Month" value="@Model.SubmittedStartDate.Month" type="text" placeholder="MM" size="2" maxlength="2">
+                        <input class="form form-control input-sm pull-left" id="SubmittedStartDate.Day" name="SubmittedStartDate.Day" value="@Model.SubmittedStartDate.Day" type="text" placeholder="DD" size="2" maxlength="2">
+                        <input class="form form-control input-sm pull-left" id="SubmittedStartDate.Year" name="SubmittedStartDate.Year" value="@Model.SubmittedStartDate.Year" type="text" placeholder="YYYY" size="4" maxlength="4">
+                    </div>
+                </div>
+                <br>
+                <div class="form-inline">
+                    <label class="fixed-width">@Resources.strings.qviEnding</label>
+                    <div class="pull-right">
+                        <select class="form form-control input-sm pull-left" id="SubmittedEndComparator" name="SubmittedEndComparator" style="width:100px">
+                            <option @if (Model.SubmittedEndComparator == 0) { <text> selected </text>   } value=0> </option>
+                            <option @if (Model.SubmittedEndComparator == 1) { <text> selected </text>   } value=1><</option>
+                            <option @if (Model.SubmittedEndComparator == 2) { <text> selected </text>   } value=2><=</option>
+                            <option @if (Model.SubmittedEndComparator == 3) { <text> selected </text>   } value=3>=</option>
+                            <option @if (Model.SubmittedEndComparator == 4) { <text> selected </text>   } value=4>>=</option>
+                            <option @if (Model.SubmittedEndComparator == 5) { <text> selected </text>   } value=5>></option>
+                        </select>
+                        <input class="form form-control input-sm pull-left" id="SubmittedEndDate.Month" name="SubmittedEndDate.Month" value="@Model.SubmittedEndDate.Month" type="text" placeholder="MM" size="2" maxlength="2">
+                        <input class="form form-control input-sm pull-left" id="SubmittedEndDate.Day" name="SubmittedEndDate.Day" value="@Model.SubmittedEndDate.Day" type="text" placeholder="DD" size="2" maxlength="2">
+                        <input class="form form-control input-sm pull-left" id="SubmittedEndDate.Year" name="SubmittedEndDate.Year" value="@Model.SubmittedEndDate.Year" type="text" placeholder="YYYY" size="4" maxlength="4"> 
+                    </div>
+                </div>
+            </div>
+        </div> <!-- /.row-stat -->
+    </div> <!-- /.col -->
+    <div class="col-sm-6 col-md-4">
+        <div class="row-stat">
+            <p class="row-stat-label">@Resources.strings.qviAssignedTo</p>
+            <div class="form-group">
+                @Html.DisplaySelectListNullableDefault("AssignedToID", Model.AssignedToID, Model.Employees, "class='form-control' ")
+                <br>
+                <div class="form-inline">
+                    <label>@Resources.strings.qviStarting </label>
+                    <div class="pull-right">
+                        <select class="form form-control input-sm pull-left" id="AssignedToStartComparator" name="AssignedToStartComparator" style="width:100px">
+                            <option @if (Model.AssignedToStartComparator == 0) { <text> selected </text>  } value=0>  </option>
+                            <option @if (Model.AssignedToStartComparator == 1) { <text> selected </text>  } value=1>< </option>
+                            <option @if (Model.AssignedToStartComparator == 2) { <text> selected </text>  } value=2><=</option>
+                            <option @if (Model.AssignedToStartComparator == 3) { <text> selected </text>  } value=3>=</option>
+                            <option @if (Model.AssignedToStartComparator == 4) { <text> selected </text>  } value=4>>=</option>
+                            <option @if (Model.AssignedToStartComparator == 5) { <text> selected </text>  } value=5>> </option>
+                        </select>
+                        <input class="form form-control input-sm pull-left" id="AssignedToStartDate.Month" name="AssignedToStartDate.Month" value="@Model.AssignedToStartDate.Month" type="text" placeholder="MM" size="2" maxlength="2">
+                        <input class="form form-control input-sm pull-left" id="AssignedToStartDate.Day" name="AssignedToStartDate.Day" value="@Model.AssignedToStartDate.Day" type="text" placeholder="DD" size="2" maxlength="2">
+                        <input class="form form-control input-sm pull-left" id="AssignedToStartDate.Year" name="AssignedToStartDate.Year" value="@Model.AssignedToStartDate.Year" type="text" placeholder="YYYY" size="4" maxlength="4">                                                                   
+                    </div>
+                </div>
+                <br/>    
+                <div class="form-inline">
+                    <label>@Resources.strings.qviEnding </label>
+                    <div class="pull-right">
+                        <select class="form form-control input-sm pull-left" id="AssignedToEndComparator" name="AssignedToEndComparator" style="width:100px">
+                            <option @if (Model.AssignedToEndComparator == 0) { <text> selected </text>   } value=0> </option>
+                            <option @if (Model.AssignedToEndComparator == 1) { <text> selected </text>   } value=1><</option>
+                            <option @if (Model.AssignedToEndComparator == 2) { <text> selected </text>   } value=2><=</option>
+                            <option @if (Model.AssignedToEndComparator == 3) { <text> selected </text>   } value=3>=</option>
+                            <option @if (Model.AssignedToEndComparator == 4) { <text> selected </text>   } value=4>>=</option>
+                            <option @if (Model.AssignedToEndComparator == 5) { <text> selected </text>   } value=5>></option>
+                        </select> 
+                        <input class="form form-control input-sm pull-left" id="AssignedToEndDate.Month" name="AssignedToEndDate.Month" value="@Model.AssignedToEndDate.Month" type="text" placeholder="MM" size="2" maxlength="2">
+                        <input class="form form-control input-sm pull-left" id="AssignedToEndDate.Day" name="AssignedToEndDate.Day" value="@Model.AssignedToEndDate.Day" type="text" placeholder="DD" size="2" maxlength="2">
+                        <input class="form form-control input-sm pull-left" id="AssignedToEndDate.Year" name="AssignedToEndDate.Year" value="@Model.AssignedToEndDate.Year" type="text" placeholder="YYYY" size="4" maxlength="4">                                                                                           
+                     </div>       
+                </div>
+            </div>
+        </div> <!-- /.row-stat -->
+    </div> <!-- /.col -->
+    <div class="col-sm-6 col-md-4">
+        <div class="row-stat">
+            <p class="row-stat-label">@Resources.strings.qviResolvedBy</p>
+            @Html.DisplaySelectListNullableDefault("ResolvedByID", Model.ResolvedByID, Model.Employees, "class='form-control'")
+        <br/>
+            <div class="form-group">
+                <div class="form-inline">
+                    <label>
+                        @Resources.strings.qviStarting
+                    </label>
+                    <div class="pull-right">
+                        <select class="form form-control input-sm pull-left" id="ResolvedStartComparator" name="ResolvedStartComparator" style="width:100px">
+                            <option @if (Model.ResolvedStartComparator == 0) { <text> selected </text>   } value=0> </option>
+                            <option @if (Model.ResolvedStartComparator == 1) { <text> selected </text>   } value=1><</option>
+                            <option @if (Model.ResolvedStartComparator == 2) { <text> selected </text>   } value=2><=</option>
+                            <option @if (Model.ResolvedStartComparator == 3) { <text> selected </text>   } value=3>=</option>
+                            <option @if (Model.ResolvedStartComparator == 4) { <text> selected </text>   } value=4>>=</option>
+                            <option @if (Model.ResolvedStartComparator == 5) { <text> selected </text>   } value=5>></option>
+                        </select>
+                        <input class="form form-control input-sm pull-left" id="ResolvedStartDate.Month" name="ResolvedStartDate.Month" value="@Model.ResolvedStartDate.Month" type="text" placeholder="MM" size="2" maxlength="2">
+                        <input class="form form-control input-sm pull-left" id="ResolvedStartDate.Day" name="ResolvedStartDate.Day" value="@Model.ResolvedStartDate.Day" type="text" placeholder="DD" size="2" maxlength="2">
+                        <input class="form form-control input-sm pull-left" id="ResolvedStartDate.Year" name="ResolvedStartDate.Year" value="@Model.ResolvedStartDate.Year" type="text" placeholder="YYYY" size="4" maxlength="4">
+                    </div>
+                </div>
+                <br/>
+                <div class="form-inline">
+                    <label>
+                        @Resources.strings.qviEnding
+                    </label>
+                    <div class="pull-right">
+                        <select class="form form-control input-sm pull-left" id="ResolvedEndComparator" name="ResolvedEndComparator" style="width:100px">
+                            <option @if (Model.ResolvedEndComparator == 0) { <text> selected </text>   } value=0> </option>
+                            <option @if (Model.ResolvedEndComparator == 1) { <text> selected </text>   } value=1><</option>
+                            <option @if (Model.ResolvedEndComparator == 2) { <text> selected </text>   } value=2><=</option>
+                            <option @if (Model.ResolvedEndComparator == 3) { <text> selected </text>   } value=3>=</option>
+                            <option @if (Model.ResolvedEndComparator == 4) { <text> selected </text>   } value=4>>=</option>
+                            <option @if (Model.ResolvedEndComparator == 5) { <text> selected </text>   } value=5>></option>
+                        </select> 
+                        <input class="form form-control input-sm pull-left" id="ResolvedEndDate.Month" name="ResolvedEndDate.Month" value="@Model.ResolvedEndDate.Month" type="text" placeholder="MM" size="2" maxlength="2" />
+                        <input class="form form-control input-sm pull-left" id="ResolvedEndDate.Day" name="ResolvedEndDate.Day" value="@Model.ResolvedEndDate.Day" type="text" placeholder="DD" size="2" maxlength="2" />
+                        <input class="form form-control input-sm pull-left" id="ResolvedEndDate.Year" name="ResolvedEndDate.Year" value="@Model.ResolvedEndDate.Year" type="text" placeholder="YYYY" size="4" maxlength="4" />                                      
+                    </div>     
+                </div>
+            </div>
+        </div> <!-- /.row-stat -->
+    </div> <!-- /.col -->
+</div> <!-- /.row -->
+
+<div class="row">
+    <div class="col-sm-6 col-md-4">
+        <div class="row-stat">
+            <p class="row-stat-label">@Resources.strings.qviClosedBy</p>
+            @Html.DisplaySelectListNullableDefault("ClosedByID", Model.ClosedByID, Model.Employees, "class='form-control'")
+            <br>
+            <div class="form-group">
+                <div class="form-inline">
+                    <label>
+                        @Resources.strings.qviStarting
+                    </label>
+                    <div class="pull-right">
+                        <select class="form form-control input-sm pull-left" id="ClosedStartComparator" name="closedstartcomparator" style="width:100px">
+                            <option @if (Model.ClosedStartComparator == 0) { <text> selected </text>   } value=0> </option>
+                            <option @if (Model.ClosedStartComparator == 1) { <text> selected </text>   } value=1><</option>
+                            <option @if (Model.ClosedStartComparator == 2) { <text> selected </text>   } value=2><=</option>
+                            <option @if (Model.ClosedStartComparator == 3) { <text> selected </text>   } value=3>=</option>
+                            <option @if (Model.ClosedStartComparator == 4) { <text> selected </text>   } value=4>>=</option>
+                            <option @if (Model.ClosedStartComparator == 5) { <text> selected </text>   } value=5>></option>
+                        </select>
+                        <input class="form form-control input-sm pull-left" id="ClosedStartDate.Month" name="ClosedStartDate.Month" value="@Model.ClosedStartDate.Month" type="text" placeholder="MM" size="2" maxlength="2">
+                        <input class="form form-control input-sm pull-left" id="ClosedStartDate.Day" name="ClosedStartDate.Day" value="@Model.ClosedStartDate.Day" type="text" placeholder="DD" size="2" maxlength="2">
+                        <input class="form form-control input-sm pull-left" id="ClosedStartDate.Year" name="ClosedStartDate.Year" value="@Model.ClosedStartDate.Year" type="text" placeholder="YYYY" size="4" maxlength="4">                                       
+                    </div>
+                </div>
+            <br/>
+                <div class="form-inline">
+                    <label>
+                        @Resources.strings.qviEnding
+                    </label>
+                    <div class="pull-right">
+                        <select class="form form-control input-sm pull-left" id="ClosedEndComparator" name="ClosedEndComparator" style="width:100px">
+                            <option @if (Model.ClosedEndComparator == 0) { <text> selected </text>   } value=0> </option>
+                            <option @if (Model.ClosedEndComparator == 1) { <text> selected </text>   } value=1><</option>
+                            <option @if (Model.ClosedEndComparator == 2) { <text> selected </text>   } value=2><=</option>
+                            <option @if (Model.ClosedEndComparator == 3) { <text> selected </text>   } value=3>=</option>
+                            <option @if (Model.ClosedEndComparator == 4) { <text> selected </text>   } value=4>>=</option>
+                            <option @if (Model.ClosedEndComparator == 5) { <text> selected </text>   } value=5>></option>
+                        </select>
+                        <input class="form form-control input-sm pull-left" id="ClosedEndDate.Month" name="ClosedEndDate.Month" value="@Model.ClosedEndDate.Month" type="text" placeholder="MM" size="2" maxlength="2">
+                        <input class="form form-control input-sm pull-left" id="ClosedEndDate.Day" name="ClosedEndDate.Day" value="@Model.ClosedEndDate.Day" type="text" placeholder="DD" size="2" maxlength="2">
+                        <input class="form form-control input-sm pull-left" id="ClosedEndDate.Year" name="ClosedEndDate.Year" value="@Model.ClosedEndDate.Year" type="text" placeholder="YYYY" size="4" maxlength="4">                                                        
+                     </div>            
+                </div>
+            </div>
+        </div> <!-- /.row-stat -->
+    </div> <!-- /.col -->
+    <div class="col-sm-6 col-md-4">
+        <div class="row-stat">
+            <p class="row-stat-label">Last Updated On</p>
+            <div class="form-group">
+                <div class="form-inline">
+                    <label>
+                        @Resources.strings.qviStarting
+                    </label>
+                    <div class="pull-right">
+                        <select class="form form-control input-sm pull-left" id="ModifiedAfterComparator" name="ModifiedAfterComparator" style="width:100px">
+                            <option @if (Model.ModifiedAfterComparator == 0) { <text> selected </text>     } value=0>  </option>
+                            <option @if (Model.ModifiedAfterComparator == 1) { <text> selected </text>     } value=1>< </option>
+                            <option @if (Model.ModifiedAfterComparator == 2) { <text> selected </text>     } value=2><=</option>
+                            <option @if (Model.ModifiedAfterComparator == 3) { <text> selected </text>     } value=3>= </option>
+                            <option @if (Model.ModifiedAfterComparator == 4) { <text> selected </text>     } value=4>>=</option>
+                            <option @if (Model.ModifiedAfterComparator == 5) { <text> selected </text>     } value=5>> </option>
+                        </select>
+                        <input class="form form-control input-sm pull-left" id="ModifiedAfter.Month" name="ModifiedAfter.Month" value="@Model.ModifiedAfter.Month" type="text" placeholder="MM" size="2" maxlength="2">
+                        <input class="form form-control input-sm pull-left" id="ModifiedAfter.Day" name="ModifiedAfter.Day" value="@Model.ModifiedAfter.Day" type="text" placeholder="DD" size="2" maxlength="2">
+                        <input class="form form-control input-sm pull-left" id="ModifiedAfter.Year"  name="ModifiedAfter.Year"  value="@Model.ModifiedAfter.Year" type="text" placeholder="YYYY" size="4" maxlength="4">                                  
+                    </div>
+                </div>
+                <br>
+                <div class="form-inline">
+                    <label class="fixed-width">
+                        @Resources.strings.qviEnding
+                    </label>
+                    <div class="pull-right">
+                        <select class="form form-control input-sm pull-left" id="ModifiedBeforeComparator" name="ModifiedBeforeComparator" style="width:100px">
+                            <option @if (Model.ModifiedBeforeComparator == 0) { <text> selected </text>     } value=0>  </option>
+                            <option @if (Model.ModifiedBeforeComparator == 1) { <text> selected </text>     } value=1>< </option>
+                            <option @if (Model.ModifiedBeforeComparator == 2) { <text> selected </text>     } value=2><=</option>
+                            <option @if (Model.ModifiedBeforeComparator == 3) { <text> selected </text>     } value=3>= </option>
+                            <option @if (Model.ModifiedBeforeComparator == 4) { <text> selected </text>     } value=4>>=</option>
+                            <option @if (Model.ModifiedBeforeComparator == 5) { <text> selected </text>     } value=5>> </option>
+                        </select>
+                        <input class="form form-control input-sm pull-left" id="ModifiedBefore.Month" name="ModifiedBefore.Month" value="@Model.ModifiedBefore.Month" type="text" placeholder="MM" size="2" maxlength="2">
+                        <input class="form form-control input-sm pull-left" id="ModifiedBefore.Day" name="ModifiedBefore.Day" value="@Model.ModifiedBefore.Day" type="text" placeholder="DD" size="2" maxlength="2">
+                        <input class="form form-control input-sm pull-left" id="ModifiedBefore.Year" name="ModifiedBefore.Year" value="@Model.ModifiedBefore.Year" type="text" placeholder="YYYY" size="4" maxlength="4">                
+                    </div>
+                </div>
+            </div>
+        </div> <!-- /.row-stat -->
+    </div> <!-- /.col -->
+
+</div> <!-- /.row -->
+

@@ -1,0 +1,47 @@
+﻿@model REA_Tracker.Models.SessionManagerViewModel
+
+@{
+    ViewBag.Title = Resources.strings.qviSessionManager;
+}
+<h2>@Resources.strings.qviSessionManager</h2>
+
+@using (Html.BeginForm())
+{
+        <div class="display: inline-block; vertical-align: top;">
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-secondary">
+                        @Resources.strings.qviFilterData
+                    </button>
+                </span>
+            </div><!-- /input-group -->
+        </div><!-- class="display: inline-block; vertical-align: top;" -->
+}
+<br/>
+<h4 class="content-title"><u>@Resources.strings.qviLast30Days</u></h4>
+<div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+    <img src="@Url.Action("CustomReportChart", "Home", new
+                             {
+                                 Title = "Top Browsers",
+                                 ArgsxValues = Model.TopBrowserXValues,
+                                 ArgsyValues = Model.TopBrowserYValues,
+                                 colorenum = 0
+                                 //ParamWidth = Model.width,
+                                 //ParamHeight = Model.hieght
+                             })" alt="SimpleChart" />
+</div>
+@for (int i = 0; i < Model.BrowserXValues.Count; i++)
+{ 
+    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+        <img src="@Url.Action("CustomReportChart", "Home", new
+                             {
+                                 Title = Model.TopBrowserName[i],
+                                 ArgsxValues = Model.BrowserXValues[i],
+                                 ArgsyValues = Model.BrowserYValues[i],
+                                 colorenum = i+1
+                                 //ParamWidth = Model.width,
+                                 //ParamHeight = Model.hieght
+                             })" alt="SimpleChart" />
+    </div>
+}
+

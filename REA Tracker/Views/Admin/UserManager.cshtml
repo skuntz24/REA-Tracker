@@ -1,0 +1,92 @@
+﻿@model SCR_Tracker.Models.AdminIndexViewModel
+@using HelperMethods.Infrastructure
+@{
+    ViewBag.Title = Resources.strings.qviAdministrator;
+}
+<p class="text-danger">@ViewBag.StatusMessage</p>
+<script type="text/javascript" src="~/Scripts/TableSort/jquery.tablesorter.js">
+    
+</script> 
+<script>
+    $(document).ready(function () {
+        $('#usertable').tablesorter({
+            headers: {
+                0: { sorter: false }
+            }
+        });
+    });
+</script>
+@using(Html.BeginForm())
+{
+    <table class="table table-borderless">
+        <tr>
+            <td><label> @Resources.strings.qviLogin   </label>      </td><td>  <input type="text" name="SearchUserID"         value="@Model.SearchUserID"     />   </td>
+            <td><label> @Resources.strings.qviEmail   </label>      </td><td>  <input type="text" name="SearchEmail"          value="@Model.SearchEmail"     />    </td>
+        </tr>                                                        
+        <tr>                                  
+            <td><label> @Resources.strings.qviFirstName  </label>  </td><td>  <input type="text" name = "SearchFirstName"     value="@Model.SearchFirstName"    /> </td>
+            <td><label> @Resources.strings.qviLastName   </label>  </td><td>  <input type="text" name = "SearchLastName"       value="@Model.SearchLastName"    /> </td>
+        </tr>
+        <tr>
+            <td> <input type="checkbox" name="ShowEx" value="true" @if(Model.ShowEX){<text> checked </text> }> <label>@Resources.strings.qviIncludeExEmployee </label> </td>
+        </tr>
+        <tr>
+            <td>
+                <button type="submit" class="btn btn-danger"> @Resources.strings.qviSearch </button>
+            </td>
+        </tr>
+    </table>
+}
+<table id="usertable" class="table table-bordered tablesorter">
+    <thead>
+        <tr class="header">
+            <th style="text-align: center;"></th>
+            <th style="text-align: center;">@Resources.strings.qviID</th>
+            <th style="text-align: center;">@Resources.strings.qviLogin</th>
+            <th style="text-align: center;">@Resources.strings.qviFullName</th>
+            <th style="text-align: center;">@Resources.strings.qviEmailAddress</th>
+            <th style="text-align: center; padding-left:30px; padding-right:30px;">@Resources.strings.qviAccountType</th>
+            <th style="text-align: center;">@Resources.strings.qviCompany</th>
+            <th style="text-align: center;">@Resources.strings.qviDepartment</th>
+            <th style="text-align: center; padding-left:30px; padding-right:40px;">@Resources.strings.qviBoss</th>
+        </tr>
+    </thead>
+    @Html.ActionLink(Resources.strings.qviAddUser, "CreateUser", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })
+    <tbody>
+        @foreach (var item in ViewBag.Users) 
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(Resources.strings.qviEdit, "Edit", new { id = item.UserID})
+                </td>
+                <td>
+                    @item.UserID
+                </td>
+                <td>
+                    @item.Login
+                </td>
+                <td>
+                    @item.FullName
+                </td>
+                <td>
+                    @Html.Nl2Br((String)item.EmailAddress)
+                </td>
+                <td>
+                    @item.AccountType
+                </td>
+                <td>
+                    @item.Company
+                </td>
+                <td>
+                    @item.Department
+                </td>
+                <td>
+                    @item.Boss
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr><td colspan="9">@Resources.strings.qviTotal: @ViewBag.UserCount </td></tr>
+    </tfoot>
+</table>

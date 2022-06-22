@@ -1,0 +1,77 @@
+﻿@model REA_Tracker.Models.StatusChangeEdit
+@if (ViewBag.DisplayMessage)
+{
+<script>
+        alert(@Resources.strings.qviThatStatusChangeMessage)
+</script>
+}
+@using (Html.BeginForm())
+{
+    <h2>Status Manager Edit @Model.RoleName</h2>
+
+    <input type="hidden" name="StatusChangeId" value="@Model.StatusChangeId" />
+    <input type="hidden" name="GroupID" value="@Model.GroupID" />
+    <table>
+        <tr>
+            <td>
+                @Resources.strings.qviFromState
+            </td>
+            <td>
+                <select name="SelectFrom">
+                    @for (int i = 0; i < Model.StatusNames.Count; i++)
+                    {
+                        <option value="@Model.StatusNames.ElementAt(i).Item1"
+                                @( Model.SelectFrom == Model.StatusNames.ElementAt(i).Item1 ? "Selected": "")
+                                >
+                            @Model.StatusNames.ElementAt(i).Item2
+                        </option>
+                    }
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Resources.strings.qviToState
+            </td>
+            <td>
+                <select name="SelectTo">
+                    @for (int i = 0; i < Model.StatusNames.Count; i++)
+                    {
+                        <option value="@Model.StatusNames.ElementAt(i).Item1"
+                                @( Model.SelectTo == Model.StatusNames.ElementAt(i).Item1 ? "Selected" : "")
+                                >
+                            @Model.StatusNames.ElementAt(i).Item2
+                        </option>
+                    }
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Resources.strings.qviException:
+            </td>
+            <td>
+                <select name="isExeception">
+                    <option value="1" @( Model.isExeception == 1 ? "Selected" : "")>Yes</option>
+                    <option value="0" @( Model.isExeception == 0 ? "Selected" : "")>No </option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Resources.strings.qviDeny
+            </td>
+            <td>
+                <select name="isDenied">
+                    <option value="1" @(Model.isDenied == 1 ? "Selected" : "")>Yes</option>
+                    <option value="0" @(Model.isDenied == 0 ? "Selected" : "")>No </option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button type="submit" class="btn btn-success" value="Update">@Resources.strings.qviUpdate</button>
+            </td>
+        </tr>
+    </table>
+}

@@ -1,0 +1,92 @@
+﻿@model SCR_Tracker.Models.ProductManagerViewModel
+@using HelperMethods.Infrastructure
+@{
+    ViewBag.Title = "ProductManagerEditTeam";
+}
+<div class="layout layout-main-left layout-stack-sm">
+    <div class="col-md-3 col-sm-4 layout-main">
+        <h4 class="portlet-title">
+            <u>@Resources.strings.qviProductManager</u>
+            @*<button class="btn btn-default pull-right" onclick="javascript: window.location.href = '/Admin/ProductManagerCreate'">
+                <i class="fa fa-plus"> </i>
+            </button>*@
+            <a href="/Admin/ProductManagerCreate" class="btn btn-default pull-right"> <i class="fa fa-plus"> </i> </a>
+        </h4>
+        @using (Html.BeginForm("ProductManagerEditTeam", "Admin", FormMethod.Post))
+        {
+            @Html.DisplaySelectList("productID", Model.ProductName, "class='form-control fixed-width' onchange='this.form.submit()' data-val='true'")
+        }
+        <br />
+        <div class="list-group">
+            <a style="cursor:hand; cursor:pointer;" onmouseup="javascript:location.href = '/Admin/ProductManager/@Model.productID';" class="list-group-item">@Resources.strings.qviDetails</a>
+            <a style="cursor:hand; cursor:pointer;" onmouseup="javascript:location.href = '/Admin/ProductManagerEditInformation/@Model.productID';" class="list-group-item">@Resources.strings.qviUpdateInformation</a>
+            <a style="cursor:hand; cursor:pointer;" onmouseup="javascript:location.href = '/Admin/ProductManagerEditModule/@Model.productID';" class="list-group-item">@Resources.strings.qviUpdateModule</a>
+            <a style="cursor:hand; cursor:pointer;" onmouseup="javascript:location.href = '/Admin/ProductManagerEditTeam/@Model.productID';" class=" list-group-item">@Resources.strings.qviUpdateTeam</a>
+            <a style="cursor:hand; cursor:pointer;" onmouseup="javascript:location.href = '/Admin/ProductManagerMetrics/@Model.productID';" class=" list-group-item">@Resources.strings.qviUpdateMetrics</a>
+        </div>
+    </div>
+
+
+    <div class="col-md-9 col-sm-8 layout-sidebar">
+        <font color="#33CC66" id="Message" name="Message">
+            @ViewBag.Message
+        </font>
+        @using (Html.BeginForm("ProductManagerEditTeam", "Admin", FormMethod.Post, new { @onsubmit = "return validateNewTeamForm();" }))
+        {
+            @Html.HiddenFor(m => m.productID)
+            <div class="form-inline">
+                <h4>@Resources.strings.qviAddNewTeammate</h4>
+                <label> @Resources.strings.qviName: </label>
+                @Html.DisplaySelectList("NewMemmberID", Model.GetListofAllNonteamMates(), "class='form-control'")
+            <label> @Resources.strings.qviRole: </label>
+                @Html.DisplaySelectList("NewRoleID", Model.RolesSelected(1), "class='form-control'")
+                <input type="submit" name="button" value=@Resources.strings.qviAddUser class="btn btn-default" />
+            </div>
+        }
+        @using (Html.BeginForm("ProductManagerEditTeam", "Admin", FormMethod.Post))
+        {
+            @Html.HiddenFor(m => m.productID)
+                <div class="portlet-body col-lg-8">
+                    <h4>@Resources.strings.qviTeammates</h4>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="col-lg-5">
+                                    @Resources.strings.qviName
+                                </th>
+                                <th class="col-lg-5">
+                                    @Resources.strings.qviRole
+                                </th>
+                                <th>
+                                    @Resources.strings.qviRemove
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+            int i = 0;
+                            }
+                            @foreach (var TeamMemmber in Model.ListOfTeammates)
+                            {
+                                <tr>
+                                    <td align="center">
+                                        <a onclick="javascript: popUp('/Account/ViewUser/@TeamMemmber.UserID')">@TeamMemmber.Name</a>
+                                        <input type="hidden" id="ListOfTeammates[@i].TeamTableID" name="ListOfTeammates[@i].TeamTableID" value="@TeamMemmber.TeamTableID" class='form-control'>
+                                        <input type="hidden" id="ListOfTeammates[@i].UserID" name="ListOfTeammates[@i].UserID" value="@TeamMemmber.UserID" class='form-control'>
+                                    </td>
+                                    <td align="center">
+                                        @Html.DisplaySelectList("ListOfTeammates[" + Convert.ToString(i) + "].RoleID", Model.RolesSelected(TeamMemmber.RoleID),"class='form-control valid'")
+                                    </td>
+                                    <td align="center">
+                                        <input type="checkbox" id="ListOfTeammates[@i].Remove" name="ListOfTeammates[@i].Remove" value="true" class='form-control'>
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+                        </tbody>
+                    </table>
+                    <input type="submit" name="button" value=@Resources.strings.qviUpdateAllUsers class="btn btn-default" />
+                </div>
+        }
+    </div>
+</div>

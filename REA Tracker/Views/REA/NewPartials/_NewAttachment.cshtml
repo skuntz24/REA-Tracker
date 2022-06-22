@@ -1,0 +1,58 @@
+﻿@model REA_Tracker.Models.NewREA
+
+
+    <h3 class="content-title"><u>Attachments</u></h3>
+    <p>
+        Attachments That The REA Uses
+    </p><br>
+    <br>
+    <div class="form-group">
+        <label class="col-md-2">File</label>
+    <div class="col-md-10">
+        @Html.TextBoxFor(model => model.File[0], new { @class = "form-control", @type = "file" })
+        </div><!-- /.col -->
+    </div><!-- /.form-group -->
+    <div class="form-group">
+        <label class="col-md-2">Description</label><div class="col-md-10">
+        <input type="text" id="FileDescription" name="FileDescription" class="form-control"></div><!-- /.col -->
+        <div class="col-md-2"></div><div class="col-md-10"><p class="text-danger">Required.</p></div>
+    </div><!-- /.form-group -->
+    <div class="form-group">
+        <label class="col-md-2"></label><div class="col-md-10"><button type="submit" name="button" value="Upload" class="btn btn-info"><i class="fa fa-upload"></i>&nbsp;&nbsp;Upload</button></div><!-- /.col -->
+    </div><!-- /.form-group -->
+    <br />
+    <br />
+    <table class="table table-bordered">
+        @if(Model.Files != null && Model.Files.Count>0)
+        { 
+            <thead>
+                <tr>
+                    <th>File Name</th>
+                    <th class="col-md-8">Description</th>
+                    <th>Size</th>
+                    <th class="col-md-1"><button class="btn btn-danger" type="submit" name="button" value="RemoveFiles">Remove</button></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Files.Count(); i++ )
+                {
+                    <tr>
+                        <td>@Model.Files[i].file.FileName</td>
+                        <td >@Model.Files[i].Description</td>
+                        <td>@Model.Files[i].getSize()</td>
+                        <td align ="center">@Html.CheckBoxFor(m => m.Files[i].remove)</td>
+                    </tr>
+                }
+            </tbody>
+        }
+    </table>
+<!-- adds -->
+@if(Model.Files != null)
+{
+    for (int i = 0; i < Model.Files.Count; i++)
+    {
+            @Html.HiddenFor(m=>m.Files[i].file, Model.Files[i].file)
+            @Html.HiddenFor(m => m.Files[i].Description, Model.Files[i].Description)
+    }
+}
+

@@ -1,0 +1,65 @@
+﻿@model REA_Tracker.Models.SearchViewModel
+@using HelperMethods.Infrastructure;
+
+<div class="row">
+    <div class="col-sm-6 col-md-3">
+        <div class="row-stat">
+            <p class="row-stat-label">Reported</p>
+            <div class="form-group form-inline">
+                <select id="CustomerReported" onchange="ChangeReported()" name="CustomerReported" class="form-control">
+                    <option @if(Model.CustomerReported == null){<text> selected </text>} value=""> </option>
+                    <option @if(Model.CustomerReported != null && Model.CustomerReported == 0){<text> selected </text>} value="0">No</option>
+                    <option @if(Model.CustomerReported != null && Model.CustomerReported == 1){<text> selected </text>} value="1">Yes</option>
+                </select>
+            </div>
+        </div> <!-- /.row-stat -->
+    </div> <!-- /.col -->
+    <div class="col-sm-6 col-md-3">
+        <div class="row-stat">
+            <p class="row-stat-label">Company</p>
+            <div class="form-group form-inline">
+                <input type="text" id="CustomerCompany" name="CustomerCompany" class="form-control" value="@Model.CustomerCompany"/>
+            </div>
+        </div> <!-- /.row-stat -->
+    </div> <!-- /.col -->
+    <div class="col-sm-6 col-md-3">
+        <div class="row-stat">
+            <p class="row-stat-label">Location</p>
+            <div class="form-group form-inline">
+                <input type="text" id="CustomerLocation" name="CustomerLocation" class="form-control" value="@Model.CustomerLocation"/>
+            </div>
+        </div> <!-- /.row-stat -->
+    </div> <!-- /.col -->
+    <div class="col-sm-6 col-md-3">
+        <div class="row-stat">
+            <p class="row-stat-label">Contact</p>
+            <div class="form-group form-inline">
+                <input type="text" id="CustomerContact" name="CustomerContact" class=" form-control" value="@Model.CustomerContact" />
+                <!-- Drop Down -->
+                <select class="form-control pull-left" id="CustomerLogic" name="CustomerLogic">
+                    <option @if (Model.CustomerLogic == 3) { <text> selected </text> } value=3>Any Of </option>
+                    <option @if (Model.CustomerLogic == 2) { <text> selected </text> } value=2>All Words </option>
+                    <option @if (Model.CustomerLogic == 1) { <text> selected </text> } value=1>Any Words </option>
+                </select>
+            </div>
+        </div> <!-- /.row-stat -->
+    </div> <!-- /.col -->
+</div> <!-- /.row -->
+<div class="row">
+    <div class="col-sm-6 col-md-3">
+        <div class="row-stat">
+            <p class="row-stat-label">Syteline #</p>
+            <div class="form-group form-inline">
+                <input type="text" id="CustomerSyteLine" name="CustomerSyteLine" class="form-control" value="@Model.CustomerSyteLine" />
+            </div>
+        </div> <!-- /.row-stat -->
+    </div> <!-- /.col -->
+    <div class="col-sm-6 col-md-3">
+        <div class="row-stat">
+            <p class="row-stat-label">Machine S/N</p>
+            <div class="form-group form-inline">
+                <input type="text" id="CustomerMachineSN" name="CustomerMachineSN" class="form-control" value="@Model.CustomerMachineSN" />
+            </div>
+        </div> <!-- /.row-stat -->
+    </div> <!-- /.col -->
+</div> <!-- /.row -->

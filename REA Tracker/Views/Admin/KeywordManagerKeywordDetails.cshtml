@@ -1,0 +1,59 @@
+﻿@model REA_Tracker.Models.KeywordManagerKeywordDetailsViewModel
+@using HelperMethods.Infrastructure
+<script type="text/javascript" src="~/Scripts/TableSort/jquery.tablesorter.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#table1').tablesorter({
+            headers: {
+                
+            }
+        });
+    });
+</script>
+
+<section class="demo-section">
+    <h4 class="content-title"><u>@ViewBag.Title</u></h4>
+
+    <form class="form">
+        <div class="row">
+            <div class="form-group col-md-1">
+                <label for="labelID">@Resources.strings.qviID</label>
+                <input type="text" readonly class="form-control" id="ID" name="ID" placeholder="ID" value="@ViewBag.ID">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="labelKeyword">@Resources.strings.qviKeyword</label>
+                <input type="text" readonly class="form-control" id="labelKeyword" name="Keyword" placeholder="Keyword" value="@ViewBag.Keyword">
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label for="labelDescription">@Resources.strings.qviDescription</label>
+                <input type="text" readonly class="form-control" id="Description" name="Description" placeholder="None" size="50" value="@ViewBag.Description">
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label class="" for="labelList">@Resources.strings.qviSCRsReferenced:</label>
+                <table id="table1" class="table table-bordered tablesorter">
+                    <thead>
+                        <tr>
+                            <th class="qvi-col-ProductName">@Resources.strings.qviProduct</th>
+                            <th class="qvi-col-trackingid">@Resources.strings.qviSCR #</th>
+                            <th class="qvi-col-name">@Resources.strings.qviTitle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.GetAll)
+                        {
+                            <tr>
+                                <td>@item.Product</td>
+                                <td align="center"><a href="/SCR/Display/@item.TRACKING_ID" target="_blank">@item.TRACKING_ID</a></td>
+                                <td>@item.Title</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+</section>

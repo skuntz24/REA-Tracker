@@ -1,0 +1,243 @@
+﻿@model REA_Tracker.Models.DepartmentManagerViewModel
+
+@{
+    ViewBag.Title = Resources.strings.qviDepartmentManager;
+}
+<script type="text/javascript" src="~/Scripts/TableSort/jquery.tablesorter.js">
+   
+</script> 
+<script>
+    $(document).ready(function () {
+        $('#departmenttable').tablesorter(
+            {
+                headers: {
+                    0: { sorter: false }
+                }
+            }
+            );
+    });
+    function CreateValidate()
+    {
+        valid = true;
+        var name = document.getElementById("CreateName").value;
+        var code = document.getElementById("CreateCode").value;
+
+        var msg = @Resources.strings.qviTheFollowingErrorsWereFound;
+        if (!name) {
+            msg += @Resources.strings.qviTheNameFieldCannotBeEmpty;
+            valid = false;
+        }
+        if (!code)
+        {
+            msg += @Resources.strings.qviTheCodeFieldCannotBeEmpty;
+            valid = false;
+        }
+        if(code != parseInt(code, 10))
+        {
+            msg += @Resources.strings.qviTheCodeFieldCanOnlyBeIntegers;
+            valid = false;
+        }
+        if(valid == false)
+        {
+            alert(msg);
+        }
+        return valid;
+    }
+
+    function UpdateValidate()
+    {
+        valid = true;
+        var name = document.getElementById("UpdateName").value;
+        var code = document.getElementById("UpdateCode").value;
+
+        var msg = @Resources.strings.qviTheFollowingErrorsWereFound;
+        if (!name) {
+            msg += @Resources.strings.qviTheNameFieldCannotBeEmpty;
+            valid = false;
+        }
+        if (!code) {
+            msg += @Resources.strings.qviTheCodeFieldCannotBeEmpty;
+            valid = false;
+        }
+        if (code != parseInt(code, 10)) {
+            msg += @Resources.strings.qviTheCodeFieldCanOnlyBeIntegers;
+            valid = false;
+        }
+        if (valid == false) {
+            alert(msg);
+        }
+        return valid;
+    }
+</script>
+@using (Html.BeginForm())
+{
+    <input type="hidden" value="@Model.depID" name="depID"/>
+    if (Model.depID == -1)
+    {//Create Department and display all
+        <div>
+            <label>
+                @Resources.strings.qviNewDepartment
+            </label>
+
+            <table>
+                <tr>
+                    <td>@Resources.strings.qviName:</td>
+                    <td>
+                        <input type="text" id ="CreateName" name="Name" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Resources.strings.qviCode:</td>
+                    <td>
+                        <input type="text" id="CreateCode" name="CodeNumber" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Resources.strings.qviDeptHead:</td>
+                    <td>
+                        <select name="SelectedHead">
+                            <option value="-1">
+                                @Resources.strings.qviNone
+                            </option>
+                            @for (int i = 0; i < Model.ListOfHeads.Length; i++ )
+                            {
+                                <option value="@Model.ListOfHeads[i].Item1">
+                                    @Model.ListOfHeads[i].Item2
+                                </option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Resources.strings.qviCompany:</td>
+                    <td>
+                        <select name="SelectedCompany">
+                            @for (int i = 0; i < Model.ListOfCompanies.Length; i++)
+                            {
+                                <option value="@Model.ListOfCompanies[i].Item1"
+                                        @if (Model.ListOfCompanies[i].Item1 == 6)
+                                        {
+                                            <text> selected </text>
+                                        }
+                                        >
+                                    @Model.ListOfCompanies[i].Item2
+                                </option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    &nbsp;
+                    <td>
+                        <button class="btn btn-success" type="submit" value="Create" onclick="return CreateValidate();" name="button">
+                            @Resources.strings.qviCreate
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    <br/>
+        <div>
+            <table id="departmenttable" class="table table-bordered tablesorter">
+                <thead>
+                    <tr>
+                        @for (int i = 0; i < Model.ColCount;i++ )
+                        {
+                            <th>@Model.TableHead[i]</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.RowCount; i++)
+                    {
+                        <tr>
+                            @for (int j = 0; j < Model.ColCount; j++)
+                            {
+                                <td @if(j!=1){ <text> align="center" </text> }>
+                                    @if(j==0)
+                                    {
+                                        @Html.Raw(Model.Table[i,j])
+                                    }
+                                    else
+                                    {
+                                        @Model.Table[i, j]
+                                    }
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {//Edit department
+        <div>
+            <label>
+                @Resources.strings.qviUpdateDepartment
+            </label>
+
+            <table>
+                <tr>
+                    <td>@Resources.strings.qviName:</td>
+                    <td>
+                        <input type="text" id="UpdateName" name="Name" value="@Model.Name"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Resources.strings.qviCode:</td>
+                    <td>
+                        <input type="text" id="UpdateCode" name="CodeNumber" value="@Model.CodeNumber"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Resources.strings.qviDeptHead:</td>
+                    <td>
+                        <select name="SelectedHead">
+                            <option value="-1">
+                                None
+                            </option>
+                            @for (int i = 0; i < Model.ListOfHeads.Length; i++)
+                            {
+                                <option value="@Model.ListOfHeads[i].Item1"
+                                        @if (Model.ListOfHeads[i].Item1 == Model.SelectedHead)
+                                        {
+                                            <text> selected </text>
+                                        }
+                                        >
+                                    @Model.ListOfHeads[i].Item2
+                                </option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Resources.strings.qviCompany:</td>
+                    <td>
+                        <select name="SelectedCompany">
+                            @for (int i = 0; i < Model.ListOfCompanies.Length; i++)
+                            {
+                                <option value="@Model.ListOfCompanies[i].Item1"
+                                        @if (Model.ListOfCompanies[i].Item1 == Model.SelectedCompany) 
+                                        { 
+                                            <text> selected </text>  
+                                        }
+                                        >
+                                    @Model.ListOfCompanies[i].Item2
+                                </option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button class="btn btn-success" type="submit" value="Update" name="button" onclick="return UpdateValidate();">
+                            @Resources.strings.qviUpdate
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
+
+}

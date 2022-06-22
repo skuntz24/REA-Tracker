@@ -1,0 +1,93 @@
+﻿@model SCR_Tracker.Models.ProductManagerViewModel
+@using HelperMethods.Infrastructure
+@{
+    ViewBag.Title = Resources.strings.qviProductManagerModule;
+}
+@Scripts.Render("~/Scripts/Products.js")
+<div class="layout layout-main-left layout-stack-sm">
+    <div class="col-md-3 col-sm-4 layout-main">
+        <h4 class="portlet-title">
+            <u>@Resources.strings.qviProductManager</u>
+            @*<button class="btn btn-default pull-right" onclick="javascript: window.location.href = '/Admin/ProductManagerCreate'">
+                <i class="fa fa-plus"> </i>
+            </button>*@
+            <a href="/Admin/ProductManagerCreate" class="btn btn-default pull-right"> <i class="fa fa-plus"> </i> </a>
+        </h4>
+        @using (Html.BeginForm("ProductManagerEditModule", "Admin", FormMethod.Post))
+        {
+            @Html.DisplaySelectList("productID", Model.ProductName, "class='form-control fixed-width' onchange='this.form.submit()' data-val='true'")
+        }
+        <br />
+        <div class="list-group">
+            <a style="cursor:hand; cursor:pointer;" onmouseup="javascript:location.href = '/Admin/ProductManager/@Model.productID';" class="list-group-item">@Resources.strings.qviDetails</a>
+            <a style="cursor:hand; cursor:pointer;" onmouseup="javascript:location.href = '/Admin/ProductManagerEditInformation/@Model.productID';" class="list-group-item">@Resources.strings.qviUpdateInformation</a>
+            <a style="cursor:hand; cursor:pointer;" onmouseup="javascript:location.href = '/Admin/ProductManagerEditModule/@Model.productID';" class="list-group-item">@Resources.strings.qviUpdateModule</a>
+            <a style="cursor:hand; cursor:pointer;" onmouseup="javascript:location.href = '/Admin/ProductManagerEditTeam/@Model.productID';" class=" list-group-item">@Resources.strings.qviUpdateTeam</a>
+            <a style="cursor:hand; cursor:pointer;" onmouseup="javascript:location.href = '/Admin/ProductManagerMetrics/@Model.productID';" class=" list-group-item">@Resources.strings.qviUpdateMetrics</a>
+        </div>
+    </div>
+
+    <div class="col-md-9 col-sm-8 layout-sidebar">
+        <font color="#33CC66" id="Message" name="Message">
+            @ViewBag.Message
+        </font>
+
+        @using (Html.BeginForm("ProductManagerEditModule", "Admin", FormMethod.Post, new { @onsubmit = "return validateNewModuleForm();" }))
+        {
+            @Html.HiddenFor(m => m.productID)
+            <div class="form-inline">
+                <h4>@Resources.strings.qviCreateNewModule</h4>
+                <label> @Resources.strings.qviName: </label>
+                <input type="text" id="NewModuleName" name="NewModuleName" value="@Model.NewModuleName" class='form-control'>
+                <label> @Resources.strings.qviDescription: </label>
+                <input type="text" id="NewModuleDescription" name="NewModuleDescription" value="@Model.NewModuleDescription" class='form-control'>
+                <input type="submit" name="button" value=@Resources.strings.qviCreateModule class="btn btn-default" />
+            </div>
+        }
+        @using (Html.BeginForm("ProductManagerEditModule", "Admin", FormMethod.Post, new { @onsubmit = "return validateUpdateModuleForm();" }))
+        {
+            @Html.HiddenFor(m => m.productID)
+                <div class="portlet-body col-lg-8">
+                    <h4>@Resources.strings.qviModules</h4>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Resources.strings.qviName
+                                </th>
+                                <th>
+                                    @Resources.strings.qviDescription
+                                </th>
+                                <th>
+                                    @Resources.strings.qviRetired
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+            int i = 0;
+                            }
+                            @foreach (var item in Model.ProductModules)
+                            {
+                                    <tr>
+                                        <td align="center">
+                                            <input type="text" id="ProductModules[@i].Name" name="ProductModules[@i].Name" value="@item.Name" class='form-control'>
+                                            <input type="hidden" id="ProductModules[@i].ID" name="ProductModules[@i].ID" value="@item.ID" class='form-control'>
+                                        </td>
+                                        <td>
+                                            <input type="text" id="ProductModules[@i].Description" name="ProductModules[@i].Description" value="@item.Description" class='form-control'>
+                                        </td>
+                                        <td align="center">
+                                            <input type="checkbox" id="ProductModules[@i].isRetired" name="ProductModules[@i].isRetired" value="true" class='form-control'
+                                                @if(item.isRetired){<text> checked </text>}/>
+                                        </td>
+                                    </tr>
+                                    i++;
+                            }
+                        </tbody>
+                    </table>
+                    <input type="submit" name="button" value=@Resources.strings.qviUpdateModule class="btn btn-default" />
+            </div>
+        }
+    </div>
+</div>

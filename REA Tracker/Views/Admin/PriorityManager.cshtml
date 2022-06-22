@@ -1,0 +1,72 @@
+﻿@model REA_Tracker.Models.PriorityManagerViewModel
+@using HelperMethods.Infrastructure
+@{
+    ViewBag.Title = Resources.strings.qviPriorityManager;
+}
+<script>
+    @if (ViewBag.Message != "" && ViewBag.Message != null && !(Convert.ToString(ViewBag.Message).ToLower().Contains("success")))
+    {<text>
+        var message2 = "@ViewBag.Message";
+        alert(message2);
+    </text>
+    }
+</script>
+@using (Html.BeginForm("PriorityManager", "Admin", FormMethod.Post, new { @onsubmit = "return ValidateCurrentForm();" }))
+{
+    @Html.AntiForgeryToken()
+    <font @if (ViewBag.Message != null && (Convert.ToString(ViewBag.Message).ToLower().Contains("success"))) { @Html.Raw("color='#66CC99'")  } else { @Html.Raw("color='#b94a48'")  }> @Html.Nl2BrEscapeCharacters((String)ViewBag.Message)</font>
+    <table>
+        <tr>
+            <td><p style="float:left">@Resources.strings.qviName:</p></td>
+            <td class="col-lg-6">@Html.TextBoxFor(m => m.Name, new { @class = "form-control" })</td>
+        </tr>
+        <!-- Moves the value of hwere the value will be inserted     -->
+       @*<tr>
+            <td><p style="float:left">Position:</p></td>
+            <td class="col-lg-6">
+                <select id="Before" class="fixed-width input-sm inline">
+                    <option value="true">Before</option>
+                    <option value="false">After</option>
+                </select>
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                <select id="ExistingPriorityId" class="fixed-width input-sm inline">
+                    @foreach (var item in Model.DisplayPriorities)
+                    {
+                        <option value=@item.Value> @item.Name </option>
+                    }
+                </select>
+            </td>
+        </tr>*@
+        <tr>
+            <td><p style="float:left">@Resources.strings.qviDescription:</p></td>
+            <td class="col-lg-6">@Html.TextBoxFor(m => m.Description, new { @class = "form-control" })</td>
+        </tr>
+        <tr>
+            <td><input type="submit" value=@Resources.strings.qviSubmit class="btn btn-default form-control" /></td>
+        </tr>
+    </table>
+}
+<br />
+<h2>@Resources.strings.qviPriorityManager</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th class="col-lg-1"> @Resources.strings.qviName </th>
+            <th> @Resources.strings.qviDescription </th>
+            <th class="col-lg-1"> @Resources.strings.qviValue </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.DisplayPriorities)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td align="center">@item.Value</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,142 @@
+﻿@model REA_Tracker.Models.SearchViewModel
+@using HelperMethods.Infrastructure;
+
+<div class="row">
+    <div class="col-sm-6 col-md-3">
+        <div class="row-stat">
+            <p class="row-stat-label">Found</p>
+            <div class="form-group form-inline">
+                <select id="VersionFound.MajorCompare" name="VersionFound.MajorCompare" class="form-control input-sm" >
+                    <option value="="  @if(Model.VersionFound.MajorCompare == "=" ){ <text> selected </text> } >=</option>
+                    <option value="<"  @if(Model.VersionFound.MajorCompare == "<" ){ <text> selected </text> }><</option>
+                    <option value="<=" @if(Model.VersionFound.MajorCompare == "<="){ <text> selected </text> }><=</option>
+                    <option value=">"  @if(Model.VersionFound.MajorCompare == ">" ){ <text> selected </text> }>></option>
+                    <option value=">=" @if(Model.VersionFound.MajorCompare == ">="){ <text> selected </text> }>>=</option>
+                </select>                 
+                <input class="form-control input-sm" style="width: 125px;" id="VersionFound.Major" name="VersionFound.Major" value="@Model.VersionFound.Major" type="text" placeholder="Major">
+
+                <select class="form-control input-sm" id="VersionFound.MinorCompare" name="VersionFound.MinorCompare">
+                    <option value="="  @if (Model.VersionFound.MinorCompare == "=" ) { <text> selected </text>     }>=</option>
+                    <option value="<"  @if (Model.VersionFound.MinorCompare == "<" ) { <text> selected </text>     }><</option>
+                    <option value="<=" @if (Model.VersionFound.MinorCompare == "<=") { <text> selected </text>     }><=</option>
+                    <option value=">"  @if (Model.VersionFound.MinorCompare == ">" ) { <text> selected </text>     }>></option>
+                    <option value=">=" @if (Model.VersionFound.MinorCompare == ">=") { <text> selected </text>     }>>=</option>
+                </select>
+                <input class="form-control input-sm" style="width: 125px;" id="VersionFound.Minor" name="VersionFound.Minor" value="@Model.VersionFound.Minor" type="text" placeholder="Minor">
+
+                <select class="form-control input-sm" id="VersionFound.BuildCompare" name="VersionFound.BuildCompare">
+                    <option value="="  @if (Model.VersionFound.BuildCompare == "=" ) { <text> selected </text>     }>=</option>
+                    <option value="<"  @if (Model.VersionFound.BuildCompare == "<" ) { <text> selected </text>     }><</option>
+                    <option value="<=" @if (Model.VersionFound.BuildCompare == "<=") { <text> selected </text>     }><=</option>
+                    <option value=">"  @if (Model.VersionFound.BuildCompare == ">" ) { <text> selected </text>     }>></option>
+                    <option value=">=" @if (Model.VersionFound.BuildCompare == ">=") { <text> selected </text>     }>>=</option>
+                </select>
+                <input class="form-control input-sm" style="width: 125px;" id="VersionFound.Build" name="VersionFound.Build" value="@Model.VersionFound.Build" type="text" placeholder="Build">
+
+                <input class="form-control input-sm" style="width: 190px;" id="VersionFound.Misc" name="VersionFound.Misc" value="@Model.VersionFound.Misc" type="text" placeholder="Misc" maxlength="50">
+            </div>
+        </div> <!-- /.row-stat -->
+    </div> <!-- /.col -->
+    <div class="col-sm-6 col-md-3">
+        <div class="row-stat">
+            <p class="row-stat-label">Planned</p>
+            <div class="form-group form-inline">
+                <select id="VersionPlanned.MajorCompare" name="VersionPlanned.MajorCompare" class="form-control input-sm">
+                    <option value="="  @if (Model.VersionPlanned.MajorCompare == "=" ) { <text> selected </text> }>=  </option>
+                    <option value="<"  @if (Model.VersionPlanned.MajorCompare == "<" ) { <text> selected </text> }><  </option>
+                    <option value="<=" @if (Model.VersionPlanned.MajorCompare == "<=") { <text> selected </text> }><= </option>
+                    <option value=">"  @if (Model.VersionPlanned.MajorCompare == ">" ) { <text> selected </text> }>>  </option>
+                    <option value=">=" @if (Model.VersionPlanned.MajorCompare == ">=") { <text> selected </text> }>>= </option>
+                </select>
+                <input class="form form-control input-sm" style="width: 125px;" id="VersionPlanned.Major" name="VersionPlanned.Major" value="@Model.VersionPlanned.Major" type="text" placeholder="Major">
+                <select class="form-control input-sm" id="VersionPlanned.MinorCompare" name="VersionPlanned.MinorCompare">
+                    <option value="="  @if (Model.VersionPlanned.MinorCompare == "=" ) { <text> selected </text> }>=  </option>
+                    <option value="<"  @if (Model.VersionPlanned.MinorCompare == "<" ) { <text> selected </text> }><  </option>
+                    <option value="<=" @if (Model.VersionPlanned.MinorCompare == "<=") { <text> selected </text> }><= </option>
+                    <option value=">"  @if (Model.VersionPlanned.MinorCompare == ">" ) { <text> selected </text> }>>  </option>
+                    <option value=">=" @if (Model.VersionPlanned.MinorCompare == ">=") { <text> selected </text> }>>= </option>
+                </select>
+                <input class="form form-control input-sm" style="width: 125px;" id="VersionPlanned.Minor" name="VersionPlanned.Minor" value="@Model.VersionPlanned.Minor" type="text" placeholder="Minor">
+                <select class="form-control input-sm" id="VersionPlanned.BuildCompare" name="VersionPlanned.BuildCompare">
+                    <option value="="  @if (Model.VersionPlanned.BuildCompare == "=" ) { <text> selected </text> }>=  </option>
+                    <option value="<"  @if (Model.VersionPlanned.BuildCompare == "<" ) { <text> selected </text> }><  </option>
+                    <option value="<=" @if (Model.VersionPlanned.BuildCompare == "<=") { <text> selected </text> }><= </option>
+                    <option value=">"  @if (Model.VersionPlanned.BuildCompare == ">" ) { <text> selected </text> }>>  </option>
+                    <option value=">=" @if (Model.VersionPlanned.BuildCompare == ">=") { <text> selected </text> }>>= </option>
+                </select>
+                <input class="form form-control input-sm" style="width: 125px;" id="VersionPlanned.Build" name="VersionPlanned.Build" value="@Model.VersionPlanned.Build" type="text" placeholder="Build">
+
+                <input class="form form-control input-sm" style="width: 190px;" id="VersionPlanned.Misc" name="VersionPlanned.Misc" value="@Model.VersionPlanned.Misc" type="text" placeholder="Misc" maxlength="50">
+            </div>
+        </div> <!-- /.row-stat -->
+    </div> <!-- /.col -->
+    <div class="col-sm-6 col-md-3">
+        <div class="row-stat">
+            <p class="row-stat-label">Resolved</p>
+            <div class="form-group form-inline">
+                <select class="form-control input-sm" id="VersionResolved.MajorCompare" name="VersionResolved.MajorCompare">
+                    <option value="="   @if (Model.VersionResolved.MajorCompare == "=" ) { <text> selected </text> }>=</option>
+                    <option value="<"   @if (Model.VersionResolved.MajorCompare == "<" ) { <text> selected </text> }><</option>
+                    <option value="<="  @if (Model.VersionResolved.MajorCompare == "<=") { <text> selected </text> }><=</option>
+                    <option value=">"   @if (Model.VersionResolved.MajorCompare == ">" ) { <text> selected </text> }>></option>
+                    <option value=">="  @if (Model.VersionResolved.MajorCompare == ">=") { <text> selected </text> }>>=</option>
+                </select>
+                <input class="form form-control input-sm" style="width: 125px;" id="VersionResolved.Major" name="VersionResolved.Major" value="@Model.VersionResolved.Major" type="text" placeholder="Major">
+
+                <select class="form-control input-sm" id="VersionResolved.MinorCompare" name="VersionResolved.MinorCompare">
+                    <option value="="  @if (Model.VersionResolved.MinorCompare == "=" ) { <text> selected </text>          }>= </option>
+                    <option value="<"  @if (Model.VersionResolved.MinorCompare == "<" ) { <text> selected </text>          }>< </option>
+                    <option value="<=" @if (Model.VersionResolved.MinorCompare == "<=") { <text> selected </text>          }><=</option>
+                    <option value=">"  @if (Model.VersionResolved.MinorCompare == ">" ) { <text> selected </text>          }>> </option>
+                    <option value=">=" @if (Model.VersionResolved.MinorCompare == ">=") { <text> selected </text>          }>>=</option>
+                </select>
+                <input class="form form-control input-sm" style="width: 125px;" id="VersionResolved.Minor" name="VersionResolved.Minor" value="@Model.VersionResolved.Minor" type="text" placeholder="Minor">
+
+                <select class="form-control input-sm" id="VersionResolved.BuildCompare" name="VersionResolved.BuildCompare">
+                    <option value="=" @if (Model.VersionResolved.BuildCompare == "=")   { <text> selected </text>          }>=</option>
+                    <option value="<" @if (Model.VersionResolved.BuildCompare == "<")   { <text> selected </text>          }><</option>
+                    <option value="<=" @if (Model.VersionResolved.BuildCompare == "<=") { <text> selected </text>          }><=</option>
+                    <option value=">" @if (Model.VersionResolved.BuildCompare == ">") { <text> selected </text>          }>></option>
+                    <option value=">=" @if (Model.VersionResolved.BuildCompare == ">=") { <text> selected </text>          }>>=</option>
+                </select>
+                <input class="form form-control input-sm" style="width: 125px;" id="VersionResolved.Build" name="VersionResolved.Build" value="@Model.VersionResolved.Build" type="text" placeholder="Build">
+
+                <input class="form form-control input-sm" style="width: 190px;" id="VersionResolved.Misc" name="VersionResolved.Misc" value="@Model.VersionResolved.Misc" type="text" placeholder="Misc" maxlength="50">
+            </div>
+        </div> <!-- /.row-stat -->
+    </div> <!-- /.col -->
+    <div class="col-sm-6 col-md-3">
+        <div class="row-stat">
+            <p class="row-stat-label">Closed</p>
+            <div class="form-group form-inline">
+                <select class="form-control input-sm" id="VersionClosed.MajorCompare" name="VersionClosed.MajorCompare">
+                    <option value="=" @if (Model.VersionClosed.MajorCompare == "=") { <text> selected </text>           }>=</option>
+                    <option value="<" @if (Model.VersionClosed.MajorCompare == "<") { <text> selected </text>           }><</option>
+                    <option value="<=" @if (Model.VersionClosed.MajorCompare == "<=") { <text> selected </text>           }><=</option>
+                    <option value=">" @if (Model.VersionClosed.MajorCompare == ">") { <text> selected </text>           }>></option>
+                    <option value=">=" @if (Model.VersionClosed.MajorCompare == ">=") { <text> selected </text>           }>>=</option>
+                </select>
+                <input class="form form-control input-sm" style="width: 125px;" id="VersionClosed.Major" name="VersionClosed.Major" value="@Model.VersionClosed.Major" type="text" placeholder="Major">
+                <select class="form-control input-sm" id="VersionClosed.MinorCompare" name="VersionClosed.MinorCompare">
+                    <option value="="  @if (Model.VersionClosed.MinorCompare == "=") { <text> selected </text>           }>=</option>
+                    <option value="<"  @if (Model.VersionClosed.MinorCompare == "<") { <text> selected </text>           }><</option>
+                    <option value="<=" @if (Model.VersionClosed.MinorCompare == "<=") { <text> selected </text>           }><=</option>
+                    <option value=">"  @if (Model.VersionClosed.MinorCompare == ">") { <text> selected </text>           }>></option>
+                    <option value=">=" @if (Model.VersionClosed.MinorCompare == ">=") { <text> selected </text>           }>>=</option>
+                </select>
+                <input class="form form-control input-sm" style="width: 125px;" id="VersionClosed.Minor" name="VersionClosed.Minor" value="@Model.VersionClosed.Minor" type="text" placeholder="Minor">
+                <select class="form-control input-sm" id="VersionClosed.BuildCompare" name="VersionClosed.BuildCompare">
+                    <option value="="  @if (Model.VersionClosed.BuildCompare == "=") { <text> selected </text>           }>=</option>
+                    <option value="<"  @if (Model.VersionClosed.BuildCompare == "<") { <text> selected </text>           }><</option>
+                    <option value="<=" @if (Model.VersionClosed.BuildCompare == "<=") { <text> selected </text>           }><=</option>
+                    <option value=">"  @if (Model.VersionClosed.BuildCompare == ">") { <text> selected </text>           }>></option>
+                    <option value=">=" @if (Model.VersionClosed.BuildCompare == ">=") { <text> selected </text>           }>>=</option>
+                </select>
+                <input class="form form-control input-sm" style="width: 125px;" id="VersionClosed.Build" name="VersionClosed.Build" value="@Model.VersionClosed.Build" type="text" placeholder="Build">
+
+                <input class="form form-control input-sm" style="width: 190px;" id="VersionClosed.Misc" name="VersionClosed.Misc" value="@Model.VersionClosed.Misc" type="text" placeholder="Misc" maxlength="50">
+            </div>
+        </div> <!-- /.row-stat -->
+    </div> <!-- /.col -->
+
+</div> <!-- /.row -->

@@ -1,0 +1,226 @@
+﻿@model REA_Tracker.Models.SearchViewModel
+@using HelperMethods.Infrastructure;
+
+<div class="row">
+    <div class="col-sm-6 col-md-5">
+        <div class="row-stat">
+
+            <p class="row-stat-label">REA NUMBER</p>
+            <div class="form-inline form-group">
+                <select class="form-control" id="REAComparator" name="REAComparator" onchange="SCRNumberReveal()">
+                    <option @if (Model.REAComparator == 0) { <text> selected </text>         } value=0>             </option>
+                    <option @if (Model.REAComparator == 1) { <text> selected </text>         } value=1>is exactly   </option>
+                    <option @if (Model.REAComparator == 2) { <text> selected </text>         } value=2>is at least  </option>
+                    <option @if (Model.REAComparator == 3) { <text> selected </text>         } value=3>is at most   </option>
+                    <option @if (Model.REAComparator == 4) { <text> selected </text>         } value=4>is between   </option>
+                </select>
+                &nbsp;
+                <input class="form-control" id="REANumber"  name="REANumber"  style="" value="@Model.REANumber" type="text" size="6" maxlength="6">
+                and
+                <!-- DO NOT REMOVE EMPTY STYLE TAG FROM SCR2  JS WILL FILL IT TO HIDE AND REVEAL IT OR CHANGE IT-->
+                <input class="form-control" id="REANumber2" name="REANumber2" style="" value="@Model.REANumber2" type="text" size="6" maxlength="6" />
+            </div>
+        @*
+            <p class="row-stat-label">LEGACY SCR NUMBER</p>
+            <div class="form-inline form-group">
+                <select class="form-control" id="LegacyREAComparator" name="REAComparator" onchange="LegacySCRNumberReveal()">
+                    <option @if (Model.LegacyREAComparator == 0) { <text> selected </text>           } value=0>             </option>
+                    <option @if (Model.LegacyREAComparator == 1) { <text> selected </text>           } value=1>is exactly   </option>
+                    <option @if (Model.LegacyREAComparator == 2) { <text> selected </text>           } value=2>is at least  </option>
+                    <option @if (Model.LegacyREAComparator == 3) { <text> selected </text>           } value=3>is at most   </option>
+                    <option @if (Model.LegacyREAComparator == 4) { <text> selected </text>           } value=4>is between   </option>
+                </select>
+                &nbsp;
+                <input class="form-control" id="LegacySCRNumber" name="LegacySCRNumber" value="@Model.LegacySCRNumber" type="text" size="6" maxlength="6">
+                and
+                <!-- DO NOT REMOVE EMPTY STYLE TAG FROM SCR2  JS WILL FILL IT TO HIDE AND REVEAL IT OR CHANGE IT-->
+                <input class="form-control" id="LegacySCRNumber2" name="LegacySCRNumber2" style="" value="@Model.LegacySCRNumber2" type="text" size="6" maxlength="6" />
+            </div>
+            *@
+        </div> <!-- /.row-stat -->
+    </div> <!-- /.col -->
+
+    <div class="col-sm-6 col-md-3">
+        <div class="row-stat">
+
+            <p class="row-stat-label">Flags</p>
+            <table class="table table-condensed table-borderless table-responsive">
+                <tr>
+                    <td>
+                        <input type="hidden">
+                        <div class="checkbox">
+                            <select id="ReqDocChg" name="ReqDocChg" class="">
+                                <option value=""></option>
+                                <option value="0" @if (Model.ReqDocChg == 0) { <text> selected </text>   }>@Resources.strings.qviNo </option>
+                                <option value="1" @if (Model.ReqDocChg == 1) { <text> selected </text>   }>@Resources.strings.qviYes</option>
+                                <option value="2" @if (Model.ReqDocChg == 2) { <text> selected </text>    }>@Resources.strings.qviDone</option>
+                                <option value="3" @if (Model.ReqDocChg == 3) { <text> selected </text>    }>@Resources.strings.qviTBD</option>
+                            </select>
+                            <label>
+                                Help Changed
+                            </label>
+                        </div>
+                        <input type="hidden">
+                        <div class="checkbox">
+                            <select id="ReqReqChg" name="ReqReqChg" class="">
+                                <option value=""></option>
+                                <option value="0" @if (Model.ReqReqChg == 0) { <text> selected </text>    }>@Resources.strings.qviNo </option>
+                                <option value="1" @if (Model.ReqReqChg == 1) { <text> selected </text>    }>@Resources.strings.qviYes</option>
+                            </select>
+                            <label>
+                                @Resources.strings.qviRequirementsChange
+                            </label>
+                        </div>
+                        <input type="hidden">
+                        <div class="checkbox">
+                            <select id="ReqDBChg" name="ReqDBChg" class="">
+                                <option value=""></option>
+                                <option value="0" @if (Model.ReqDBChg == 0) { <text> selected </text>    }>@Resources.strings.qviNo </option>
+                                <option value="1" @if (Model.ReqDBChg == 1) { <text> selected </text>   }>@Resources.strings.qviYes</option>
+                            </select>
+                            <label>
+                                @Resources.strings.qviDatabaseChange
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+        </div> <!-- /.row-stat -->
+    </div> <!-- /.col -->
+
+    <div class="col-sm-8 col-md-8">
+        <div class="row-stat">
+            <p class="row-stat-label">Keywords</p>
+            <div class="form-inline form-group">
+                <table class="table table-condensed table-borderless table-responsive">
+                    <tr>
+                        <td>
+                            <input type="hidden" id="SelectedKeyword[0].ID" name="SelectedKeyword[0].ID" value="@Model.Keywords[0].ID">
+                            <div class="checkbox"><label><input id="SelectedKeyword[0].Selected" name="SelectedKeyword[0].Selected" value="true" @if (Model.SelectedKeyword[0].Selected) { <text> checked </text>           } type="checkbox">@Model.Keywords[0].Name</label></div>
+                        </td>
+                        <td>
+                            <input type="hidden" id="SelectedKeyword[1].ID" name="SelectedKeyword[1].ID" value="@Model.Keywords[1].ID">
+                            <div class="checkbox"><label><input id="SelectedKeyword[1].Selected" name="SelectedKeyword[1].Selected" value="true" @if (Model.SelectedKeyword[1].Selected) { <text> checked </text>            } type="checkbox">@Model.Keywords[1].Name</label></div>
+                        </td>
+                        <td>
+                            <input type="hidden" id="SelectedKeyword[2].ID" name="SelectedKeyword[2].ID" value="@Model.Keywords[2].ID">
+                            <div class="checkbox"><label><input id="SelectedKeyword[2].Selected" name="SelectedKeyword[2].Selected" value="true" @if (Model.SelectedKeyword[2].Selected) { <text> checked </text>             } type="checkbox">@Model.Keywords[2].Name</label></div>
+                        </td>
+                        <td>
+                            <input type="hidden" id="SelectedKeyword[3].ID" name="SelectedKeyword[3].ID" value="@Model.Keywords[3].ID">
+                            <div class="checkbox"><label><input id="SelectedKeyword[3].Selected" name="SelectedKeyword[3].Selected" value="true" @if (Model.SelectedKeyword[3].Selected) { <text> checked </text>             } type="checkbox">@Model.Keywords[3].Name</label></div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="hidden" id="SelectedKeyword[4].ID" name="SelectedKeyword[4].ID" value="@Model.Keywords[4].ID">
+                            <div class="checkbox"><label><input id="SelectedKeyword[4].Selected" name="SelectedKeyword[4].Selected" value="true" @if (Model.SelectedKeyword[4].Selected) { <text> checked </text>            } type="checkbox">@Model.Keywords[4].Name</label></div>
+                        </td>
+                        <td>
+                            <input type="hidden" id="SelectedKeyword[5].ID" name="SelectedKeyword[5].ID" value="@Model.Keywords[5].ID">
+                            <div class="checkbox"><label><input id="SelectedKeyword[5].Selected" name="SelectedKeyword[5].Selected" value="true" @if (Model.SelectedKeyword[5].Selected) { <text> checked </text>             } type="checkbox">@Model.Keywords[5].Name</label></div>
+                        </td>
+                        <td>
+                            <input type="hidden" id="SelectedKeyword[6].ID" name="SelectedKeyword[6].ID" value="@Model.Keywords[6].ID">
+                            <div class="checkbox"><label><input id="SelectedKeyword[6].Selected" name="SelectedKeyword[6].Selected" value="true" @if (Model.SelectedKeyword[6].Selected) { <text> checked </text>              } type="checkbox">@Model.Keywords[6].Name</label></div>
+                        </td>
+                        <td>
+                            <input type="hidden" id="SelectedKeyword[7].ID" name="SelectedKeyword[7].ID" value="@Model.Keywords[7].ID">
+                            <div class="checkbox"><label><input id="SelectedKeyword[7].Selected" name="SelectedKeyword[7].Selected" value="true" @if (Model.SelectedKeyword[7].Selected) { <text> checked </text>              } type="checkbox">@Model.Keywords[7].Name</label></div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="hidden" id="SelectedKeyword[8].ID" name="SelectedKeyword[8].ID" value="@Model.Keywords[8].ID">
+                            <div class="checkbox"><label><input id="SelectedKeyword[8].Selected" name="SelectedKeyword[8].Selected" value="true" @if (Model.SelectedKeyword[8].Selected) { <text> checked </text>            } type="checkbox">@Model.Keywords[8].Name</label></div>
+                        </td>
+                        <td>
+                            <input type="hidden" id="SelectedKeyword[9].ID" name="SelectedKeyword[9].ID" value="@Model.Keywords[9].ID">
+                            <div class="checkbox"><label><input id="SelectedKeyword[9].Selected" name="SelectedKeyword[9].Selected" value="true" @if (Model.SelectedKeyword[9].Selected) { <text> checked </text>             } type="checkbox">@Model.Keywords[9].Name</label></div>
+                        </td>
+                        <td>
+                            <input type="hidden" id="SelectedKeyword[10].ID" name="SelectedKeyword[10].ID" value="@Model.Keywords[10].ID">
+                            <div class="checkbox"><label><input id="SelectedKeyword[10].Selected" name="SelectedKeyword[10].Selected" value="true" @if (Model.SelectedKeyword[10].Selected) { <text> checked </text>             } type="checkbox">@Model.Keywords[10].Name</label></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div> <!-- /.row-stat -->
+    </div> <!-- /.col -->
+@* TODO:
+    <div class="col-sm-6 col-md-3">
+        <div class="row-stat">
+            <p class="row-stat-label"> CODE REVIEW NUMBER </p>
+            <div>
+
+            </div>
+        </div>
+    </div>
+*@
+    @*
+    <div class="col-sm-6 col-md-9">
+        <div class="row-stat">
+        
+            <p class="row-stat-label">PRODUCT</p>
+            <div class="form-inline form-group">
+                <select class="form-control" id="LeftSelectTagProducts" multiple="multiple" name="LeftSelectTagProducts" size="14" style="width:300px">
+                    <!-- fill from hidden -->
+                    @for (int i = 0; i < Model.UnSelectedProducts.Count(); i++)
+                    {
+                        if (Model.SelectedProducts.Where(x => x.ID == Model.UnSelectedProducts[i].ID).Count() == 0)
+                        {
+                            <option value="@Model.UnSelectedProducts[i].ID"> @Model.UnSelectedProducts[i].Name </option>
+                        }
+                    }
+                </select>
+                <!-- Hidden Field to auto fill into Model -->
+                <input id="HiddenProductString" name="HiddenProductString" class="form-group" type="hidden" value="" />
+                <!-- Move to Display -->
+                <button class="form-control" type="button" onmouseup="javascript: SelectMoveRows(form.LeftSelectTagProducts, form.RightSelectTagProducts)">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+                &nbsp;
+                <!-- Move to Hidden-->
+                <button class="form-control" type="button" onmouseup="javascript: SelectMoveRows(form.RightSelectTagProducts, form.LeftSelectTagProducts)">
+                    <span class="glyphicon glyphicon-minus"></span>
+                </button>
+                <select class="form-control" id="RightSelectTagProducts" multiple="multiple" name="RightSelectTagProducts" size="14" style="width:300px">
+                    <!-- fill from display -->
+                    @for (int i = 0; i < Model.SelectedProducts.Count(); i++)
+                    {
+                        <option value="@Model.SelectedProducts[i].ID"> @Model.SelectedProducts[i].Name </option>
+                    }
+                </select>
+            </div>
+        
+        </div> <!-- /.row-stat -->
+    </div> <!-- /.col -->
+        *@
+    @*<div class="col-sm-6 col-md-3">
+        <div class="row-stat">
+            <p class="row-stat-label">MODULE</p>
+            <div class="form-inline form-group">
+                <input class="form-control" id="ModuleName" name="ModuleName" value="@Model.ModuleName" type="text">
+            </div>
+        </div> <!-- /.row-stat -->
+    </div> <!-- /.col -->*@
+
+    @*
+    <div class="col-sm-6 col-md-9">
+        <div class="row-stat">
+            <p class="row-stat-label">HISTORY</p>
+            <div class="form-inline form-group">
+                <input class="form-control" id="HistoryTerm" name="HistoryTerm" value="@Model.HistoryTerm" type="text" size="50" maxLength="50">
+                <select class="form-control pull-right" id="SearchType" name="SearchType">
+                    <option @if (Model.HistorySearchlogic == 0) { <text> selected </text>  } value=0>any words </option>
+                    <option @if (Model.HistorySearchlogic == 1) { <text> selected </text>  } value=1>all words </option>
+                    <option @if (Model.HistorySearchlogic == 2) { <text> selected </text>  } value=2>any of    </option>
+                </select>
+            </div>
+        </div> <!-- /.row-stat -->
+    </div> <!-- /.col -->
+        *@
+</div> <!-- /.row -->

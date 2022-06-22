@@ -1,0 +1,114 @@
+﻿@model REA_Tracker.Models.NewREA
+@using HelperMethods.Infrastructure
+
+    <h3 class="content-title"><u>@Resources.strings.qviRelatedREAs</u></h3>
+    <p class="text-danger">@ViewBag.Message[4]</p>
+    <p>
+        @Resources.strings.qviRelatedREAsDescription
+    </p>
+    <br>
+    <br>
+
+    <div class="form-group form-inline">
+
+        <div class="col-md-10"><input class="form-control" type="text" id="RelatedInputID" name="RelatedInputID" />
+        &nbsp;&nbsp;
+                               <button class="btn btn-default" name="button" value="Add" type="submit"><i class="fa fa-plus-circle fa-lg"></i>&nbsp;&nbsp;@Resources.strings.qviAdd</button>
+        <text>&nbsp;</text>
+        <button class="btn btn-default" name="button" value="Correlate" type="submit"><i class="fa fa-arrows-h fa-lg"></i>&nbsp;&nbsp;@Resources.strings.qviCorrelate</button>
+        
+
+    </div><!-- /.col -->
+    </div><!-- /.form-group -->
+    <br />
+    <br />
+    <table class="table table-bordered">
+        @if(Model.RelatedREAIDs.Count>0)
+        { 
+            <thead>
+                <tr>
+                    <th>REA #</th>
+                    <th>Product</th>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Correlate</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i<Model.RelatedREAIDs.Count;i++ )
+                {
+                <tr>
+                    <td>
+                        @Model.RelatedREAIDs[i].otherTrackingId                   
+                    </td>
+                    <td>
+
+                            @Model.RelatedREAIDs[i].product
+
+                    </td>
+                    <td>
+                        @Model.RelatedREAIDs[i].title
+                        <br/>
+                        <div style="font-size: 10pt;">
+                            <div class="pull-left">
+                                <b>@Resources.strings.qviAssignedTo</b>&nbsp;@Model.RelatedREAIDs[i].AssignTo
+                                @Html.IssueIcon(Model.RelatedREAIDs[i].issue, "", false)
+                                @Html.PriorityIcon(Model.RelatedREAIDs[i].Priority, "", false)
+                            </div>
+                            <div class="pull-right">
+                                <b>@Resources.strings.qviPlannedRelease:</b>&nbsp;@Model.RelatedREAIDs[i].PlannedRelease
+                            </div>                                     
+                        </div>
+                    </td>
+                    <td>@Model.RelatedREAIDs[i].Status</td>
+                    <td align="center">@Model.RelatedREAIDs[i].correlated</td>
+                    <td align="center">
+                        <button class="btn btn-danger" type="submit" style="vertical-align:middle" name="button" value=@Model.RelatedREAIDs[i].getRemoveValue(i)>
+                            <span class=" glyphicon glyphicon-remove-circle">
+                            </span>
+                        </button>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        }
+    </table>
+<!-- Adds all of the RelatedREAIDs to the next RelatedREAIDs -->
+@*@for (int i = 0; i < Model.RelatedREAIDs.Count; i++)
+{
+    @Html.Hidden("RelatedREAIDs[" + i + "].otherTrackingId", Model.RelatedREAIDs[i].otherTrackingId)
+    @Html.Hidden("RelatedREAIDs[" + i + "].product", Model.RelatedREAIDs[i].product)
+    @Html.Hidden("RelatedREAIDs[" + i + "].title", Model.RelatedREAIDs[i].title)
+    @Html.Hidden("RelatedREAIDs[" + i + "].issue", Model.RelatedREAIDs[i].issue)
+    @Html.Hidden("RelatedREAIDs[" + i + "].Priority", Model.RelatedREAIDs[i].Priority)
+    @Html.Hidden("RelatedREAIDs[" + i + "].Status", Model.RelatedREAIDs[i].Status)
+    @Html.Hidden("RelatedREAIDs[" + i + "].AssignTo", Model.RelatedREAIDs[i].AssignTo)
+    @Html.Hidden("RelatedREAIDs[" + i + "].PlannedRelease", Model.RelatedREAIDs[i].PlannedRelease)
+    @Html.Hidden("RelatedREAIDs[" + i + "].correlated", Model.RelatedREAIDs[i].correlated)
+}*@
+@for (int i = 0; i < Model.RelatedREAIDs.Count; i++)
+{
+    @Html.HiddenFor(m => m.RelatedREAIDs[i].otherTrackingId, Model.RelatedREAIDs[i].otherTrackingId)
+    @Html.HiddenFor(m => m.RelatedREAIDs[i].product, Model.RelatedREAIDs[i].product)
+    @Html.HiddenFor(m => m.RelatedREAIDs[i].title, Model.RelatedREAIDs[i].title)
+    @Html.HiddenFor(m => m.RelatedREAIDs[i].issue, Model.RelatedREAIDs[i].issue)
+    @Html.HiddenFor(m => m.RelatedREAIDs[i].Priority, Model.RelatedREAIDs[i].Priority)
+    @Html.HiddenFor(m => m.RelatedREAIDs[i].Status, Model.RelatedREAIDs[i].Status)
+    @Html.HiddenFor(m => m.RelatedREAIDs[i].AssignTo, Model.RelatedREAIDs[i].AssignTo)
+    @Html.HiddenFor(m => m.RelatedREAIDs[i].PlannedRelease, Model.RelatedREAIDs[i].PlannedRelease)
+    @Html.HiddenFor(m => m.RelatedREAIDs[i].correlated, Model.RelatedREAIDs[i].correlated)
+}
+
+@*@for (int i = 0; i < Model.RelatedREAIDs.Count; i++)
+{
+    <input id="RelatedREAIDs[@i].otherTrackingId" name="RelatedREAIDs[@i].otherTrackingId" type="hidden" value= @Model.RelatedREAIDs[i].otherTrackingId/>
+    <input id="RelatedREAIDs[@i].product" name="RelatedREAIDs[@i].product" type="hidden" value=@Model.RelatedREAIDs[i].product />
+    <input id="RelatedREAIDs[@i].title" name="RelatedREAIDs[@i].title" type="hidden" value=@Model.RelatedREAIDs[i].title />
+    <input id="RelatedREAIDs[@i].issue" name="RelatedREAIDs[@i].issue" type="hidden" value=@Model.RelatedREAIDs[i].issue />
+    <input id="RelatedREAIDs[@i].Priority" name="RelatedREAIDs[@i].Priority" type="hidden" value=@Model.RelatedREAIDs[i].Priority />
+    <input id="RelatedREAIDs[@i].Status" name="RelatedREAIDs[@i].Status" type="hidden" value=@Model.RelatedREAIDs[i].Status />
+    <input id="RelatedREAIDs[@i].AssignTo" name="RelatedREAIDs[@i].AssignTo" type="hidden" value=@Model.RelatedREAIDs[i].AssignTo />
+    <input id="RelatedREAIDs[@i].PlannedRelease" name="RelatedREAIDs[@i].PlannedRelease" type="hidden" value=@Model.RelatedREAIDs[i].PlannedRelease />
+    <input id="RelatedREAIDs[@i].correlated" name="RelatedREAIDs[@i].correlated" type="hidden" value=@Model.RelatedREAIDs[i].correlated />
+}*@

@@ -1,0 +1,127 @@
+﻿@using Microsoft.AspNet.Identity
+@model SCR_Tracker.Models.EditUserManagerViewModel
+
+<script src="/Scripts/SelectList.js" type="text/javascript"></script>
+<script src="/Scripts/AdminUserManager.js" type="text/javascript"></script>
+<script>window.onload = function ()
+{
+    if (true == document.getElementById("fullAccess").checked) {
+        document.getElementById("toLeft").disabled = true;
+        document.getElementById("toRight").disabled = true;
+        document.getElementById("Clear").disabled = true;
+        document.getElementById("NoAccess").disabled = true;
+        document.getElementById("giveAccess").disabled = true;
+    }
+    else {
+        document.getElementById("toLeft").disabled = false;
+        document.getElementById("toRight").disabled = false;
+        document.getElementById("Clear").disabled = false;
+        document.getElementById("NoAccess").disabled = false;
+        document.getElementById("giveAccess").disabled = false;
+    }
+}
+</script>
+
+    @using(Html.BeginForm(null,null, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+<div class="tab-pane fade in" id="product-tab">
+        <h3 class="content-title">
+            <u>@Resources.strings.qviProductRoles</u>
+        </h3>
+    <p class="text-success">@ViewBag.StatusMessage[1]</p>
+    <p>@Html.ValidationSummary()</p>
+        <p>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </p><br>
+        <br>
+        <table>
+            <tr>
+                <td>
+    @Html.DisplayNameFor(m => m.fullAccess)
+                </td>
+                <td>
+                    &nbsp;
+    &nbsp;
+    @Html.CheckBoxFor(m => m.fullAccess, new { @onchange = "javascript: FullAccessChange()" })
+    </td>
+</tr>
+</table>
+        <label>
+            @Resources.strings.qviProductAccess
+        </label>
+<table>
+<thead>
+    <tr class ="header">
+        <th style="text-align: center;">@Resources.strings.qviOtherProducts</th>
+        <th></th>
+        <th style="text-align: center;">@Resources.strings.qviAccess</th>
+    </tr>
+</thead>
+<tbody>
+    <tr >
+        <td>
+            <select id="NoAccess" class="valid col-md-5" multiple="multiple" name="NoAccess" size="25" style="width: 300px">
+                <optgroup label="Active">
+                @for (int i = 0; i < Model.OtherActive.Count(); i++ )
+                        {
+                            <option value=@Model.OtherActive[i].ID> @Model.OtherActive[i].Name </option>
+                        }
+                </optgroup>
+
+                <optgroup label="Retired">
+                @for (int i = 0; i < Model.OtherRetired.Count(); i++)
+                        {
+                            <option value=@Model.OtherRetired[i].ID> @Model.OtherRetired[i].Name </option>
+                        }
+                </optgroup>
+            </select>
+        </td>
+        <td>
+            <table align="center">
+                <tr>
+                    <td align="center">
+                        <input id="toLeft" type="button" onclick="javascript: SelectMoveRows(form.giveAccess, form.NoAccess)" value="<<" />
+                        <input id="toRight" type="button" onclick="javascript: SelectMoveRows(form.NoAccess, form.giveAccess)" value=">>" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" class="bottom">
+                        <input id="hiddenString" class="form-group" type="hidden" name="hiddenString" value="" />
+                        <!--input id="SubmitAccess" type="submit" name="button" value="Submit" onmouseup="javascript: autoFillHidden(form.giveAccess)" class="btn btn-danger" /-->
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <input id="Clear" name="Clear" type="button" value="Clear" class="btn btn-facebook" onmouseup="javascript: clearAccessList()">
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td>
+            <select id="giveAccess" class="valid col-md-5" multiple="multiple" name="giveAccess" size="25" style="width: 300px">
+                <optgroup label="Active">
+                @for (int i = 0; i < Model.AccessActive.Count(); i++)
+                        {
+                            <option value=@Model.AccessActive[i].ID> @Model.AccessActive[i].Name </option>
+                        }
+                </optgroup>
+                <optgroup label="Retired">
+                @for (int i = 0; i < Model.AccessRetired.Count(); i++)
+                        {
+                            <option value=@Model.AccessRetired[i].ID> @Model.AccessRetired[i].Name </option>
+                        }
+                </optgroup>
+            </select>
+        </td>
+    </tr>
+</tbody>
+</table>
+
+<div class="form-group">
+    <div class="col-md-7 col-md-push-3">
+        <button type="submit" class="btn btn-primary" name="button" onclick="javascript: autoFillHiddenFullAccess(form.fullAccess,form.NoAccess,form.giveAccess)" value="Product">@Resources.strings.qviSaveChanges</button>
+    <button type="reset" class="btn btn-default">@Resources.strings.qviReset</button>
+    </div><!-- /.col -->
+</div><!-- /.form-group -->
+</div><!-- /.tab-pane -->
+}
